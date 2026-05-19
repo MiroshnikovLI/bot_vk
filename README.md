@@ -8,7 +8,7 @@
 Это частный проект. Все права защищены.  
 Автор: @MiroshnikovLI © 2025
 
-<p id="beginning">📋 Оглавление</p>  
+📋 Оглавление
 
 1) [Возможности](#opportunities)
 
@@ -40,7 +40,7 @@
 | Рассылка задач | Отправка задач выбранным ПВЗ со сбором отчета для руководства |
 | Шаблоны отписок |	Кнопки с шаблонами, где менеджер заполняет данные по форме |
 
-[<div align="right" >Оглавление</div>](#beginning)
+
 
 <h2 id="technologies">🛠 Технологии</h2>
 
@@ -53,14 +53,14 @@
 | Фоновые задачи | node-cron | Планировщик для проверок отписок |
 | Процесс-менеджер |	PM2 |	Автоматический перезапуск |
 
-[<div align="right" >Оглавление</div>](#beginning)
+
 
 
 <h2 id="architecture">🏗 Архитектура</h2>
 
 <img src="https://sun9-41.userapi.com/s/v1/ig2/uyxvUtdfAmOuotLyqSsHW7XUOb7eXZ90UqCbYfp9DcSESV00KVCn8MecCJgF5mmEYRMJVswXQQh9vXIyVMemgjEl.jpg?quality=95&as=32x34,48x51,72x77,108x115,160x171,240x256,360x384,480x512,540x576,600x640&from=bu&u=ZkeMQgnU9BRophAM3dLbYsvmDEaBZ5oj0kbxFVC5xlU&cs=600x0"/>
 
-[<div align="right" >Оглавление</div>](#beginning)
+
 
 <h2 id="database">База данных</h2>
 
@@ -179,7 +179,7 @@ INSERT INTO bot_settings (key, value, description) VALUES
 
 ```
 
-[<div align="right" >Оглавление</div>](#beginning)
+
 
 <h4 id="project-structure">📁 Структура проекта</h4>
 
@@ -258,7 +258,7 @@ wb-pvz-bot/
 
 ```
 
-[<div align="right" >Оглавление</div>](#beginning)
+
 
 <h3 id="installation-and-launch">🔧 Установка и запуск</h3>
 
@@ -417,4 +417,3 @@ AI-помощник для ответов на частые вопросы
 Вложение изображений в ответы
 ```
 
-[<div align="right" >Оглавление</div>](#beginning)
