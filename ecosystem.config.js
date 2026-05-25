@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'bot_vk',
-      scripts: 'src/bot/index.js',
+      script: 'src/bot/index.js',          
       watch: false,
       instances: 1,
       exec_mode: 'fork',
@@ -17,29 +17,29 @@ module.exports = {
     },
     {
       name: 'bot_api',
-      scripts: 'src/server/index.js',
+      script: 'src/server/index.js',        
       watch: false,
       instances: 1,
-      exec_mode: 'forck',
+      exec_mode: 'fork',                    
       env: {
-        NODE_ENV: 'productions',
-        PORT: 3001
+        NODE_ENV: 'production',              
+        PORT: 21254
       },
       error_file: 'logs/api-error.log',
       out_file: 'logs/api-out.log',
       time: true
     },
     {
-      name: 'bot_sheduler',
-      scripts: 'src/sheduler/index.js',
+      name: 'bot_scheduler',                
+      script: 'src/scheduler/index.js',      
       watch: false,
       instances: 1,
-      exec_mode: 'forck',
+      exec_mode: 'fork',                    
       env: {
-        NODE_ENV: 'productions'
+        NODE_ENV: 'production'              
       },
-      error_file: 'logs/sheduler-error.log',
-      out_file: 'logs/sheduler-out.log',
+      error_file: 'logs/scheduler-error.log',
+      out_file: 'logs/scheduler-out.log',
       time: true
     }
   ]
