@@ -328,11 +328,11 @@ pm2 startup
 
 ecosystem.config.js
 ```
-module.exports = {
+module.exports = { 
   apps: [
     {
       name: 'vk-bot',
-      script: './bot/index.js',
+      script: './src/bot/index.js',
       watch: false,
       env: {
         NODE_ENV: 'production'
@@ -340,7 +340,7 @@ module.exports = {
     },
     {
       name: 'api-server',
-      script: './server/index.js',
+      script: './src/server/index.js',
       watch: false,
       env: {
         PORT: 3001
@@ -348,7 +348,7 @@ module.exports = {
     },
     {
       name: 'scheduler',
-      script: './scheduler/index.js',
+      script: './src/scheduler/index.js',
       watch: false
     }
   ]
@@ -416,4 +416,3 @@ AI-помощник для ответов на частые вопросы
 
 Вложение изображений в ответы
 ```
-
