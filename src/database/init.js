@@ -7,7 +7,7 @@ const pool = new Pool({
   port: process.env.DB_PORT || 21254,
   database: process.env.DB_NAME || "wb_bot",
   user: process.env.DB_USER || "postgres",
-  password: process.env.DB_PASSWORD || "postgres"
+  password: process.env.DB_PASSWORD
 });
 
 // SQL запросы для создание таблиц
@@ -280,7 +280,6 @@ async function initDatabase() {
     throw error;
   } finally {
     client.release();
-    await pool.end();
   }
 }
 
@@ -320,7 +319,7 @@ async function resetDatabase() {
     console.log('База данных очищена');
 
     // Пересоздаем
-    await initeDatabase();
+    await initDatabase();
 
   } catch (error) {
     await client.query('ROLLBACK');
@@ -355,17 +354,22 @@ if (require.main === module) {
   const command = process.argv[2];
 
   (async () => {
+    try {
     const connected = await testConnection();
     if(!connected) {
       process.exit(1);
     }
 
     if(command === 'reset') {
-      await resetDatebase();
-    } else {
-      await initDatabase();
+        await resetDatabase();
+      } else {
+        await initDatabase();
+      }
+    } catch {
+      process.exit(0);
+    } finally {
+      await pool.end(); // ✅ Закрываем здесь
+      console.log('🔌 Соединение закрыто');
     }
-
-    process.exit(0);
   })();
 };
