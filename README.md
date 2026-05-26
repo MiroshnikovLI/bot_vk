@@ -72,24 +72,17 @@
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     vk_id BIGINT UNIQUE NOT NULL,
-    wb_id INTEGER UNIQUE,
     full_name VARCHAR(255) NOT NULL,
-    phone VARCHAR(20),
     role VARCHAR(50) DEFAULT 'manager',  -- 'manager', 'admin', 'viewer'
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
 -- Пункты выдачи
 CREATE TABLE pvz (
     id SERIAL PRIMARY KEY,
-    id_pvz VARCHAR(50) UNIQUE NOT NULL,
+    code VARCHAR(50) UNIQUE NOT NULL,
     address VARCHAR(500) NOT NULL,
-    open_time TIME DEFAULT '08:00',
-    close_time TIME DEFAULT '21:00',
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
 -- Связь менеджеров с ПВЗ
@@ -97,11 +90,20 @@ CREATE TABLE pvz_managers (
     id SERIAL PRIMARY KEY,
     pvz_id INTEGER REFERENCES pvz(id) ON DELETE CASCADE,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    notes TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
+    is_primary BOOLEAN DEFAULT FALSE,    -- основной менеджер
     UNIQUE(pvz_id, user_id)
+);
+
+-- Отчеты об открытии/закрытии
+CREATE TABLE shift_reports (
+    id SERIAL PRIMARY KEY,
+    pvz_id INTEGER REFERENCES pvz(id),
+    user_id INTEGER REFERENCES users(id),
+    report_type VARCHAR(10) CHECK (report_type IN ('open', 'close')),
+    shift_people VARCHAR(500),           -- ФИО + ID сотрудника в смене
+    report_text TEXT,                     -- полный текст отчета
+    created_at TIMESTAMP DEFAULT NOW(),
+    published BOOLEAN DEFAULT FALSE      -- опубликовано на стене?
 );
 
 -- Плановые смены (на следующий день)
@@ -113,31 +115,6 @@ CREATE TABLE planned_shifts (
     shift_type VARCHAR(10) CHECK (shift_type IN ('open', 'close')),
     confirmed BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT NOW()
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    UNIQUE(pvz_id, shift_date, shift_type),
-    UNIQUE(user_id, shift_date)
-);
-
--- Отчеты об открытии/закрытии
-CREATE TABLE shift_reports (
-    id SERIAL PRIMARY KEY,
-    pvz_id INTEGER REFERENCES pvz(id),
-    user_id INTEGER REFERENCES users(id),
-    wb_id INTEGER,
-    employee_name VARCHAR(250),
-    report_type VARCHAR(10) CHECK (report_type IN ('open', 'close')),
-    shift_people VARCHAR(500),           -- ФИО + ID сотрудника в смене
-    report_text TEXT,                     -- полный текст отчета
-    report_time TIME,
-    is_ontime BOOLEAN DEFAULT TRUE,
-    published_wall_id INTEGER,                        -- ID поста на стене
-    published_at TIMESTAMP,                           -- Время публикации
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    --Индексы для быстрого поиска
-    CONSTRAINT fk_pvz FOREIGN KEY (pvz_id) REFERENCES pvz(id),
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 -- Настройки бота
@@ -145,8 +122,7 @@ CREATE TABLE bot_settings (
     id SERIAL PRIMARY KEY,
     key VARCHAR(100) UNIQUE NOT NULL,
     value TEXT,
-    description TEXT,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    description TEXT
 );
 
 -- Задачи для рассылки
@@ -155,12 +131,9 @@ CREATE TABLE tasks (
     title VARCHAR(255) NOT NULL,
     message TEXT NOT NULL,
     target_pvz INTEGER[] DEFAULT '{}',    -- массив ID ПВЗ (пусто = все)
-    target_managers INTEGER[] DEFAULT'{}',
     report_destination VARCHAR(20) CHECK (report_destination IN ('wall', 'dm_admin')),
     status VARCHAR(20) DEFAULT 'pending', -- 'pending', 'sent', 'completed'
     created_by INTEGER REFERENCES users(id),
-    sent_at TIMESTAMP,
-    completed_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -180,21 +153,7 @@ CREATE TABLE bot_logs (
     log_type VARCHAR(50),  -- 'report', 'reminder', 'task', 'error'
     target_id BIGINT,      -- user_id или chat_id
     message TEXT,
-    metadata JSONB,
     created_at TIMESTAMP DEFAULT NOW()
-);
-
--- 11. Отсутствие и подмены
-CREATE TABLE IF NOT EXISTS absences (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id),
-  pvz_id INTEGER NOT NULL REFERENCES pvz(id),
-  absences_date DATE NOT NULL,
-  shift_type VARCHAR(10) CHECK (shift_type IN ('open', 'close', 'full')),
-  substitute_id INTEGER REFERENCES users(id),
-  reason TEXT,
-  approved BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
 
 -- Индексы для скорости
@@ -369,7 +328,7 @@ pm2 startup
 
 ecosystem.config.js
 ```
-module.exports = {
+module.exports = { 
   apps: [
     {
       name: 'vk-bot',
