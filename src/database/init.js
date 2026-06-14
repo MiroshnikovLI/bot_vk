@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS shift_reports (
   wb_id INTEGER,
   employee_name VARCHAR(250),
   report_type VARCHAR(10) CHECK (report_type IN ('open', 'close')),
-  reportText TEXT NOT NULL,
+  report_text TEXT NOT NULL,
   report_time TIME,
   is_ontime BOOLEAN DEFAULT TRUE,
   published_wall_id INTEGER,
@@ -153,19 +153,7 @@ CREATE TABLE IF NOT EXISTS absences (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
 
--- 12. Таблица заявок на привязку к ПВЗ
-CREATE TABLE IF NOT EXISTS pvz_requests (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  pvz_id INTEGER NOT NULL REFERENCES pvz(id) ON DELETE CASCADE,
-  status VARCHAR(20) DEFAULT 'pending',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  processed_at TIMESTAMP,
-  processed_by INTEGER REFERENCES users(id),
-  UNIQUE(user_id, pvz_id, status)
-);
-
--- 13. Таблица сменщиков (для отписок)
+-- 12. Таблица сменщиков (для отписок)
 CREATE TABLE shift_substitutes (
   id SERIAL PRIMARY KEY,
   main_user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,  -- основной менеджер
@@ -192,9 +180,6 @@ CREATE INDEX IF NOT EXISTS idx_reports_date ON shift_reports(created_at);
 CREATE INDEX IF NOT EXISTS idx_reports_type_date ON shift_reports(report_type, created_at);
 CREATE INDEX IF NOT EXISTS idx_tasks_status ON tasks(status);
 CREATE INDEX IF NOT EXISTS idx_absences_date ON absences(absences_date);
-CREATE INDEX IF NOT EXISTS idx_requests_user ON pvz_requests(user_id);
-CREATE INDEX IF NOT EXISTS idx_requests_pvz ON pvz_requests(pvz_id);
-CREATE INDEX IF NOT EXISTS idx_requests_status ON pvz_requests(status);
 CREATE INDEX IF NOT EXISTS idx_substitutes_main ON shift_substitutes(main_user_id);
 CREATE INDEX IF NOT EXISTS idx_substitutes_sub ON shift_substitutes(replacement_user_id);
 `;
