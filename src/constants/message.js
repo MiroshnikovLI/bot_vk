@@ -28,7 +28,7 @@ const CHANGE_NAME = "✏️ Введите ваше новое ФИО полно
 
 const CHANGE_WB_ID = "🆖 Введите ваш новый WB ID (только цифры):";
 
-const OPERATION_CANCELLED = "❌ Операция отменина"
+const OPERATION_CANCELLED = "❌ Операция отменена"
 
 const UNSUBSCRIBE_SETTINGS =
   `🏪 **НАСТРОЙКИ ОТПИСКИ**\n\n` +
@@ -67,31 +67,31 @@ const NOTIFICATIONS = {
   NO_OPEN_SHIFTS: "✅ У вас нет открытых смен.",
   NO_PVZ_LIST: "📋 Список ПВЗ пуст.",
   CHOOSE_PVZ: "🏪 Выберите ПВЗ:",
-  CHOSE_REPLECAMENT: "👤 Пожалуйста, выберите сменщика",
-  CHOSE_RATE_PVZ: "Введите рейтинг ПВЗ в формате: 5 4,99 4.99",
-  WAITING_PVZ_ID: "🆔 Введите ID ПВЗ (только цыфры)",
-  WAITING_ADDRESS_PVZ: "🏪 Введите адресс ПВЗ.\n Например: \n 1) ул. Аэродромная, 18\n 2) Авиационная улица, 74к4\n 3) Хорошёвское шоссе 25Ак1",
+  CHOOSE_REPLACEMENT: "👤 Пожалуйста, выберите сменщика",
+  CHOOSE_RATE_PVZ: "Введите рейтинг ПВЗ в формате: 5 4,99 4.99",
+  WAITING_PVZ_ID: "🆔 Введите ID ПВЗ (только цифры)",
+  WAITING_ADDRESS_PVZ: "🏪 Введите адрес ПВЗ.\n Например: \n 1) ул. Аэродромная, 18\n 2) Авиационная улица, 74к4\n 3) Хорошёвское шоссе 25Ак1",
   ADMIN_WAITING_WORK_TIME: "⏰ Введите время работы пункта в формате 24 часа.\n Например: 9-22 или 08:00-22:00",
   ERROR: "❌ Ошибка операции попробуйте еще раз.",
-  TECHNICAL_ERROR: "Техническая ошибка. Обратитесь к админестратору.",
+  TECHNICAL_ERROR: "Техническая ошибка. Обратитесь к администратору.",
   WARNING_ID_ONLY_NUMBERS: "❌ ID должен содержать только цифры.\n\nПопробуйте еще раз:",
   WARNING_RATE_ONLY_NUMBERS: "❌ Введите рейтинг в формате (только цифры): 5.00 5,00 5",
   NO_RECEIVE_PVZ: "❌ Не удалось получить список ПВЗ.\n\nПопробуйте позже",
-  DELETED_SUCCESSFULLY: (text) => `ПВЗ ${text} был успешно удален с базы`,
-  ERROR_DELETED: `Ошибка при удаление. Попробуйте позже`,
+  DELETED_SUCCESSFULLY: (text) => `ПВЗ ${text} был успешно удален из базы`,
+  ERROR_DELETED: `Ошибка при удалении. Попробуйте позже`,
   PVZ_ADDED: (pvz) => `✅ ПВЗ ${pvz.id} - ${pvz.address} успешно добавлен.`,
   PVZ_ALREADY_ADDED: (pvz) => `ПВЗ ${pvz.pvz_id} - ${pvz.address} уже добавлен.`,
   PVZ_NOT_FOUND: (pvz) => `❌ ПВЗ с кодом "${pvz}" не найден.`,
-  PVZ_NOT_FOUND_SEARCH: (pvz) => `ПВЗ ${text} не найден пожалуйста выберети из списка`,
+  PVZ_NOT_FOUND_SEARCH: (pvz) => `ПВЗ ${pvz} не найден. Пожалуйста выберети из списка`,
   PVZ_NOT_FOUND_PINNED: (pvz) => `❌ ПВЗ ${pvz.pvz_id} - ${pvz.address}\n Не был найден в закрепленных`,
   PVZ_SUCCESSFULLY_DELETED: (pvz) => `✅ Успешно удалено из отписок\n 📍ПВЗ ${pvz.pvz_id} - ${pvz.address}\n`,
   USER_NOT_FOUND: (user) => `❌ Пользователь с WB ID: ${user} не найден`,
-  REPLECAMENT_ALREADY_ADDED: (user) => `✅ Сменщик уже добавлен.\n• ${user.full_name}`,
-  REPLECAMENT_FOUND_ADDED: (user) => `✅ Сменщик успешно добавлен.\n• ${user.full_name}`,
-  REPLECAMENT_FOUND_DELETED: (text) => `✅ Сменщик успешно удален из отписок.\n• ${text}`,
-  REPLECAMENT_NOT_FOUND: (text) => `❌ Сменщик ${text} не найден.\n`,
-  ERROR_ADDED_REPLECAMENT: (message) => `${message}\n❌ Не удалось добавить сменщика\n• Повторите операцию позже.`,
-  ADMIN_WAITING_CONFIRMATION: (pvz_id, address, timeWork) => `Проверьте правильность введеных данных:\n\n 1) ID ПВЗ: ${pvz_id}\n 2) Адресс: ${address.city}, ${address.street}, ${address.house}\n 3) Время работы: ${timeWork.open} : ${timeWork.close} `,
+  REPLACEMENT_ALREADY_ADDED: (user) => `✅ Сменщик уже добавлен.\n• ${user.full_name}`,
+  REPLACEMENT_FOUND_ADDED: (user) => `✅ Сменщик успешно добавлен.\n• ${user.full_name}`,
+  REPLACEMENT_FOUND_DELETED: (text) => `✅ Сменщик успешно удален из отписок.\n• ${text}`,
+  REPLACEMENT_NOT_FOUND: (text) => `❌ Сменщик ${text} не найден.\n`,
+  ERROR_ADDED_REPLACEMENT: (message) => `${message}\n❌ Не удалось добавить сменщика\n• Повторите операцию позже.`,
+  ADMIN_WAITING_CONFIRMATION: (pvz_id, address, timeWork) => `Проверьте правильность введённых данных:\n\n 1) ID ПВЗ: ${pvz_id}\n 2) Адрес: ${address.city}, ${address.street}, ${address.house}\n 3) Время работы: ${timeWork.open} : ${timeWork.close} `,
   LIST_PVZ: (pvz) => {
     let message = "📋 **СПИСОК ПВЗ**\n\n";
     pvz.forEach((p) => {
@@ -189,7 +189,7 @@ const UNSUBSCRIBE_MENU =
   "• ❌ Нет отчета открытия - отчет: какие пункты еще не отчитались об открытии ПВЗ\n" +
   "• ❌ Нет отчета закрытия - отчет: какие пункты еще не отчитались о закрытии ПВЗ\n" +
   "• 🔔 Напомнить об открытии - отправить отчет в чат с ПВЗ, которые еще не отчитались об открытии\n" +
-  "• 🔔 Напомнить об закрытии - отправить отчет в чат с ПВЗ, которые еще не отчитались об закрытии\n";
+  "• 🔔 Напомнить о закрытии - отправить отчет в чат с ПВЗ, которые еще не отчитались об закрытии\n";
 
 module.exports = {
   START,

@@ -54,19 +54,19 @@ async function addReplacement(userId, text) {
       if (resultAddReplecement.message === "Сменщик уже привязан") {
         await sendMessage(
           userId,
-          NOTIFICATIONS.REPLECAMENT_ALREADY_ADDED(addReplacementUser),
+          NOTIFICATIONS.REPLACEMENT_ALREADY_ADDED(addReplacementUser),
           getUnsubscribeKeyboard(),
         );
       } else if (resultAddReplecement.message === "Сменщик привязан") {
         await sendMessage(
           userId,
-          NOTIFICATIONS.REPLECAMENT_FOUND_ADDED(addReplacementUser),
+          NOTIFICATIONS.REPLACEMENT_FOUND_ADDED(addReplacementUser),
           getUnsubscribeKeyboard(),
         );
       } else {
         await sendMessage(
           userId,
-          NOTIFICATIONS.ERROR_ADDED_REPLECAMENT(resultAddReplecement.message),
+          NOTIFICATIONS.ERROR_ADDED_REPLACEMENT(resultAddReplecement.message),
           getUnsubscribeKeyboard(),
         );
       }

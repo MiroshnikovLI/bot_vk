@@ -48,12 +48,12 @@ async function selectingReplacementInChat(
   }
   if (selectPvz && createShiftReport) {
     userStates.set(userId, "waitingRatePvzInChat", { pvz: selectPvz, user: chatUsers, replecament: selectedReplecament, reportType: state.reportType});
-    await sendMessage(userId, NOTIFICATIONS.CHOSE_RATE_PVZ, getRatePvzKeyboard(selectPvz.rate));
+    await sendMessage(userId, NOTIFICATIONS.CHOOSE_RATE_PVZ, getRatePvzKeyboard(selectPvz.rate));
     return;
   } else {
     await sendMessage(
       userId,
-      NOTIFICATIONS.CHOSE_REPLECAMENT,
+      NOTIFICATIONS.CHOOSE_REPLACEMENT,
       getReplacementKeyboard(userReplecament, state.reportType),
     );
   }

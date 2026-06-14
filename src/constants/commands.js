@@ -31,7 +31,7 @@ const COMMANDS = {
   MISSING_OPENING: "нет отчета открытия",
   MISSING_CLOSING: "нет отчета закрытия",
   REMIND_OPENING: "напомнить об открытии",
-  REMIND_CLOSING: "напомнить об закрытии",
+  REMIND_CLOSING: "напомнить о закрытии",
 
   CANCELLATION: "отмена",
   YES_DATA_IS_CORRECT: "да данные верны",

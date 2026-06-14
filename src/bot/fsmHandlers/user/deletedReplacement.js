@@ -53,13 +53,13 @@ async function deletedReplacement(userId, text) {
       if (resultDeletedReplecement.message === "Сменщик не найден") {
         await sendMessage(
           userId,
-          NOTIFICATIONS.REPLECAMENT_NOT_FOUND(wbIdDeleted),
+          NOTIFICATIONS.REPLACEMENT_NOT_FOUND(wbIdDeleted),
           getUnsubscribeKeyboard(),
         );
       } else if (resultDeletedReplecement.message === "Сменщик удален") {
         await sendMessage(
           userId,
-          NOTIFICATIONS.REPLECAMENT_FOUND_DELETED(deletedReplacement.full_name),
+          NOTIFICATIONS.REPLACEMENT_FOUND_DELETED(deletedReplacement.full_name),
           getUnsubscribeKeyboard(),
         );
       } else {
