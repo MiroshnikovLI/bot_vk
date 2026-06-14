@@ -1,9 +1,9 @@
 {
   "name": "bot-vk",
   "version": "1.0.0",
-  "main": "src/bot/index.js",
+  "main": "src/bot/bot.js",
   "scripts": {
-    "start": "nodemon src/bot/index.js",
+    "start": "nodemon src/bot/bot.js",
     "db:init": "node src/database/init.js"
   },
   "dependencies": {
