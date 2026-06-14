@@ -18,7 +18,7 @@ async function waitingWbId(userId, text) {
   userStates.delete(userId);
   await sendMessage(
     userId,
-    NOTIFICATIONS.PROFILE_COMPLETED_SUCCESSFULLY(state.tempData_full_name, text),
+    NOTIFICATIONS.PROFILE_COMPLETED_SUCCESSFULLY(state.tempData.full_name, text),
     await getPrivateKeyboard(userId),
   );
 }
