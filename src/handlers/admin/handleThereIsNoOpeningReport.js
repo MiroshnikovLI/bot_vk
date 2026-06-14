@@ -5,7 +5,7 @@ const { getThereIsNoReport } = require('../../services/reportService');
 
 async function handleThereIsNoOpeningReport(userId, isAdmin) {
   if(!isAdmin) {
-    sendMessage(userId, NO_ACCESS_RIGHTS, await getPrivateKeyboard(userId));
+    await sendMessage(userId, NO_ACCESS_RIGHTS, await getPrivateKeyboard(userId));
   }
 
   const report = await getThereIsNoReport('open');

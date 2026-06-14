@@ -7,7 +7,7 @@ const { getAllUsers } = require('../../services/userService');
 
 async function handlePVZOpeningReport(userId, isAdmin) {
   if(!isAdmin) {
-    sendMessage(userId, NO_ACCESS_RIGHTS, await getPrivateKeyboard(userId));
+    await sendMessage(userId, NO_ACCESS_RIGHTS, await getPrivateKeyboard(userId));
   }
 
   const report = await getAllTheReportsForToday('open');

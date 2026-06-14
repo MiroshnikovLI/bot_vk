@@ -107,7 +107,7 @@ async function handleUpdate(update) {
         "• 🌅 Открытие ПВЗ\n" +
         "• 🌙 Закрытие ПВЗ\n\n" +
         "Или воспользуйтесь кнопками меню.",
-      await getPrivateKeyboard(),
+      await getPrivateKeyboard(peerId),
     );
   }
 }

@@ -7,7 +7,7 @@ require("dotenv").config();
 
 async function handleToRemindAboutTheOpening(userId, isAdmin) {
   if(!isAdmin) {
-    sendMessage(userId, NO_ACCESS_RIGHTS, await getPrivateKeyboard(userId));
+    await sendMessage(userId, NO_ACCESS_RIGHTS, await getPrivateKeyboard(userId));
   }
 
   const report = await handleToRemind(userId, 'open');

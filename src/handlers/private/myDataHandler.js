@@ -36,7 +36,7 @@ async function myDataHandler(userId) {
   if (!user.full_name || !user.wb_id) {
     message += `⚠️ **Профиль не заполнен!**\nНажмите "✏️ Изменить ФИО" или "✏️ Изменить WB ID".`;
   }
-  await sendMessage(userId, message, await await getPrivateKeyboard(userId));
+  await sendMessage(userId, message, await getPrivateKeyboard(userId));
 }
 
 module.exports = {

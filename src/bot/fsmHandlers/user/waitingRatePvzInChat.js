@@ -39,7 +39,7 @@ async function waitingRatePvzInChat(userId, text) {
       await updatePvzRating(rate, pvz.pvz_id);
     } catch {
       userStates.delete(userId);
-      await sendMessage(userId, NOTIFICATIONS.ERROR, getPrivateKeyboard());
+      await sendMessage(userId, NOTIFICATIONS.ERROR, await getPrivateKeyboard(userId));
       return;
     }
   }

@@ -1,4 +1,4 @@
-const { getUnsubscriptionsKeyboard } = require('../../keyboards/keyboards');
+const { getUnsubscriptionsKeyboard, getPrivateKeyboard } = require('../../keyboards/keyboards');
 const { sendMessage } = require('../../config/vkApi');
 const { NO_ACCESS_RIGHTS, UNSUBSCRIBE_MENU } = require('../../constants/message');
 

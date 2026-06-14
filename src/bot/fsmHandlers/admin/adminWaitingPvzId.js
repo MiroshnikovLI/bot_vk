@@ -12,7 +12,7 @@ async function adminWaitingPvzId(userId, text) {
 
   if (clearText === COMMANDS.CANCELLATION) {
     userStates.delete(userId);
-    sendMessage(userId, OPERATION_CANCELLED, getAdminKeyboard());
+    await (userId, OPERATION_CANCELLED, getAdminKeyboard());
     return;
   }
 
