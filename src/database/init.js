@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS pvz_requests (
 CREATE TABLE shift_substitutes (
   id SERIAL PRIMARY KEY,
   main_user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,  -- основной менеджер
-  substitute_user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, -- сменщик
+  replacement_user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, -- сменщик
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   
