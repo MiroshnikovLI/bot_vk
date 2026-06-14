@@ -6,7 +6,7 @@ const {
 } = require("../../../keyboards/keyboards");
 const { userStates } = require("../../../state/stateManager");
 const { sendMessage } = require("../../../config/vkApi");
-const { NOTIFICATIONS, COMMANDS } = require("../../../constants/index");
+const { NOTIFICATIONS, COMMANDS, OPERATION_CANCELLED } = require("../../../constants/index");
 const { addPvzToDb } = require('../../../services/pvzService');
 
 async function adminWaitingСonfirmation(userId, text) {
