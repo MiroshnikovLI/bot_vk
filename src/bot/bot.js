@@ -138,5 +138,4 @@ startBot();
 
 setInterval(() => {
   userStates.clearExpired();
-  console.log("🧹 Очистка старых состояний выполнена");
 }, 600000);

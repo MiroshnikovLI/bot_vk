@@ -32,8 +32,6 @@ async function waitingRatePvzInChat(userId, text) {
 
   const rate = parseRating(text);
 
-  console.log(rate !== pvz.rate);
-
   if (rate !== pvz.rate) {
     try {
       await updatePvzRating(rate, pvz.pvz_id);

@@ -10,11 +10,11 @@ const {
 const { userStates } = require('../../../state/stateManager');
 const { sendMessage } = require('../../../config/vkApi');
 const { OPERATION_CANCELLED, NOTIFICATIONS, COMMANDS } = require('../../../constants/index');
+const { createShiftReport } = require('../../../handlers/handleChatReport');
 
 async function selectingPvzInChat(
   userId,
   text,
-  createShiftReport,
 ) {
   const state = userStates.get(userId);
   const clearText = cleanText(text);
