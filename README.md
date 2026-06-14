@@ -47,7 +47,7 @@
 | Компонент |	Технология |	Обоснование |
 | ----------| -----------| -------------|
 | Язык | JavaScript (Node.js) |	Единый язык для бота и веб-панели |
-| Бот |	vk-io / node-vk-bot-sdk |	Легковесные библиотеки для VK API |
+| Бот | VK API (Long Poll) | Нативная работа через HTTPS-запросы |
 | Веб-панель |	React + Express.js |	Современный UI и легкий бэкенд |
 | База данных |	PostgreSQL |	Надежность, индексы, связи между таблицами |
 | Фоновые задачи | node-cron | Планировщик для проверок отписок |
@@ -72,25 +72,36 @@
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     vk_id BIGINT UNIQUE NOT NULL,
+    wb_id INTEGER UNIQUE,
     full_name VARCHAR(255) NOT NULL,
     role VARCHAR(50) DEFAULT 'manager',  -- 'manager', 'admin', 'viewer'
-    created_at TIMESTAMP DEFAULT NOW()
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Пункты выдачи
 CREATE TABLE pvz (
     id SERIAL PRIMARY KEY,
-    code VARCHAR(50) UNIQUE NOT NULL,
+    pvz_id VARCHAR(50) UNIQUE NOT NULL,
     address VARCHAR(500) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
+    city VARCHAR(100),
+    street VARCHAR(200),
+    house VARCHAR(50),
+    street_normalized VARCHAR(200),
+    open_time TIME DEFAULT '08:00',
+    close_time TIME DEFAULT '21:00',
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Связь менеджеров с ПВЗ
-CREATE TABLE pvz_managers (
+CREATE TABLE pvz_manager (
     id SERIAL PRIMARY KEY,
     pvz_id INTEGER REFERENCES pvz(id) ON DELETE CASCADE,
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    is_primary BOOLEAN DEFAULT FALSE,    -- основной менеджер
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    is_active BOOLEAN DEFAULT TRUE,
     UNIQUE(pvz_id, user_id)
 );
 
@@ -99,67 +110,41 @@ CREATE TABLE shift_reports (
     id SERIAL PRIMARY KEY,
     pvz_id INTEGER REFERENCES pvz(id),
     user_id INTEGER REFERENCES users(id),
+    wb_id INTEGER,
+    employee_name VARCHAR(250),
     report_type VARCHAR(10) CHECK (report_type IN ('open', 'close')),
-    shift_people VARCHAR(500),           -- ФИО + ID сотрудника в смене
-    report_text TEXT,                     -- полный текст отчета
-    created_at TIMESTAMP DEFAULT NOW(),
-    published BOOLEAN DEFAULT FALSE      -- опубликовано на стене?
+    report_text TEXT NOT NULL,
+    report_time TIME,
+    is_ontime BOOLEAN DEFAULT TRUE,
+    published_wall_id INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Плановые смены (на следующий день)
-CREATE TABLE planned_shifts (
+-- Таблица сменщиков
+CREATE TABLE shift_substitutes (
     id SERIAL PRIMARY KEY,
-    pvz_id INTEGER REFERENCES pvz(id),
-    user_id INTEGER REFERENCES users(id),
-    shift_date DATE NOT NULL,
-    shift_type VARCHAR(10) CHECK (shift_type IN ('open', 'close')),
-    confirmed BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT NOW()
+    main_user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    substitute_user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(main_user_id, substitute_user_id)
 );
 
 -- Настройки бота
 CREATE TABLE bot_settings (
     id SERIAL PRIMARY KEY,
     key VARCHAR(100) UNIQUE NOT NULL,
-    value TEXT,
-    description TEXT
+    value TEXT NOT NULL,
+    description TEXT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Задачи для рассылки
-CREATE TABLE tasks (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    message TEXT NOT NULL,
-    target_pvz INTEGER[] DEFAULT '{}',    -- массив ID ПВЗ (пусто = все)
-    report_destination VARCHAR(20) CHECK (report_destination IN ('wall', 'dm_admin')),
-    status VARCHAR(20) DEFAULT 'pending', -- 'pending', 'sent', 'completed'
-    created_by INTEGER REFERENCES users(id),
-    created_at TIMESTAMP DEFAULT NOW()
-);
-
--- Ответы на задачи (от менеджеров)
-CREATE TABLE task_responses (
-    id SERIAL PRIMARY KEY,
-    task_id INTEGER REFERENCES tasks(id),
-    user_id INTEGER REFERENCES users(id),
-    pvz_id INTEGER REFERENCES pvz(id),
-    response_text TEXT,
-    created_at TIMESTAMP DEFAULT NOW()
-);
-
--- Логи сообщений бота
-CREATE TABLE bot_logs (
-    id SERIAL PRIMARY KEY,
-    log_type VARCHAR(50),  -- 'report', 'reminder', 'task', 'error'
-    target_id BIGINT,      -- user_id или chat_id
-    message TEXT,
-    created_at TIMESTAMP DEFAULT NOW()
-);
+-- ... и другие таблицы (задачи, логи, заявки и т.д.)
 
 -- Индексы для скорости
 CREATE INDEX idx_reports_pvz ON shift_reports(pvz_id);
 CREATE INDEX idx_reports_date ON shift_reports(created_at);
-CREATE INDEX idx_shifts_date ON planned_shifts(shift_date);
+CREATE INDEX idx_shifts_date ON shifts(shift_date);
 CREATE INDEX idx_tasks_status ON tasks(status);
 
 ```
@@ -185,76 +170,30 @@ INSERT INTO bot_settings (key, value, description) VALUES
 
 ```
 
-wb-pvz-bot/
-│
-├── bot/                          # ВК Бот
-│   ├── index.js                  # Точка входа (Long Poll)
-│   ├── handlers/
-│   │   ├── openShift.js          # Обработка отчета об открытии
-│   │   ├── closeShift.js         # Обработка отчета о закрытии
-│   │   ├── myData.js             # Просмотр своих данных
-│   │   ├── missingReport.js      # Отчет о неотписавшихся
-│   │   └── taskResponse.js       # Ответ на задачу
-│   ├── keyboards/
-│   │   └── index.js              # Клавиатуры (открытие/закрытие/назад)
-│   └── utils/
-│       ├── vkApi.js              # Обертки над VK API
-│       ├── reportFormatter.js    # Форматирование отчетов
-│       └── reminders.js          # Логика напоминаний
-│
-├── panel/                        # Веб-панель (React)
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Layout/
-│   │   │   ├── PVZList/
-│   │   │   ├── ManagersList/
-│   │   │   ├── ReportsTable/
-│   │   │   ├── TasksCreator/
-│   │   │   └── SettingsForm/
-│   │   ├── pages/
-│   │   │   ├── Dashboard.js      # Главная со статистикой
-│   │   │   ├── PVZPage.js        # Управление ПВЗ
-│   │   │   ├── ReportsPage.js    # Просмотр отчетов
-│   │   │   ├── TasksPage.js      # Управление задачами
-│   │   │   └── SettingsPage.js   # Настройки бота
-│   │   ├── services/
-│   │   │   └── api.js            # API клиент
-│   │   └── App.js
-│   └── package.json
-│
-├── server/                       # Бэкенд API
-│   ├── index.js                  # Express сервер
-│   ├── routes/
-│   │   ├── pvz.js                # CRUD ПВЗ
-│   │   ├── users.js              # CRUD менеджеров
-│   │   ├── reports.js            # Получение отчетов
-│   │   ├── tasks.js              # Создание/получение задач
-│   │   └── settings.js           # Настройки бота
-│   ├── middleware/
-│   │   ├── auth.js               # Проверка прав админа
-│   │   └── validation.js
-│   └── controllers/              # Логика эндпоинтов
-│
-├── database/
-│   ├── init.sql                  # SQL схема
-│   ├── migrations/               # Миграции
-│   └── connection.js             # Пул соединений
-│
-├── scheduler/                    # Планировщик задач
-│   ├── index.js                  # Инициализация cron
-│   ├── shiftReminders.js         # Напоминания о сменах
-│   ├── dailySchedule.js          # Публикация смен на завтра
-│   └── taskScheduler.js          # Отправка задач
-│
-├── shared/
-│   ├── constants.js              # Константы
-│   └── utils.js                  # Общие утилиты
-│
-├── .env
-├── .env.example
-├── package.json
-├── README.md
-└── docker-compose.yml            # Для локальной разработки
+bot_vk/
+├── src/                # Исходный код
+|   ├── bot/
+│   |   └── bot.js      # Точка входа бота (Long Poll)
+│   ├── config/         # Конфигурация (БД, VK API)
+│   ├── constants/      # Тексты сообщений и команды
+│   ├── database/
+│   │   └── init.js     # Скрипт инициализации БД
+│   ├── fsm/            # Машина состояний (FSM)
+│   ├── handlers/       # Обработчики команд
+│   │ ├── admin/        # Админ-команды
+│   │ ├── private/      # Личные команды пользователя
+│   │ └── chat/         # Обработка сообщений из чата
+│   ├── keyboards/      # Генерация клавиатур
+│   ├── listeners/      # Слушатели событий
+│   ├── services/       # Бизнес-логика и работа с БД
+│   ├── state/          # Управление состояниями пользователей
+│   └── utils/          # Вспомогательные функции
+├── panel/              # React-панель управления
+├── server/             # Express API сервер
+├── scheduler/          # Планировщик задач (cron)
+├── .env.example        # Пример файла окружения
+├── ecosystem.config.js # Конфигурация PM2
+└── package.json
 
 ```
 
@@ -285,31 +224,28 @@ cp .env.example .env
 ```
 # VK
 VK_GROUP_TOKEN=your_group_token_here
-VK_GROUP_ID=123456789
-VK_CONFIRMATION_CODE=your_code
+VK_GROUP_ID=your_group_id
+VK_CHAT_ID=idChat          # ID чата для отчетов
 
 # Database
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=wb_pvz_bot
+DB_NAME=wb_pvz
 DB_USER=postgres
-DB_PASSWORD=your_password
+DB_PASSWORD=your_postgres_password
 
-# Server
+# Server (опционально)
 API_PORT=3001
-API_SECRET_KEY=your_secret_key
-
-# Panel
-PANEL_PORT=3000
 ```
 Шаг 3: База данных
 
 ```
 # Создание БД
-createdb wb_pvz_bot
+sudo -u postgres psql -c "CREATE DATABASE wb_pvz OWNER postgres;"
 
-# Инициализация схемы
-psql -d wb_pvz_bot -f database/init.sql
+# Инициализация схемы (из корня проекта!)
+cd ~/bot_vk
+node src/database/init.js
 ```
 
 Шаг 4: Установка зависимостей и запуск
@@ -332,7 +268,7 @@ module.exports = {
   apps: [
     {
       name: 'vk-bot',
-      script: './src/bot/index.js',
+      script: './src/bot/bot.js',
       watch: false,
       env: {
         NODE_ENV: 'production'
@@ -375,44 +311,41 @@ module.exports = {
 
 <h3 id="development-plans">🗺 Планы развития</h3>
 
-MVP (первый релиз)
+
+MVP (текущая версия)
 ```
 Базовая структура проекта
 
-Регистрация менеджеров через бота
+Регистрация менеджеров
 
-Кнопки "Открытие" и "Закрытие" с заполнением данных
+Отправка отчётов об открытии/закрытии
 
-Сохранение отчетов в БД
+Сохранение отчётов в БД
 
-Публикация отчетов на стену
-
-Простая веб-панель (просмотр отчетов)
+Админ-панель и управление ПВЗ
 ```
-
 Версия 1.0
 ```
 Напоминания о сменах (планировщик)
 
-Кнопка "Кто не отписался"
+Кнопка "Кто не отписался" (готово?)
 
-Управление ПВЗ и менеджерами через панель
-
-Настройки времени и интервалов через панель
+Управление ПВЗ и менеджерами через веб-панель
 ```
-
 Версия 2.0
 ```
 Планирование смен на следующий день
 
 Рассылка задач менеджерам
 
-Сбор отчетов по задачам
+Сбор отчётов по задачам
 ```
-
 Версия 3.0
 ```
 AI-помощник для ответов на частые вопросы
 
 Вложение изображений в ответы
 ```
+📄 Лицензия
+Это частный проект. Все права защищены.
+Автор: @MiroshnikovLI © 2025–2026
