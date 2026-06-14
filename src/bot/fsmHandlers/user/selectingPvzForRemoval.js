@@ -1,6 +1,6 @@
 const { cleanText, } = require('../../../utils/helpers');
 const { logAction } = require('../../../utils/logger');
-const { getPvzByCode, removeUserFromPVZ, } = require('../../../services/pvzService');
+const { getPvzByCode, removeUserFromPvz, } = require('../../../services/pvzService');
 const { getUserVkId } = require('../../../services/userService');
 const { getUnsubscribeKeyboard, getCancelKeyboard } = require('../../../keyboards/keyboards');
 const { sendMessage } = require('../../../config/vkApi');
@@ -42,7 +42,7 @@ async function selectingPvzForRemoval(userId, text) {
     return true;
   }
 
-  const deletePVZ = await removeUserFromPVZ(userX.id, existingPVZs.id);
+  const deletePVZ = await removeUserFromPvz(userX.id, existingPVZs.id);
 
   if (deletePVZ.error === "Связь между пользователем и ПВЗ не найдена") {
     await sendMessage(

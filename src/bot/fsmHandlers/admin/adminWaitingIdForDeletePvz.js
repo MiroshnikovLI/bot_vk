@@ -2,7 +2,7 @@ const { userStates } = require("../../../state/stateManager");
 const { sendMessage } = require("../../../config/vkApi");
 const { cleanText } = require("../../../utils/helpers");
 const { getAdminKeyboard, getCancelKeyboard } = require('../../../keyboards/keyboards');
-const { getAllPvzs, deactivePVZFromDb } = require('../../../services/pvzService');
+const { getAllPvzs, deactivePvzFromDb } = require('../../../services/pvzService');
 const { NOTIFICATIONS, COMMANDS } = require("../../../constants/index");
 
 async function adminWaitingDeletePvzId(userId, text) {
@@ -40,7 +40,7 @@ async function adminWaitingDeletePvzId(userId, text) {
 
   const deletePvz = pvz.data.find(p => Number(p.pvz_id) === Number(clearText));
 
-  const result = await deactivePVZFromDb(deletePvz.pvz_id);
+  const result = await deactivePvzFromDb(deletePvz.pvz_id);
 
   if (result.success) {
     userStates.delete(userId)

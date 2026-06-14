@@ -16,6 +16,7 @@ const {
   adminWaitingPvzAdress,
   adminWaitindWorkTime,
   adminWaitingСonfirmation,
+  waitingRatePvzInChat,
 } = require("./fsmHandlers/index");
 
 const rawHandlers = {
@@ -34,6 +35,7 @@ const rawHandlers = {
   adminWaitingPvzAdress,
   adminWaitindWorkTime,
   adminWaitingСonfirmation,
+  waitingRatePvzInChat,
 };
 
 const safeHandlers = createSafeHandlers(rawHandlers);

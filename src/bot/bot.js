@@ -8,7 +8,6 @@ const {
   getReplacementKeyboard,
 } = require("../keyboards/keyboards");
 const {
-  getUserVkId,
   isProfileComplete,
   getUserId,
   isUserAdmin,
@@ -20,12 +19,13 @@ const {
   addPvzToDb,
   getUserReplacements,
 } = require("../services/pvzService");
-const { hasUserReportedToday, addShiftReport } = require('../services/reportService');
-const { cleanText } = require("../utils/helpers");
-const { logAction } = require('../utils/logger');
 const {
-  handleTextInput,
-} = require("./fsmHandler");
+  hasUserReportedToday,
+  addShiftReport,
+} = require("../services/reportService");
+const { cleanText } = require("../utils/helpers");
+const { logAction } = require("../utils/logger");
+const { handleTextInput } = require("./fsmHandler");
 const {
   sendMessage,
   startLongPoll,
@@ -33,8 +33,8 @@ const {
   editMessage,
 } = require("../config/vkApi");
 const { commandHandlers } = require("../handlers/commandHandlers");
-const { createShiftReport } = require('../handlers/handleChatReport');
-const { chatMessageListener } = require('./listeners/chatMessageListener');
+const { createShiftReport } = require("../handlers/handleChatReport");
+const { chatMessageListener } = require("./listeners/chatMessageListener");
 const { userStates } = require("../state/stateManager");
 require("dotenv").config();
 
@@ -53,7 +53,7 @@ async function handleUpdate(update) {
     text,
     out,
     conversation_message_id: cmid,
-    date
+    date,
   } = message;
 
   // Игнорируем свои сообщения
@@ -78,9 +78,37 @@ async function handleUpdate(update) {
 
   const handler = commandHandlers[cleanTexts];
   if (handler) {
-    await handler(senderId, isAdmin); // передаём нужные параметры
+    await handler(senderId, isAdmin);
+    return; // ← не идём дальше
+  }
+
+  // Если команда не найдена — обрабатываем текстовый ввод или fallback
+  const state = userStates.get(senderId);
+
+  if (state) {
+    // Пользователь в процессе диалога (ждёт ввод WB ID, ФИО и т.д.)
+    await handleTextInput(
+      senderId,
+      text,
+      false,
+      null,
+      createShiftReport,
+      sendMessage,
+    );
   } else {
-    await handleTextInput(senderId, text, false, null, createShiftReport, sendMessage);
+    // Нет активного диалога и команда не распознана
+    await sendMessage(
+      senderId,
+      "❌ Я не понял ваш запрос.\n\n" +
+        "🔍 Доступные команды:\n" +
+        "• 📋 Мои данные\n" +
+        "• ✏️ Изменить данные\n" +
+        "• 🏪 Настройки отписки\n" +
+        "• 🌅 Открытие ПВЗ\n" +
+        "• 🌙 Закрытие ПВЗ\n\n" +
+        "Или воспользуйтесь кнопками меню.",
+      getPrivateKeyboard(),
+    );
   }
 }
 
@@ -110,5 +138,5 @@ startBot();
 
 setInterval(() => {
   userStates.clearExpired();
-  console.log('🧹 Очистка старых состояний выполнена');
+  console.log("🧹 Очистка старых состояний выполнена");
 }, 600000);

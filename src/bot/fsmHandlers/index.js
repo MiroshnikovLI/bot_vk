@@ -13,6 +13,7 @@ const { adminWaitingDeletePvzId } = require('./admin/adminWaitingIdForDeletePvz'
 const { adminWaitingPvzAdress } = require('./admin/adminWaitingPvzAdress');
 const { adminWaitindWorkTime } = require('./admin/adminWaitindWorkTime');
 const { adminWaitingСonfirmation } = require('./admin/adminWaitingConfirmation');
+const { waitingRatePvzInChat } = require('./user/waitingRatePvzInChat');
 
 module.exports = {
   waitingWbId,
@@ -29,5 +30,6 @@ module.exports = {
   adminWaitingDeletePvzId,
   adminWaitingPvzAdress,
   adminWaitindWorkTime,
-  adminWaitingСonfirmation
+  adminWaitingСonfirmation,
+  waitingRatePvzInChat
 }

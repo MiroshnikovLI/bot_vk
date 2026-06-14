@@ -10,7 +10,7 @@ function createSafeHandlers(handlers) {
         await handlerFunc(userId, ...args);
       } catch (error) {
         console.log(`[FSM] ${name} error: ${error.message}`);
-        await sendMessage(userId, 'Ошибка! Обратитесь к администратору!', getPrivateKeyboard());
+        await sendMessage(userId, 'Ошибка! Обратитесь к администратору!', await getPrivateKeyboard(userId));
         const { userStates } = require('../state/stateManager');
         userStates.delete(userId);
       }

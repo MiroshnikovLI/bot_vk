@@ -1,5 +1,6 @@
 const { COMMANDS } = require('./commands');
-const {   
+const {
+  START,
   ADMIN_MENU,
   MY_DATA,
   CHANGE_DATA,

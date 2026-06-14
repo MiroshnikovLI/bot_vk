@@ -100,12 +100,13 @@ async function handleChatReport(userId, reportType) {
   }
 }
 
-async function createShiftReport(userId, user, pvz, replecament, reportType) {
+async function createShiftReport(userId, user, pvz, replecament, reportType, rate) {
   const reportText = await NOTIFICATIONS.REPORT_TEXT(
     pvz,
     user,
     replecament,
     reportType,
+    rate
   );
 
   const result = await addShiftReport(
@@ -114,7 +115,7 @@ async function createShiftReport(userId, user, pvz, replecament, reportType) {
     user.wb_id,
     user.full_name,
     reportType,
-    reportText,
+    reportText
   );
 
   await sendMessage(process.env.VK_CHAT_ID, `${reportText}`);

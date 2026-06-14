@@ -2,7 +2,6 @@ const { sendMessage } = require('../../config/vkApi');
 const { NO_ACCESS_RIGHTS, NOTIFICATIONS } = require('../../constants/message');
 const { handleToRemind } = require('../../services/reminderService');
 const { getPrivateKeyboard, getUnsubscriptionsKeyboard } = require('../../keyboards/keyboards');
-const { getUserVkId } = require('../../services/userService');
 require("dotenv").config();
 
 async function handleToRemindAboutTheCloses(userId, isAdmin) {

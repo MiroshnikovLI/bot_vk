@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS pvz (
   street_normalized VARCHAR(200),                    -- Нормализованная улица (для поиска)
   open_time TIME DEFAULT '08:00',                    -- Время открытия ПВЗ
   close_time TIME DEFAULT '21:00',                   -- Время закрытия ПВЗ
+  rate NUMERIC(3,2) DEFAULT 5.00,                    -- Рейтинг ПВЗ (0.00 - 5.00)
   is_active BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

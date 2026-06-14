@@ -93,7 +93,7 @@ async function addPvzToDb(pvzId, address, openTime, closeTime) {
   }
 }
 
-async function deactivePVZFromDb(pvzId) {
+async function deactivePvzFromDb(pvzId) {
   try {
     const result = await query(
       `UPDATE pvz SET is_active = $1 WHERE pvz_id = $2
@@ -136,7 +136,7 @@ async function linkUserToPvz(userId, pvzId) {
   }
 }
 
-async function removeUserFromPVZ(userId, pvzId) {
+async function removeUserFromPvz(userId, pvzId) {
   try {
     const result = await query(
       `DELETE FROM pvz_manager WHERE user_id = $1 AND pvz_id = $2 RETURNING *`,
@@ -190,15 +190,32 @@ async function deleteReplacement(userId, replacementId) {
   }
 }
 
+async function updatePvzRating(rate, pvzId) {
+  try {
+    const result = await query(`
+      UPDATE pvz SET rate = $1, updated_at = NOW() WHERE pvz_id = $2 RETURNING *
+      `, [rate.value, pvzId]);
+
+    if (result.rows.length === 0) {
+      return { success: false, message: "Не удалось найти ПВЗ"};
+    }
+
+    return { success: true, message: "Рейтинг установлен"}
+  } catch (error) {
+    return error.message
+  }
+}
+
 module.exports = {
   getAllPvzs,
   getPvzByCode,
   getUserPvzs,
   addPvzToDb,
   linkUserToPvz,
-  removeUserFromPVZ,
+  removeUserFromPvz,
   addReplacementDb,
   deleteReplacement,
   getUserReplacements,
-  deactivePVZFromDb,
+  deactivePvzFromDb,
+  updatePvzRating,
 };

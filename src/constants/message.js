@@ -1,5 +1,7 @@
 const { getUserVkId } = require("../services/userService");
 
+const START = "👋 Добро пожаловать! Давайте настроим ваш профиль.\n\n📝 Введите ваше ФИО полностью:";
+
 const ADMIN_MENU =
   `🛡️ **АДМИН-ПАНЕЛЬ**\n\n` +
   `➕ Добавить ПВЗ - добавить новый пункт выдачи в базу\n` +
@@ -66,12 +68,14 @@ const NOTIFICATIONS = {
   NO_PVZ_LIST: "📋 Список ПВЗ пуст.",
   CHOOSE_PVZ: "🏪 Выберите ПВЗ:",
   CHOSE_REPLECAMENT: "👤 Пожалуйста, выберите сменщика",
+  CHOSE_RATE_PVZ: "Введите рейтинг ПВЗ в формате: 5 4,99 4.99",
   WAITING_PVZ_ID: "🆔 Введите ID ПВЗ (только цыфры)",
   WAITING_ADDRESS_PVZ: "🏪 Введите адресс ПВЗ.\n Например: \n 1) ул. Аэродромная, 18\n 2) Авиационная улица, 74к4\n 3) Хорошёвское шоссе 25Ак1",
   ADMIN_WAITING_WORK_TIME: "⏰ Введите время работы пункта в формате 24 часа.\n Например: 9-22 или 08:00-22:00",
   ERROR: "❌ Ошибка операции попробуйте еще раз.",
   TECHNICAL_ERROR: "Техническая ошибка. Обратитесь к админестратору.",
   WARNING_ID_ONLY_NUMBERS: "❌ ID должен содержать только цифры.\n\nПопробуйте еще раз:",
+  WARNING_RATE_ONLY_NUMBERS: "❌ Введите рейтинг в формате (только цифры): 5.00 5,00 5",
   NO_RECEIVE_PVZ: "❌ Не удалось получить список ПВЗ.\n\nПопробуйте позже",
   DELETED_SUCCESSFULLY: (text) => `ПВЗ ${text} был успешно удален с базы`,
   ERROR_DELETED: `Ошибка при удаление. Попробуйте позже`,
@@ -148,7 +152,7 @@ const NOTIFICATIONS = {
       `Старший менеджер: ${user.full_name}`
     );
   },
-  REPORT_TEXT: async (pvz, user, replecament, reportType) => {
+  REPORT_TEXT: async (pvz, user, replecament, reportType, rate) => {
     const replecamentText =
       replecament.length === 0
         ? ""
@@ -162,7 +166,7 @@ const NOTIFICATIONS = {
           `3. Вывеска: Горит\n` +
           `4. Непринятых ШК: 0\n` +
           `5. В смене: [id${user.vk_id}|${user.full_name}] ${user.wb_id}\n` +
-          `6. Рейтинг ПВЗ: ${rate.rate}\n` +
+          `6. Рейтинг ПВЗ: ${rate.value}\n` +
           `${replecamentText}`;
 
     return reportText;
@@ -188,6 +192,7 @@ const UNSUBSCRIBE_MENU =
   "• 🔔 Напомнить об закрытии - отправить отчет в чат с ПВЗ, которые еще не отчитались об закрытии\n";
 
 module.exports = {
+  START,
   ADMIN_MENU,
   MY_DATA,
   CHANGE_DATA,

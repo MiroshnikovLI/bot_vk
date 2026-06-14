@@ -4,6 +4,7 @@ const { getUserReplacements } = require("../../../services/pvzService");
 const {
   getPrivateKeyboard,
   getReplacementKeyboard,
+  getRatePvzKeyboard,
 } = require("../../../keyboards/keyboards");
 const { userStates } = require('../../../state/stateManager');
 const { sendMessage } = require('../../../config/vkApi');
@@ -46,13 +47,9 @@ async function selectingReplacementInChat(
     return;
   }
   if (selectPvz && createShiftReport) {
-    await createShiftReport(
-      userId,
-      chatUsers,
-      selectPvz,
-      selectedReplecament,
-      state.reportType,
-    );
+    userStates.set(userId, "waitingRatePvzInChat", { pvz: selectPvz, user: chatUsers, replecament: selectedReplecament, reportType: state.reportType});
+    await sendMessage(userId, NOTIFICATIONS.CHOSE_RATE_PVZ, getRatePvzKeyboard(selectPvz.rate));
+    return;
   } else {
     await sendMessage(
       userId,

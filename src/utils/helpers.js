@@ -1,5 +1,4 @@
 const { query } = require("../config/database");
-const { getUserVkId } = require("../services/userService");
 
 // Функция извлекает время открытия и закрытия из строки расписания
 function parseScheduleTime(scheduleString) {
@@ -156,6 +155,28 @@ async function determineReportTypeWithChecks(pvzId, user, timestamp) {
   return { type: null, date: dateStr, needConfirmation: true };
 }
 
+function parseRating(value) {
+  // Приводим к строке и заменяем запятую на точку
+  const str = String(value).trim().replace(/^⭐\s*/, '').replace(',', '.');
+  
+  // Проверяем формат
+  const regex = /^(?:[0-4](?:\.\d{1,2})?|5(?:\.0{1,2})?)$/;
+  
+  if (!regex.test(str)) {
+    return { success: false, error: "Неверный формат рейтинга" };
+  }
+  
+  // Преобразуем в число
+  const rating = parseFloat(str);
+  
+  // Округляем до 2 знаков
+  return { 
+    success: true, 
+    value: Math.round(rating * 100) / 100,
+    original: str
+  };
+}
+
 module.exports = {
   parseScheduleTime,
   cleanText,
@@ -163,4 +184,5 @@ module.exports = {
   parseAddress,
   normalizeYo,
   determineReportTypeWithChecks,
+  parseRating,
 };
