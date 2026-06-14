@@ -101,6 +101,7 @@ CREATE TABLE IF NOT EXISTS bot_settings (
   id SERIAL PRIMARY KEY,
   key VARCHAR(100) UNIQUE NOT NULL,
   value TEXT NOT NULL,
+  admin_vk_ids 
   description TEXT,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

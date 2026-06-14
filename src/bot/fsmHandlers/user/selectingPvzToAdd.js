@@ -12,6 +12,7 @@ const {
   OPERATION_CANCELLED,
   NOTIFICATIONS,
   COMMANDS,
+  UNSUBSCRIBE_SETTINGS
 } = require("../../../constants/index");
 
 async function selectingPvzToAdd(userId, text) {
