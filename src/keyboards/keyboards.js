@@ -17,7 +17,7 @@ async function getPrivateKeyboard(userId) {
       ],
       [
         {
-          action: { type: `text`, label: `🏪 ${COMMANDS.UNSUBSCRIPTIONS_MENU.toUpperCase()}` },
+          action: { type: `text`, label: `🏪 ${COMMANDS.UNSUBSCRIBE_SETTINGS.toUpperCase()}` },
           color: `secondary`,
         },
       ],
