@@ -174,7 +174,7 @@ CREATE TABLE shift_substitutes (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   
   -- Один и тот же сменщик не может быть дважды привязан к одному менеджеру
-  UNIQUE(main_user_id, substitute_user_id)
+  UNIQUE(main_user_id, replacement_user_id)
 );
 `;
 
@@ -196,7 +196,7 @@ CREATE INDEX IF NOT EXISTS idx_requests_user ON pvz_requests(user_id);
 CREATE INDEX IF NOT EXISTS idx_requests_pvz ON pvz_requests(pvz_id);
 CREATE INDEX IF NOT EXISTS idx_requests_status ON pvz_requests(status);
 CREATE INDEX IF NOT EXISTS idx_substitutes_main ON shift_substitutes(main_user_id);
-CREATE INDEX IF NOT EXISTS idx_substitutes_sub ON shift_substitutes(substitute_user_id);
+CREATE INDEX IF NOT EXISTS idx_substitutes_sub ON shift_substitutes(replacement_user_id);
 `;
 
 // SQL для начальных настроек
