@@ -10,7 +10,6 @@ const { NOTIFICATIONS, COMMANDS } = require("../../../constants/index");
 const { addPvzToDb } = require('../../../services/pvzService');
 
 async function adminWaitingСonfirmation(userId, text) {
-  console.log(text)
   const clearText = cleanText(text);
   const state = userStates.get(userId);
   const newPvz = {
