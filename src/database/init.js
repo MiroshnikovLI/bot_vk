@@ -196,7 +196,6 @@ INSERT INTO bot_settings (key, value, description) VALUES
 ('close_time', '21:00', 'Время закрытия ПВЗ'),
 ('report_deadline_after_open', '15', 'Через сколько минут после открытия считается опозданием'),
 ('report_deadline_after_close', '15', 'Через сколько минут после закрытия считается опозданием'),
-('admin_vk_ids', '[]', 'Список ВК ID администраторов (JSON массив)'),
 ('report_chat_id', '', 'ID чата для публикации отчетов (если пусто = стена)'),
 ('wall_comments_enabled', 'true', 'Включить комментарии к постам на стене'),
 ('weekly_report_day', '6', 'День недели для отправки еженедельного отчета (1-7, 1=ПН)'),
