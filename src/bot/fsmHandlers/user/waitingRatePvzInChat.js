@@ -3,7 +3,7 @@ const { parseRating, cleanText } = require('../../../utils/helpers');
 const { sendMessage } = require('../../../config/vkApi');
 const { getPrivateKeyboard, getCancelKeyboard } = require('../../../keyboards/keyboards');
 const { createShiftReport } = require('../../../handlers/handleChatReport');
-const { NOTIFICATIONS } = require('../../../constants');
+const { NOTIFICATIONS, OPERATION_CANCELLED } = require('../../../constants');
 const { COMMANDS } = require('../../../constants/index');
 const { updatePvzRating } = require('../../../services/pvzService');
 
