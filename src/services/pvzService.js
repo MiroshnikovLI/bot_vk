@@ -1,7 +1,7 @@
 const { error } = require("node:console");
 const { query } = require("../config/database");
 const { parseScheduleTime, parseAddress } = require("../utils/helpers");
-require('dotenv').config();
+require("dotenv").config();
 
 async function getAllPvzs() {
   try {
@@ -30,7 +30,7 @@ async function getUserPvzs(userId) {
   const result = await query(
     `SELECT p.* FROM pvz p
      JOIN pvz_manager pm ON p.id = pm.pvz_id
-     WHERE pm.user_id = $1 AND pm.is_active = true` ,
+     WHERE pm.user_id = $1 AND pm.is_active = true`,
     [userId],
   );
   return result.rows;
@@ -48,8 +48,7 @@ async function getUserReplacements(userId) {
 
 async function addPvzToDb(pvzId, address, openTime, closeTime) {
   try {
-    const { city, street, house, streetNormalized } =
-      await parseAddress(address);
+    const { city, street, house, streetNormalized } = address;
     const result = await query(
       `INSERT INTO pvz (pvz_id, address, city, street, house, street_normalized, open_time, close_time, created_at, updated_at)
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW())
@@ -192,17 +191,20 @@ async function deleteReplacement(userId, replacementId) {
 
 async function updatePvzRating(rate, pvzId) {
   try {
-    const result = await query(`
+    const result = await query(
+      `
       UPDATE pvz SET rate = $1, updated_at = NOW() WHERE pvz_id = $2 RETURNING *
-      `, [rate.value, pvzId]);
+      `,
+      [rate.value, pvzId],
+    );
 
     if (result.rows.length === 0) {
-      return { success: false, message: "Не удалось найти ПВЗ"};
+      return { success: false, message: "Не удалось найти ПВЗ" };
     }
 
-    return { success: true, message: "Рейтинг установлен"}
+    return { success: true, message: "Рейтинг установлен" };
   } catch (error) {
-    return error.message
+    return error.message;
   }
 }
 
