@@ -3,7 +3,7 @@ const { sendMessage } = require("../../../config/vkApi");
 const { cleanText } = require("../../../utils/helpers");
 const { getAdminKeyboard, getCancelKeyboard } = require('../../../keyboards/keyboards');
 const { getAllPvzs, deactivePvzFromDb } = require('../../../services/pvzService');
-const { NOTIFICATIONS, COMMANDS } = require("../../../constants/index");
+const { NOTIFICATIONS, COMMANDS, OPERATION_CANCELLED } = require("../../../constants/index");
 
 async function adminWaitingDeletePvzId(userId, text) {
   const clearText = cleanText(text);
@@ -12,7 +12,7 @@ async function adminWaitingDeletePvzId(userId, text) {
     userStates.delete(userId);
     await sendMessage(
       userId,
-      NOTIFICATIONS.OPERATION_CANCELLED,
+      OPERATION_CANCELLED,
       getAdminKeyboard(),
     );
     return;
