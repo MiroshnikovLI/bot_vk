@@ -97,6 +97,10 @@ function normalizePhone(phone) {
   if (cleaned.startsWith('+7')) {
     return cleaned;
   }
+
+  if (cleaned.startsWith('9')) {
+    return '+7' + cleaned;
+  }
   
   return cleaned;
 }
