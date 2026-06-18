@@ -20,12 +20,16 @@ const COMMANDS = {
   CLOSE_PVZ: "закрытие пвз",
   
   // Админ-панель
+  PVZ_MENU: "меню пвз",
+  UNSUBSCRIPTIONS_MENU: "меню отписок",
+  MANAGER_MENU: "меню менеджеров",
+  BACK_TO_ADMIN: "вернуться",
+
+  // Меню пунктов выдачи
   ADD_PVZ_TO_DB: "добавить пункт выдачи",
   DELETE_PVZ_FROM_DB: "удалить пункт выдачи",
   LIST_PVZ: "список пвз",
-  UNSUBSCRIPTIONS_MENU: "меню отписок",
-  BACK_TO_ADMIN: "вернуться",
-  
+
   // Админ: отчёты
   REPORT_OPENING: "отчет об открытии пвз",
   REPORT_CLOSING: "отчет о закрытии пвз",
