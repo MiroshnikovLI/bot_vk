@@ -13,16 +13,17 @@ const {
 } = require("../../../constants/index");
 
 async function changePhone(userId, text) {
-  const cleanTextName = cleanText(text);
-  if (cleanTextName === COMMANDS.CANCELLATION) {
+  const clearText = cleanText(text);
+  if (clearText === COMMANDS.CANCELLATION) {
     userStates.delete(userId);
     await sendMessage(userId, OPERATION_CANCELLED, getEditProfileKeyboard());
+    return;
   }
 
   if (!/^(\+7|\+8|7|8)?\s*\(?\d{3}\)?\s*\d{3}[\s-]?\d{2}[\s-]?\d{2}$/.test(text)) {
     await sendMessage(
       userId,
-      "Неверный формат телефонна\n Введите в формате:\n +7 999 123-45-67\n 8 999 123-45-67\n 89991234567\n 79991234567\n 9991234567",
+      "Неверный формат телефона\n Введите в формате:\n +7 999 123-45-67\n 8 999 123-45-67\n 89991234567\n 79991234567\n 9991234567",
     );
     return;
   }
