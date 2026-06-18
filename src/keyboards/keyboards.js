@@ -92,6 +92,12 @@ function getEditProfileKeyboard() {
           color: `secondary`,
         },
       ],
+      [
+        {
+          action: { type: `text`, label: `✏️ ${COMMANDS.CHANGE_PHONE.toUpperCase()}`},
+          color: `secondary`
+        }
+      ],
       [{ action: { type: `text`, label: `🔙 ${COMMANDS.BACK.toUpperCase()}` }, color: `primary` }],
     ],
     one_time: false,

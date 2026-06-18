@@ -14,6 +14,7 @@ const { adminWaitingPvzAdress } = require('./admin/adminWaitingPvzAdress');
 const { adminWaitindWorkTime } = require('./admin/adminWaitindWorkTime');
 const { adminWaitingСonfirmation } = require('./admin/adminWaitingConfirmation');
 const { waitingRatePvzInChat } = require('./user/waitingRatePvzInChat');
+const { changePhone } = require('./user/changePhone');
 
 module.exports = {
   waitingWbId,
@@ -31,5 +32,6 @@ module.exports = {
   adminWaitingPvzAdress,
   adminWaitindWorkTime,
   adminWaitingСonfirmation,
-  waitingRatePvzInChat
+  waitingRatePvzInChat,
+  changePhone
 }

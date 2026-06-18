@@ -46,6 +46,20 @@ async function updateUserFullName(vkId, fullName) {
   await query(`UPDATE users SET full_name = $1, updated_at = NOW() WHERE vk_id = $2`, [fullName, vkId]);
 }
 
+async function updateUserPhone(vkId, phone) {
+  try {
+    const result = await query(`UPDATE users SET phone = $1, updated_at = NOW() WHERE vk_id = $2 RETURNING *`, [phone, vkId]);
+
+    if (result.rows.length === 0) {
+      return { success: false, message: 'Не удалось изменить номер.'};
+    }
+
+    return { success: true, message: "Номер успешно изменен", data: result.rows[0].phone }
+  } catch (error) {
+    return { success: false, message: error.message }
+  }
+}
+
 async function updateUserWbId(vkId, wbId) {
   try {
     const result = await query(
@@ -105,5 +119,6 @@ module.exports = {
   getAllReplacements,
   isProfileComplete,
   getSetting,
-  isUserAdmin
+  isUserAdmin,
+  updateUserPhone
 };

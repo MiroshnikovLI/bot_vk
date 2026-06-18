@@ -32,7 +32,7 @@ async function myDataHandler(userId) {
           )
         ).join("\n")
       : "• Не закреплено ни одного сменщика";
-  let message = MY_DATA(user.full_name, user.wb_id, pvzList, replacementList)
+  let message = MY_DATA(user, pvzList, replacementList)
   if (!user.full_name || !user.wb_id) {
     message += `⚠️ **Профиль не заполнен!**\nНажмите "✏️ Изменить ФИО" или "✏️ Изменить WB ID".`;
   }

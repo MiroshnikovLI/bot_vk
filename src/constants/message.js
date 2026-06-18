@@ -1,4 +1,5 @@
 const { getUserVkId } = require("../services/userService");
+const { formatPhone } = require('../utils/helpers');
 
 const START = "👋 Добро пожаловать! Давайте настроим ваш профиль.\n\n📝 Введите ваше ФИО полностью:";
 
@@ -10,10 +11,11 @@ const ADMIN_MENU =
   `☰ Меню отписок - просмотр отчетов, создание отчетов, напоминание об отписках\n` +
   `🔙 Назад - вернуться в предыдущее меню`;
 
-const MY_DATA = (full_name, wb_id, pvz_list, replacementList) =>
+const MY_DATA = (user, pvz_list, replacementList) =>
   `📋 **ВАШ ПРОФИЛЬ**\n\n` +
-  `👤 ФИО: ${full_name || "❌ не указано"}\n` +
-  `🆔 WB ID: ${wb_id || "❌ не указан"}\n\n` +
+  `👤 ФИО: ${user.full_name || "❌ не указано"}\n` +
+  `🆔 WB ID: ${user.wb_id || "❌ не указан"}\n` +
+  `📱 Телефон: ${user.phone ? formatPhone(user.phone) : 'Не указан'}\n\n` +
   `🏪 Закрепленные ПВЗ:\n` +
   `${pvz_list}\n\n` +
   `👤 Закрепленные сменщики:\n` +
@@ -25,6 +27,8 @@ const CHANGE_DATA =
   `• ✏️ Изменить WB ID - обновить ID сотрудника\n`;
 
 const CHANGE_NAME = "✏️ Введите ваше новое ФИО полностью:";
+
+const CHANGE_PHONE = "✏️ Введите номер телефона:"
 
 const CHANGE_WB_ID = "🆖 Введите ваш новый WB ID (только цифры):";
 
@@ -56,6 +60,7 @@ const DELETED_A_REPLACEMENT =
 const NO_ACCESS_RIGHTS = "❌ Нет прав доступа.";
 
 const NOTIFICATIONS = {
+  PHONE_SUCCESSFULLY: (phone) => `✅ Номер успешно изменен ${formatPhone(phone)}`,
   NO_REPORT_TO_DAY: 'Нет отчетов за сегодня',
   PVZ_ALL_UNSUBSCRIBED: 'Все пункты отписались',
   REPORT_SENT: 'Отчет отправлен в чат',
@@ -209,4 +214,5 @@ module.exports = {
   WAITING_ID_PVZ_TO_DELETE,
   UNSUBSCRIBE_MENU,
   OPERATION_CANCELLED,
+  CHANGE_PHONE
 };
