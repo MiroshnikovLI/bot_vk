@@ -11,7 +11,7 @@ async function handleStart(userId) {
     return;
   }
 
-  await sendMessage(userId, MY_DATA(user.full_name, user.wb_id, {}, {}));
+  await sendMessage(userId, MY_DATA(user, {}, {}));
 }
 
 module.exports = { handleStart }

@@ -4,6 +4,7 @@ const COMMANDS = {
   EDIT_DATA: "изменить данные",
   CHANGE_NAME: "изменить фио",
   CHANGE_WB_ID: "изменить wb id",
+  CHANGE_PHONE: "изменить телефон",
   BACK: "назад",
   ADMIN: "админ",
   

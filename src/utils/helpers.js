@@ -59,6 +59,52 @@ function normalizeYo(text) {
   return text.toLowerCase().replace(/ё/g, 'е');
 }
 
+function formatPhone(phone) {
+  if (!phone) return 'не указан';
+  
+  // Убираем все лишние символы
+  const cleaned = String(phone).replace(/\D/g, '');
+  
+  // Проверяем длину (должно быть 11 цифр для российского номера)
+  if (cleaned.length === 11) {
+    return `+${cleaned[0]} ${cleaned.slice(1, 4)} ${cleaned.slice(4, 7)}-${cleaned.slice(7, 9)}-${cleaned.slice(9, 11)}`;
+  }
+  
+  // Если номер короче/длиннее — возвращаем как есть
+  return phone;
+}
+
+function normalizePhone(phone) {
+  // Убираем все пробелы, скобки, дефисы
+  const cleaned = String(phone).replace(/[\s\-\(\)]/g, '');
+  
+  // Если начинается с 8 → +7
+  if (cleaned.startsWith('8')) {
+    return '+7' + cleaned.slice(1);
+  }
+
+  // Если начинается с +8 → +7
+  if (cleaned.startsWith('+8')) {
+    return '+7' + cleaned.slice(2);
+  }
+  
+  // Если начинается с 7 (без +) → +7
+  if (cleaned.startsWith('7')) {
+    return '+' + cleaned;
+  }
+  
+  // Если уже +7
+  if (cleaned.startsWith('+7')) {
+    return cleaned;
+  }
+
+  if (cleaned.startsWith('9')) {
+    return '+7' + cleaned;
+  }
+  
+  return cleaned;
+}
+
 function parseAddress(fullAddress) {
   const address = normalizeYo(fullAddress.toLowerCase().trim());
   
@@ -192,4 +238,6 @@ module.exports = {
   normalizeYo,
   determineReportTypeWithChecks,
   parseRating,
+  normalizePhone,
+  formatPhone,
 };
