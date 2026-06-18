@@ -15,6 +15,10 @@ async function adminWaitingСonfirmation(userId, text) {
   const newPvz = {
       id: state.pvz_id,
       address: `${state.address.city}, ${state.address.street}, ${state.address.house}`,
+      city: state.address.city,
+      street: state.address.street,
+      house: state.address.house,
+      streetNormalized: state.address.streetNormalized,
       open_time: state.timeWork.open,
       close_time: state.timeWork.close,
     }
@@ -30,6 +34,10 @@ async function adminWaitingСonfirmation(userId, text) {
     const result = await addPvzToDb(
       newPvz.id,
       newPvz.address,
+      newPvz.city,
+      newPvz.street,
+      newPvz.house,
+      newPvz.streetNormalized,
       newPvz.open_time,
       newPvz.close_time,
     );
@@ -42,6 +50,7 @@ async function adminWaitingСonfirmation(userId, text) {
       );
       return;
     } else {
+      console.log(result.message, 'error')
       await sendMessage(userId, "⏳", { buttons: [], one_time: false });
       await sendMessage(
         userId,

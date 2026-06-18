@@ -46,9 +46,8 @@ async function getUserReplacements(userId) {
   return result.rows;
 }
 
-async function addPvzToDb(pvzId, address, openTime, closeTime) {
+async function addPvzToDb(pvzId, address, city, street, house, streetNormalized, openTime, closeTime) {
   try {
-    const { city, street, house, streetNormalized } = address;
     const result = await query(
       `INSERT INTO pvz (pvz_id, address, city, street, house, street_normalized, open_time, close_time, created_at, updated_at)
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW())

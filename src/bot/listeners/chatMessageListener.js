@@ -34,7 +34,7 @@ async function chatMessageListener(context) {
   // 4. Если не нашли по ID — ищем по улице и дому
   if (!selectedPvz) {
     const streetMatches = pvzs.filter(p => 
-      normalizeYo(text).toLowerCase().includes(p.street_normalized?.toLowerCase() || '')
+      normalizeYo(text).toLowerCase().includes(p.street_normalized?.toLowerCase())
     );
     
     if (streetMatches.length === 1) {
@@ -42,7 +42,7 @@ async function chatMessageListener(context) {
     } else if (streetMatches.length > 1) {
       // Если несколько улиц — уточняем по дому
       selectedPvz = streetMatches.find(p => 
-        text.toLowerCase().includes(p.house?.toLowerCase() || '')
+        text.toLowerCase().includes(p.house?.toLowerCase())
       );
     }
   }
