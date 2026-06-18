@@ -60,46 +60,53 @@ function normalizeYo(text) {
 }
 
 function parseAddress(fullAddress) {
-  const address = normalizeYo(fullAddress.toLowerCase());
+  const address = normalizeYo(fullAddress.toLowerCase().trim());
   
-  // Извлекаем улицу: убираем город в начале
-  let street = address
-    .replace(/^(москва,?\s*г\.?\s*москва|москва,?\s*москва|москва|г\.?\s*москва)[,\s]*/i, '')
+  // 1. Извлекаем город (если есть)
+  let city = 'москва';
+  let addressWithoutCity = address
+    .replace(/^(москва,?\s*г\.?\s*москва|москва,?\s*москва|москва|г\.?\s*москва|г\.\s*москва|город\s*москва)[,\s]*/i, '')
     .trim();
   
-  // Извлекаем номер дома (более точное выражение)
-  // Ищем в конце строки: цифры + буквы + цифры + буквы и т.д.
-  const houseMatch = address.match(/(\d+[а-я]?\d*[а-я]?\d*(?:[\/\-]\d+[а-я]?)?)\s*$/i);
+  // 2. Извлекаем улицу (всё до номера дома)
+  // Ищем номер дома в конце строки
+  const houseRegex = /(\d+[а-я]?\d*[а-я]?\d*(?:[\/\-\.]\d+[а-я]?[к]?\d*[с]?\d*)?)\s*$/i;
+  const houseMatch = addressWithoutCity.match(houseRegex);
+  
   let house = '';
+  let street = addressWithoutCity;
   
   if (houseMatch) {
-    const fullHouse = houseMatch[1];
-    // Разделяем номер дома и строение/корпус
-    const matchParts = fullHouse.match(/^(\d+[а-я]?)(?:[\/\-]?(\d+[а-я]?))?/i);
-    if (matchParts) {
-      house = matchParts[1] || '';
-    }
-    
+    house = houseMatch[1];
     // Убираем номер дома из строки улицы
-    street = street.replace(new RegExp(`${fullHouse.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`), '');
+    street = addressWithoutCity.replace(new RegExp(`${house.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`), '').trim();
   }
   
-  // Убираем лишние запятые и пробелы
+  // 3. Убираем лишние запятые и пробелы в конце улицы
   street = street.replace(/[,\s]+$/, '').trim();
   
-  // Нормализованное название улицы (без "улица", "шоссе" и т.д.)
+  // 4. Формируем нормализованное название (без "улица", "шоссе" и т.д.)
   let streetNormalized = street
-    .replace(/^(ул\.?|улица|ш\.?|шоссе|пр\.?|проспект|бульвар\.?|бульв)\s*/i, '')
+    .replace(/^(ул\.?|улица|ш\.?|шоссе|пр\.?|проспект|бульвар\.?|бульв|пер\.?|переулок|пл\.?|площадь|наб\.?|набережная)\s*/i, '')
     .trim();
   
   // Если нормализованная улица пустая, используем оригинал
   if (!streetNormalized) streetNormalized = street;
   
+  // 5. Дополнительно: нормализуем номер дома
+  // "71к1" -> "71к1", "71/4" -> "71/4", "81/2с6" -> "81/2с6"
+  let houseNormalized = house;
+  
+  // 6. Возвращаем результат
   return {
-    city: 'москва',
+    city: city,
     street: street,
     house: house,
-    streetNormalized: streetNormalized
+    houseNormalized: houseNormalized,
+    streetNormalized: streetNormalized,
+    fullAddress: fullAddress,
+    // Для удобства: полный адрес в формате "улица, дом"
+    full: `${street}, ${house}`.replace(/^,\s*/, '')
   };
 }
 
