@@ -6,8 +6,8 @@ const { sendMessage } = require('../../../config/vkApi');
 const { OPERATION_CANCELLED, NOTIFICATIONS, COMMANDS } = require('../../../constants/index');
 
 async function changeWbId(userId, text) {
-  const cleanTextWbId = cleanText(text);
-  if (cleanTextWbId === COMMANDS.CANCELLATION) {
+  const clearText = cleanText(text);
+  if (clearText === COMMANDS.CANCELLATION) {
     userStates.delete(userId);
     await sendMessage(userId, OPERATION_CANCELLED, getEditProfileKeyboard());
     return;

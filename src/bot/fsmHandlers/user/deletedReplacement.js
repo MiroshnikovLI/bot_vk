@@ -10,8 +10,8 @@ const { userStates } = require("../../../state/stateManager");
 const { OPERATION_CANCELLED, NOTIFICATIONS, COMMANDS } = require('../../../constants/index');
 
 async function deletedReplacement(userId, text) {
-  const cleanTextDeletedReplacement = cleanText(text);
-  if (cleanTextDeletedReplacement === COMMANDS.CANCELLATION) {
+  const clearText = cleanText(text);
+  if (clearText === COMMANDS.CANCELLATION) {
     userStates.delete(userId);
     await sendMessage(
       userId,

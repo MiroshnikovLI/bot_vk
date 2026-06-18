@@ -6,10 +6,11 @@ const { sendMessage } = require('../../../config/vkApi');
 const { OPERATION_CANCELLED, NOTIFICATIONS, COMMANDS } = require('../../../constants/index');
 
 async function changeName(userId, text) {
-  const cleanTextName = cleanText(text);
-  if (cleanTextName === COMMANDS.CANCELLATION) {
+  const clearText = cleanText(text);
+  if (clearText === COMMANDS.CANCELLATION) {
     userStates.delete(userId);
     await sendMessage(userId, OPERATION_CANCELLED, getEditProfileKeyboard());
+    return;
   } else {
     await updateUserFullName(userId, text);
     userStates.delete(userId);

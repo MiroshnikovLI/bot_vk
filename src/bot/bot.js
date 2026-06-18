@@ -73,10 +73,10 @@ async function handleUpdate(update) {
 
   // ========== ТОЛЬКО ЛИЧНЫЕ СООБЩЕНИЯ ==========
 
-  const cleanTexts = cleanText(text);
+  const clearText = cleanText(text);
   const isAdmin = await isUserAdmin(peerId);
 
-  const handler = commandHandlers[cleanTexts];
+  const handler = commandHandlers[clearText];
   if (handler) {
     await handler(senderId, isAdmin);
     return; // ← не идём дальше

@@ -28,6 +28,7 @@ async function selectingPvzInChat(
   if (clearText === COMMANDS.CANCELLATION) {
     userStates.delete(userId);
     await sendMessage(userId, OPERATION_CANCELLED, await getPrivateKeyboard(userId));
+    return;
   } else {
     if (selectedPvz && createShiftReport) {
       if (state.reportType === "open") {

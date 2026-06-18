@@ -10,8 +10,8 @@ const { userStates } = require("../../../state/stateManager");
 const { OPERATION_CANCELLED, NOTIFICATIONS, COMMANDS } = require('../../../constants/index');
 
 async function addReplacement(userId, text) {
-  const cleanedText = cleanText(text);
-  if (cleanedText === COMMANDS.CANCELLATION) {
+  const clearText = cleanText(text);
+  if (clearText === COMMANDS.CANCELLATION) {
     userStates.delete(userId);
     await sendMessage(
       userId,
@@ -20,7 +20,7 @@ async function addReplacement(userId, text) {
     );
     return;
   }
-  if (!/^\d+$/.test(cleanedText)) {
+  if (!/^\d+$/.test(clearText)) {
     await sendMessage(userId, "⏳", { buttons: [], one_time: false });
     await sendMessage(
       userId,
@@ -30,7 +30,7 @@ async function addReplacement(userId, text) {
     return;
   }
 
-  const wbIdAdd = cleanedText.trim();
+  const wbIdAdd = clearText.trim();
 
   try {
     const addReplacementUser = await getUserWbId(wbIdAdd);

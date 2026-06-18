@@ -8,8 +8,8 @@ const { userStates } = require('../../../state/stateManager');
 const { OPERATION_CANCELLED, NOTIFICATIONS, UNSUBSCRIBE_SETTINGS, COMMANDS } = require('../../../constants/index');
 
 async function selectingPvzForRemoval(userId, text) {
-  const cleanTextPvzRemoval = cleanText(text);
-  if (cleanTextPvzRemoval === COMMANDS.CANCELLATION) {
+  const clearText = cleanText(text);
+  if (clearText === COMMANDS.CANCELLATION) {
     userStates.delete(userId);
     await sendMessage(
       userId,

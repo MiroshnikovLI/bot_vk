@@ -16,8 +16,8 @@ const {
 } = require("../../../constants/index");
 
 async function selectingPvzToAdd(userId, text) {
-  const cleanTextPvzAdd = cleanText(text);
-  if (cleanTextPvzAdd === COMMANDS.CANCELLATION) {
+  const clearText = cleanText(text);
+  if (clearText === COMMANDS.CANCELLATION) {
     userStates.delete(userId);
     await sendMessage(userId, OPERATION_CANCELLED, getUnsubscribeKeyboard());
     return;
