@@ -22,6 +22,7 @@ const { handleThereIsNoClosesReport } = require('./admin/handleThereIsNoClosesRe
 const { handleToRemindAboutTheOpening } = require('./admin/handleToRemindAboutTheOpening');
 const { handleToRemindAboutTheCloses } = require('./admin/handleToRemindAboutTheCloses');
 const { handleChangePhone } = require('./private/handleChangePhone');
+const { handlePvzMenu } = require('./admin/handlePvzMenu');
 
 const commandHandlers = {
   [COMMANDS.MY_DATA]: (senderId) => myDataHandler(senderId),
@@ -49,6 +50,7 @@ const commandHandlers = {
   [COMMANDS.REMIND_OPENING]: (senderId, isAdmin) => handleToRemindAboutTheOpening(senderId, isAdmin),
   [COMMANDS.REMIND_CLOSING]: (senderId, isAdmin) => handleToRemindAboutTheCloses(senderId, isAdmin),
   [COMMANDS.CHANGE_PHONE]: (senderId) => handleChangePhone(senderId),
+  [COMMANDS.PVZ_MENU]: (senderId) => handlePvzMenu(senderId)
 };
 
 module.exports = { commandHandlers };
