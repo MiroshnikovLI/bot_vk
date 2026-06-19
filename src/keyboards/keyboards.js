@@ -245,7 +245,7 @@ function getAdminKeyboard() {
 
 function getPvzMenu() {
   return {
-    button: [
+    buttons: [
       [
         {
           action: {
@@ -267,6 +267,15 @@ function getPvzMenu() {
           action: {
             type: `text`,
             label: `📋 ${COMMANDS.LIST_PVZ.toUpperCase()}`,
+          },
+          color: `primary`,
+        },
+      ],
+      [
+        {
+          action: {
+            type: `text`,
+            label: `🔙 ${COMMANDS.BACK_TO_ADMIN.toUpperCase()}`,
           },
           color: `primary`,
         },
@@ -395,4 +404,5 @@ module.exports = {
   getUnsubscriptionsKeyboard,
   getWaitingСonfirmationKeyboard,
   getRatePvzKeyboard,
+  getPvzMenu,
 };

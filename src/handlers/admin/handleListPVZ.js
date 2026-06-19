@@ -1,6 +1,6 @@
 const { getAllPvzs } = require("../../services/pvzService");
 const { sendMessage } = require("../../config/vkApi");
-const { getAdminKeyboard, getPrivateKeyboard } = require("../../keyboards/keyboards");
+const { getPrivateKeyboard, getPvzMenu } = require("../../keyboards/keyboards");
 const { NO_ACCESS_RIGHTS, NOTIFICATIONS } = require('../../constants/message');
 
 async function handleListPvz(userId, isAdmin) {
@@ -14,7 +14,7 @@ async function handleListPvz(userId, isAdmin) {
     return;
   }
 
-  await sendMessage(userId, NOTIFICATIONS.LIST_PVZ(pvzs.data), getAdminKeyboard());
+  await sendMessage(userId, NOTIFICATIONS.LIST_PVZ(pvzs.data), getPvzMenu());
 }
 
 module.exports = {
