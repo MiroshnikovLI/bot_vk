@@ -15,7 +15,6 @@ const {
   getReplacementKeyboard,
   getPvzKeyboard,
 } = require("../keyboards/keyboards");
-const { logAction } = require("../utils/logger");
 const { userStates } = require("../state/stateManager");
 const { NOTIFICATIONS } = require("../constants/message");
 require("dotenv").config();
@@ -125,11 +124,6 @@ async function createShiftReport(userId, user, pvz, replecament, reportType, rat
       ? `✅ Смена открыта ${pvz.pvz_id}. Отчет отправлен`
       : `✅ Смена закрыта ${pvz.pvz_id}. Отчет отправлен`,
     await getPrivateKeyboard(userId),
-  );
-  await logAction(
-    "report",
-    user.id,
-    `Создан отчет ${reportType} для ПВЗ ${pvz.pvz_id}`,
   );
   userStates.delete(userId);
 }

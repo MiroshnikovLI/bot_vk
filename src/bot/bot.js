@@ -24,7 +24,6 @@ const {
   addShiftReport,
 } = require("../services/reportService");
 const { cleanText } = require("../utils/helpers");
-const { logAction } = require("../utils/logger");
 const { handleTextInput } = require("./fsmHandler");
 const {
   sendMessage,

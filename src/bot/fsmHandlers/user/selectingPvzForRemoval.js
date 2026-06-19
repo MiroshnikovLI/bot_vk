@@ -1,5 +1,4 @@
 const { cleanText, } = require('../../../utils/helpers');
-const { logAction } = require('../../../utils/logger');
 const { getPvzByCode, removeUserFromPvz, } = require('../../../services/pvzService');
 const { getUserVkId } = require('../../../services/userService');
 const { getUnsubscribeKeyboard, getCancelKeyboard } = require('../../../keyboards/keyboards');

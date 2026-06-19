@@ -1,5 +1,4 @@
 const { cleanText } = require("../../../utils/helpers");
-const { logAction } = require("../../../utils/logger");
 const { getUserVkId } = require("../../../services/userService");
 const { getPvzByCode, linkUserToPvz } = require("../../../services/pvzService");
 const {
