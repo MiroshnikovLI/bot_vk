@@ -230,6 +230,18 @@ function parseRating(value) {
   };
 }
 
+function isValidVkMeLink(link) {
+  if (!link || typeof link !== 'string') return false;
+  
+  // Проверяем, что ссылка начинается с https://vk.me/join/
+  const trimmed = link.trim();
+  
+  // Основное регулярное выражение
+  const regex = /^https:\/\/vk\.me\/join\/[a-zA-Z0-9_\-/]+={0,2}$/;
+  
+  return regex.test(trimmed);
+}
+
 module.exports = {
   parseScheduleTime,
   cleanText,
@@ -240,4 +252,5 @@ module.exports = {
   parseRating,
   normalizePhone,
   formatPhone,
+  isValidVkMeLink,
 };

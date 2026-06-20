@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS absences (
 );
 
 -- 12. Таблица сменщиков (для отписок)
-CREATE TABLE shift_substitutes (
+CREATE TABLE IF NOT EXISTS shift_substitutes (
   id SERIAL PRIMARY KEY,
   main_user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,  -- основной менеджер
   replacement_user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, -- сменщик
@@ -164,6 +164,17 @@ CREATE TABLE shift_substitutes (
   
   -- Один и тот же сменщик не может быть дважды привязан к одному менеджеру
   UNIQUE(main_user_id, replacement_user_id)
+);
+
+--13. Таблица с ссылками на рабочие чаты
+CREATE TABLE IF NOT EXISTS work_chats (
+  id SERIAL PRIMARY KEY,
+  chat_name VARCHAR(255) NOT NULL,         -- Название чата
+  chat_link VARCHAR(255),                  -- Ссылка на чат
+  is_active BOOLEAN DEFAULT TRUE,          -- Активен ли чат
+  description TEXT,                        -- Описание/примечания
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 `;
 
@@ -200,7 +211,7 @@ INSERT INTO bot_settings (key, value, description) VALUES
 ('wall_comments_enabled', 'true', 'Включить комментарии к постам на стене'),
 ('weekly_report_day', '6', 'День недели для отправки еженедельного отчета (1-7, 1=ПН)'),
 ('auto_assign_shifts', 'true', 'Автоматически назначать смены на основании отписки'),
-('admin_vk_ids', '{1105208474, 52356640, 175869561, 698234173, 701341248}', 'Список ВК ID администраторов (массив BIGINT)'),
+('admin_vk_ids', '{1105208474, 52356640, 175869561, 698234173, 701341248, 366402660}', 'Список ВК ID администраторов (массив BIGINT)'),
 ('timezone', 'Europe/Moscow', 'Часовой пояс для расчетов')
 ON CONFLICT (key) DO UPDATE SET 
   value = EXCLUDED.value,

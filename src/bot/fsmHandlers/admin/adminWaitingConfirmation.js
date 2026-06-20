@@ -50,7 +50,6 @@ async function adminWaitingСonfirmation(userId, text) {
       );
       return;
     } else {
-      console.log(result.message, 'error')
       await sendMessage(userId, "⏳", { buttons: [], one_time: false });
       await sendMessage(
         userId,

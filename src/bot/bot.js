@@ -18,7 +18,7 @@ const {
   getAllPvzs,
   addPvzToDb,
   getUserReplacements,
-} = require("../services/pvzService");
+} = require("../services/index");
 const {
   hasUserReportedToday,
   addShiftReport,

@@ -18,6 +18,12 @@ const {
   adminWaitingСonfirmation,
   waitingRatePvzInChat,
   changePhone,
+  waitingParametrEditChat,
+  waitingIdWorkChats,
+  waitingNameLink,
+  waitingLinkLink,
+  waitingDescriptionLink,
+  waitingIdDeleteChatLink,
 } = require("./fsmHandlers/index");
 
 const rawHandlers = {
@@ -38,6 +44,12 @@ const rawHandlers = {
   adminWaitingСonfirmation,
   waitingRatePvzInChat,
   changePhone,
+  waitingParametrEditChat,
+  waitingIdWorkChats,
+  waitingNameLink,
+  waitingLinkLink,
+  waitingDescriptionLink,
+  waitingIdDeleteChatLink,
 };
 
 const safeHandlers = createSafeHandlers(rawHandlers);

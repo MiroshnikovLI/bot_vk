@@ -5,6 +5,7 @@ const COMMANDS = {
   CHANGE_NAME: "изменить фио",
   CHANGE_WB_ID: "изменить wb id",
   CHANGE_PHONE: "изменить телефон",
+  LIST_CHATS: "рабочие чаты",
   BACK: "назад",
   ADMIN: "админ",
   
@@ -23,12 +24,23 @@ const COMMANDS = {
   PVZ_MENU: "меню пвз",
   UNSUBSCRIPTIONS_MENU: "меню отписок",
   MANAGER_MENU: "меню менеджеров",
+  SETTINGS_LIST_CHATS: 'настройки списка чатов',
   BACK_TO_ADMIN: "вернуться",
 
   // Меню пунктов выдачи
   ADD_PVZ_TO_DB: "добавить пункт выдачи",
   DELETE_PVZ_FROM_DB: "удалить пункт выдачи",
   LIST_PVZ: "список пвз",
+
+  // Настройки рабочих чатов
+  EDIT_LIST_CHATS: 'редактировать список',
+  ADD_LIST_CHATS: 'добавить чат',
+  DELETED_CHATS: 'удалить чат',
+
+  // Редактор чатов
+  EDIT_NAME_LINK: "изменить название",
+  EDIT_LINK_LINK: "изменить ссылку",
+  EDIT_DESCRIPTION_LINK: "изменить описание",
 
   // Админ: отчёты
   REPORT_OPENING: "отчет об открытии пвз",

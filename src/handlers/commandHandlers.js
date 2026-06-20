@@ -23,6 +23,11 @@ const { handleToRemindAboutTheOpening } = require('./admin/handleToRemindAboutTh
 const { handleToRemindAboutTheCloses } = require('./admin/handleToRemindAboutTheCloses');
 const { handleChangePhone } = require('./private/handleChangePhone');
 const { handlePvzMenu } = require('./admin/handlePvzMenu');
+const { handleListChats } = require('./private/handleListChats');
+const { handleSettingsListСhats } = require('./admin/handleSettingsListСhats');
+const { handleEditListChats } = require('./admin/handleEditListChats');
+const { handleAddListChat } = require('./admin/handleAddListChat');
+const { handleDeletedChatLink } = require('./admin/handleDeletedChatLink');
 
 const commandHandlers = {
   [COMMANDS.MY_DATA]: (senderId) => myDataHandler(senderId),
@@ -50,7 +55,12 @@ const commandHandlers = {
   [COMMANDS.REMIND_OPENING]: (senderId, isAdmin) => handleToRemindAboutTheOpening(senderId, isAdmin),
   [COMMANDS.REMIND_CLOSING]: (senderId, isAdmin) => handleToRemindAboutTheCloses(senderId, isAdmin),
   [COMMANDS.CHANGE_PHONE]: (senderId) => handleChangePhone(senderId),
-  [COMMANDS.PVZ_MENU]: (senderId) => handlePvzMenu(senderId)
+  [COMMANDS.PVZ_MENU]: (senderId) => handlePvzMenu(senderId),
+  [COMMANDS.LIST_CHATS]: (senderId) => handleListChats(senderId),
+  [COMMANDS.SETTINGS_LIST_CHATS]: (senderId) => handleSettingsListСhats(senderId),
+  [COMMANDS.EDIT_LIST_CHATS]: (senderId) => handleEditListChats(senderId),
+  [COMMANDS.ADD_LIST_CHATS]: (senderId) => handleAddListChat(senderId),
+  [COMMANDS.DELETED_CHATS]: (senderId) => handleDeletedChatLink(senderId)
 };
 
 module.exports = { commandHandlers };

@@ -31,6 +31,15 @@ async function getPrivateKeyboard(userId) {
       {
         action: {
           type: `text`,
+          label: `📋 ${COMMANDS.LIST_CHATS.toUpperCase()}`,
+        },
+        color: `secondary`,
+      },
+    ],
+    [
+      {
+        action: {
+          type: `text`,
           label: `🌅 ${COMMANDS.OPEN_PVZ.toUpperCase()}`,
         },
         color: `positive`,
@@ -213,24 +222,33 @@ function getAdminKeyboard() {
             type: `text`,
             label: `☰ ${COMMANDS.UNSUBSCRIPTIONS_MENU.toUpperCase()}`,
           },
-          color: `primary`,
+          color: `secondary`,
         },
         {
           action: {
             type: `text`,
-            label: `☰ ${COMMANDS.PVZ_MENU.toUpperCase()}`
+            label: `☰ ${COMMANDS.PVZ_MENU.toUpperCase()}`,
           },
-          color: `primary`
-        }
+          color: `secondary`,
+        },
       ],
       [
         {
           action: {
-            type: 'text', 
-            label: `☰ ${COMMANDS.MANAGER_MENU.toUpperCase()}`
+            type: "text",
+            label: `☰ ${COMMANDS.MANAGER_MENU.toUpperCase()}`,
           },
-          color: `primary`
-        }
+          color: `secondary`,
+        },
+      ],
+      [
+        {
+          action: {
+            type: `text`,
+            label: `🔧 ${COMMANDS.SETTINGS_LIST_CHATS.toUpperCase()}`,
+          },
+          color: `secondary`,
+        },
       ],
       [
         {
@@ -393,6 +411,88 @@ function getRatePvzKeyboard(rate) {
   return { buttons, one_time: false };
 }
 
+function getSettingsListChats() {
+  return {
+    buttons: [
+      [
+        {
+          action: {
+            type: `text`,
+            label: `📋 ${COMMANDS.LIST_CHATS.toUpperCase()}`,
+          },
+          color: `secondary`,
+        },
+        {
+          action: {
+            type: `text`,
+            label: `✏️ ${COMMANDS.EDIT_LIST_CHATS.toUpperCase()}`,
+          },
+          color: `secondary`,
+        },
+      ],
+      [
+        {
+          action: {
+            type: `text`,
+            label: `➕ ${COMMANDS.ADD_LIST_CHATS.toUpperCase()}`,
+          },
+          color: `secondary`,
+        },
+        {
+          action: {
+            type: `text`,
+            label: `🗑️ ${COMMANDS.DELETED_CHATS.toUpperCase()}`,
+          },
+        },
+      ],
+      [
+        {
+          action: {
+            type: `text`,
+            label: `🔙 ${COMMANDS.BACK_TO_ADMIN.toUpperCase()}`,
+          },
+          color: `primary`,
+        },
+      ],
+    ],
+  };
+}
+
+function getWaitingParameterKeyboard() {
+  const buttons = [
+    [
+      {
+        action: {
+          type: `text`,
+          label: `✏️ ${COMMANDS.EDIT_NAME_LINK.toUpperCase()}`,
+        },
+        color: `primary`,
+      },
+    ],
+    [
+      {
+        action: {
+          type: `text`,
+          label: `✏️ ${COMMANDS.EDIT_LINK_LINK.toUpperCase()}`,
+        },
+        color: `primary`,
+      },
+    ],
+    [
+      {
+        action: {
+          type: `text`,
+          label: `✏️ ${COMMANDS.EDIT_DESCRIPTION_LINK.toUpperCase()}`,
+        },
+        color: `primary`,
+      },
+    ],
+  ];
+
+  buttons.push(...getCancelKeyboard().buttons);
+  return { buttons, one_time: false };
+}
+
 module.exports = {
   getPrivateKeyboard,
   getUnsubscribeKeyboard,
@@ -405,4 +505,6 @@ module.exports = {
   getWaitingСonfirmationKeyboard,
   getRatePvzKeyboard,
   getPvzMenu,
+  getSettingsListChats,
+  getWaitingParameterKeyboard,
 };
