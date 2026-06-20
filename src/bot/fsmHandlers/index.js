@@ -15,6 +15,12 @@ const { adminWaitindWorkTime } = require('./admin/adminWaitindWorkTime');
 const { adminWaitingСonfirmation } = require('./admin/adminWaitingConfirmation');
 const { waitingRatePvzInChat } = require('./user/waitingRatePvzInChat');
 const { changePhone } = require('./user/changePhone');
+const { waitingIdWorkChats } = require('./admin/waitingIdWorkChats');
+const { waitingParametrEditChat } = require('./admin/waitingParametrEditChat');
+const { waitingNameLink } = require('./admin/waitingNameLink');
+const { waitingLinkLink } = require('./admin/waitingLinkLink');
+const { waitingDescriptionLink } = require('./admin/waitingDescriptionLink');
+const { waitingIdDeleteChatLink } = require('./admin/waitingIdDeleteChatLink');
 
 module.exports = {
   waitingWbId,
@@ -33,5 +39,11 @@ module.exports = {
   adminWaitindWorkTime,
   adminWaitingСonfirmation,
   waitingRatePvzInChat,
-  changePhone
+  changePhone,
+  waitingIdWorkChats,
+  waitingParametrEditChat,
+  waitingNameLink,
+  waitingLinkLink,
+  waitingDescriptionLink,
+  waitingIdDeleteChatLink
 }

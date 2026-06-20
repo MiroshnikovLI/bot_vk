@@ -120,5 +120,5 @@ module.exports = {
   isProfileComplete,
   getSetting,
   isUserAdmin,
-  updateUserPhone
+  updateUserPhone,
 };

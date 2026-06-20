@@ -17,6 +17,7 @@ const {
   WAITING_ID_PVZ_TO_DELETE,
   UNSUBSCRIBE_MENU,
   OPERATION_CANCELLED,
+  LIST_CHATS,
 } = require('./message');
 
 module.exports = {
@@ -37,4 +38,5 @@ module.exports = {
   WAITING_ID_PVZ_TO_DELETE,
   UNSUBSCRIBE_MENU,
   OPERATION_CANCELLED,
+  LIST_CHATS,
 }

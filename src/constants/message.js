@@ -1,4 +1,5 @@
 const { getUserVkId } = require("../services/userService");
+const { getWorkChats } = require('../services/index');
 const { formatPhone } = require('../utils/helpers');
 
 const START = "👋 Добро пожаловать! Давайте настроим ваш профиль.\n\n📝 Введите ваше ФИО полностью:";
@@ -9,6 +10,17 @@ const ADMIN_MENU =
   `☰ Меню отписок - просмотр отчетов, создание отчетов, напоминание об отписках\n` +
   `☰ Меню менеджеров - просмотр дынных/отчетов менеджера\n` +
   `🔙 Назад - вернуться в предыдущее меню`;
+
+const SETTINGS_LIST_CHATS = `🔧 **НАСТРОЙКИ СПИСКА РАБОЧИХ ЧАТОВ**\n\n` +
+  `📋 Рабочие чаты - получить список рабочих чатов\n` +
+  `✏️ Редактировать список - отредоктировать уже созданный список чатов\n` +
+  `➕ Добавить чат - добавить новый чат в список\n` + 
+  `🗑️ Удалить чат - удалить чат из списка`;
+
+const EDIT_LINK_CHATS = `Выберите один из вариантов\n` +
+  `✏️ Изменить название - изменить название ссылки которую видеть пользователь\n` +
+  `✏️ Изменить ссылку - заменить ссылку на чат\n` + 
+  `✏️ Изменить описание - изменить описание ссылки в списке чатов`;
 
 const PVZ_MENU = 
   `➕ Добавить ПВЗ - добавить новый пункт выдачи в базу\n` +
@@ -24,6 +36,25 @@ const MY_DATA = (user, pvz_list, replacementList) =>
   `${pvz_list}\n\n` +
   `👤 Закрепленные сменщики:\n` +
   `${replacementList}\n\n`;
+
+const LIST_CHATS = async () => {
+  const chats = await getWorkChats();
+  const massChats = [];
+  
+  if (!chats.success) return `Ошибка при получение данных!`
+
+  if (chats.message === "Список чатов пока не загружен") {
+    return `Список чатов пока не загружен`
+  } else {
+    let i = 1
+    
+    chats.data.forEach(p => {
+      massChats.push(`\n\n${i})` + `[${p.chat_link}| ${p.chat_name}]` + `\n` + `${p.description}`)
+      i++
+    })
+  }
+  return `📋 Список рабочих чатов ${massChats}`
+}
 
 const CHANGE_DATA =
   `✏️ **Изменение данных**\n\n` +
@@ -64,7 +95,20 @@ const DELETED_A_REPLACEMENT =
 const NO_ACCESS_RIGHTS = "❌ Нет прав доступа.";
 
 const NOTIFICATIONS = {
+  WAITING_NEW_VALUE: (value) =>  {
+    if (value === 'name') {
+      return `Введите название ссылки:`;
+    } else if (value === 'link') {
+      return `Введите ссылку на чат:`;
+    } else {
+      return `Введите описание ссылки:`
+    }
+     
+  },
   PHONE_SUCCESSFULLY: (phone) => `✅ Номер успешно изменен ${formatPhone(phone)}`,
+  LINK_SUCCESSFULLY: (link) => `Ссылка успешно добавлена: [${link.chat_link}|${link.chat_name}]\n ${link.description}`,
+  ERROR_LINK_CHAT: "Введите ссылку в формате:  https://vk.me/join/",
+  WAITING_ID_WORK_CHATS: 'Введите ID чата для редактирования:',
   NO_REPORT_TO_DAY: 'Нет отчетов за сегодня',
   PVZ_ALL_UNSUBSCRIBED: 'Все пункты отписались',
   REPORT_SENT: 'Отчет отправлен в чат',
@@ -219,5 +263,8 @@ module.exports = {
   UNSUBSCRIBE_MENU,
   OPERATION_CANCELLED,
   CHANGE_PHONE,
-  PVZ_MENU
+  PVZ_MENU,
+  LIST_CHATS,
+  SETTINGS_LIST_CHATS,
+  EDIT_LINK_CHATS
 };
