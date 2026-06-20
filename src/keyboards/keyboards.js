@@ -29,9 +29,12 @@ async function getPrivateKeyboard(userId) {
     ],
     [
       {
-        action: { type: `text`, label: `📋 ${COMMANDS.LIST_CHATS.toUpperCase()}`},
-        color: `secondary`
-      }
+        action: {
+          type: `text`,
+          label: `📋 ${COMMANDS.LIST_CHATS.toUpperCase()}`,
+        },
+        color: `secondary`,
+      },
     ],
     [
       {
@@ -224,28 +227,28 @@ function getAdminKeyboard() {
         {
           action: {
             type: `text`,
-            label: `☰ ${COMMANDS.PVZ_MENU.toUpperCase()}`
+            label: `☰ ${COMMANDS.PVZ_MENU.toUpperCase()}`,
           },
-          color: `secondary`
-        }
+          color: `secondary`,
+        },
       ],
       [
         {
           action: {
-            type: 'text', 
-            label: `☰ ${COMMANDS.MANAGER_MENU.toUpperCase()}`
+            type: "text",
+            label: `☰ ${COMMANDS.MANAGER_MENU.toUpperCase()}`,
           },
-          color: `secondary`
-        }
+          color: `secondary`,
+        },
       ],
       [
         {
           action: {
             type: `text`,
-            label: `🔧 ${COMMANDS.SETTINGS_LIST_CHATS.toUpperCase()}`
+            label: `🔧 ${COMMANDS.SETTINGS_LIST_CHATS.toUpperCase()}`,
           },
-          color: `secondary`
-        }
+          color: `secondary`,
+        },
       ],
       [
         {
@@ -415,32 +418,32 @@ function getSettingsListChats() {
         {
           action: {
             type: `text`,
-            label: `📋 ${COMMANDS.LIST_CHATS.toUpperCase()}`
+            label: `📋 ${COMMANDS.LIST_CHATS.toUpperCase()}`,
           },
-          color: `secondary`
+          color: `secondary`,
         },
         {
           action: {
             type: `text`,
-            label: `✏️ ${COMMANDS.EDIT_LIST_CHATS.toUpperCase()}`
+            label: `✏️ ${COMMANDS.EDIT_LIST_CHATS.toUpperCase()}`,
           },
-          color: `secondary`
-        }
+          color: `secondary`,
+        },
       ],
       [
         {
           action: {
             type: `text`,
-            label: `➕ ${COMMANDS.ADD_LIST_CHATS.toUpperCase()}`
+            label: `➕ ${COMMANDS.ADD_LIST_CHATS.toUpperCase()}`,
           },
-          color: `secondary`
+          color: `secondary`,
         },
         {
           action: {
             type: `text`,
-            label: `🗑️ ${COMMANDS.DELETED_CHATS.toUpperCase()}`
-          }
-        }
+            label: `🗑️ ${COMMANDS.DELETED_CHATS.toUpperCase()}`,
+          },
+        },
       ],
       [
         {
@@ -450,39 +453,44 @@ function getSettingsListChats() {
           },
           color: `primary`,
         },
-      ]
-    ]
-  }
+      ],
+    ],
+  };
 }
 
 function getWaitingParametrKeyboar() {
-  const buttons = [[
+  const buttons = [
+    [
       {
         action: {
           type: `text`,
-          label: `✏️ ${COMMANDS.EDIT_NAME_LINK.toUpperCase()}`
+          label: `✏️ ${COMMANDS.EDIT_NAME_LINK.toUpperCase()}`,
         },
-        color: `primary`
+        color: `primary`,
       },
-      {
-        action: {
-          type: `text`,
-          label: `✏️ ${COMMANDS.EDIT_LINK_LINK.toUpperCase()}`
-        },
-        color: `primary`
-      },
-      {
-        action: {
-          type: `text`,
-          label: `✏️ ${COMMANDS.EDIT_DESCRIPTION_LINK.toUpperCase()}`
-        },
-        color: `primary`
-      }
     ],
-  ]
+    [
+      {
+        action: {
+          type: `text`,
+          label: `✏️ ${COMMANDS.EDIT_LINK_LINK.toUpperCase()}`,
+        },
+        color: `primary`,
+      },
+    ],
+    [
+      {
+        action: {
+          type: `text`,
+          label: `✏️ ${COMMANDS.EDIT_DESCRIPTION_LINK.toUpperCase()}`,
+        },
+        color: `primary`,
+      },
+    ],
+  ];
 
   buttons.push(...getCancelKeyboard().buttons);
-  return { buttons, one_time: false }
+  return { buttons, one_time: false };
 }
 
 module.exports = {
