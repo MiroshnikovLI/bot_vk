@@ -1,7 +1,7 @@
 const { cleanText } = require('../../../utils/helpers');
 const { COMMANDS, OPERATION_CANCELLED, NOTIFICATIONS } = require('../../../constants/index');
 const { sendMessage } = require('../../../config/vkApi');
-const { getSettingsListChats, getCancelKeyboard, getWaitingParametrKeyboar } = require('../../../keyboards/keyboards');
+const { getSettingsListChats, getCancelKeyboard, getWaitingParameterKeyboard } = require('../../../keyboards/keyboards');
 const { userStates } = require('../../../state/stateManager');
 
 async function waitingIdWorkChats(userId, text) {
@@ -29,7 +29,7 @@ async function waitingIdWorkChats(userId, text) {
   if (chat) {
     userStates.set(userId, 'waitingParametrEditChat', {chat: chat});
     const message = `Выберите что будете редактировать\n\n Название: ${chat.chat_name}\n Ссылку: ${chat.chat_link}\n Описание: ${chat.description} `;
-    await sendMessage(userId, message, getWaitingParametrKeyboar());
+    await sendMessage(userId, message, getWaitingParameterKeyboard());
     return
   } else if (!chat) {
     await sendMessage(userId, `Чат с ID ${text} не найден`)

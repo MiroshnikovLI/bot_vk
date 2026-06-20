@@ -63,9 +63,29 @@ async function updateWorkChat(id, name, link, description) {
   }
 }
 
+async function listChats () {
+  const chats = await getWorkChats();
+  const massChats = [];
+  
+  if (!chats.success) return `Ошибка при получение данных!`
+
+  if (chats.message === "Список чатов пока не загружен") {
+    return `Список чатов пока не загружен`
+  } else {
+    let i = 1
+    
+    chats.data.forEach(p => {
+      massChats.push(`\n\n${i})` + `[${p.chat_link}| ${p.chat_name}]` + `\n` + `${p.description}`)
+      i++
+    })
+  }
+  return `📋 Список рабочих чатов ${massChats}`
+}
+
 module.exports = {
   getWorkChats,
   addWorkChat,
   deleteWorkChat,
   updateWorkChat,
+  listChats,
 }

@@ -1,4 +1,3 @@
-const { getUserVkId } = require("../services/userService");
 const { getWorkChats } = require('../services/index');
 const { formatPhone } = require('../utils/helpers');
 
@@ -13,7 +12,7 @@ const ADMIN_MENU =
 
 const SETTINGS_LIST_CHATS = `🔧 **НАСТРОЙКИ СПИСКА РАБОЧИХ ЧАТОВ**\n\n` +
   `📋 Рабочие чаты - получить список рабочих чатов\n` +
-  `✏️ Редактировать список - отредоктировать уже созданный список чатов\n` +
+  `✏️ Редактировать список - отредактировать уже созданный список чатов\n` +
   `➕ Добавить чат - добавить новый чат в список\n` + 
   `🗑️ Удалить чат - удалить чат из списка`;
 
@@ -36,25 +35,6 @@ const MY_DATA = (user, pvz_list, replacementList) =>
   `${pvz_list}\n\n` +
   `👤 Закрепленные сменщики:\n` +
   `${replacementList}\n\n`;
-
-const LIST_CHATS = async () => {
-  const chats = await getWorkChats();
-  const massChats = [];
-  
-  if (!chats.success) return `Ошибка при получение данных!`
-
-  if (chats.message === "Список чатов пока не загружен") {
-    return `Список чатов пока не загружен`
-  } else {
-    let i = 1
-    
-    chats.data.forEach(p => {
-      massChats.push(`\n\n${i})` + `[${p.chat_link}| ${p.chat_name}]` + `\n` + `${p.description}`)
-      i++
-    })
-  }
-  return `📋 Список рабочих чатов ${massChats}`
-}
 
 const CHANGE_DATA =
   `✏️ **Изменение данных**\n\n` +
@@ -264,7 +244,6 @@ module.exports = {
   OPERATION_CANCELLED,
   CHANGE_PHONE,
   PVZ_MENU,
-  LIST_CHATS,
   SETTINGS_LIST_CHATS,
   EDIT_LINK_CHATS
 };

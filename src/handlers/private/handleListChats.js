@@ -1,8 +1,8 @@
 const { sendMessage } = require("../../config/vkApi");
 const { getPrivateKeyboard } = require("../../keyboards/keyboards");
-const { LIST_CHATS } = require('../../constants/index')
+const { listChats } = require('../../services/listChatsService');
 async function handleListChats(userId) {
-  await sendMessage(userId, await LIST_CHATS());
+  await sendMessage(userId, await listChats());
 }
 
 module.exports = {

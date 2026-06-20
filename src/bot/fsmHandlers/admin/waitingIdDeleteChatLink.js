@@ -28,13 +28,7 @@ async function waitingIdDeleteChatLink(userId, text) {
   const result = await deleteWorkChat(text);
 
   if (result.success) {
-    if (result.message === 'Запись не найдена') {
-      await sendMessage(userId, result.message, getSettingsListChats());
-    } 
-    if (result.message === "Запись успешно удалена") {
-      await sendMessage(userId, result.message, getSettingsListChats());
-    }
-
+    await sendMessage(userId, result.message, getSettingsListChats());
   } else {
     await sendMessage(userId, NOTIFICATIONS.ERROR, getSettingsListChats());
   }

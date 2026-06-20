@@ -458,7 +458,7 @@ function getSettingsListChats() {
   };
 }
 
-function getWaitingParametrKeyboar() {
+function getWaitingParameterKeyboard() {
   const buttons = [
     [
       {
@@ -506,5 +506,5 @@ module.exports = {
   getRatePvzKeyboard,
   getPvzMenu,
   getSettingsListChats,
-  getWaitingParametrKeyboar,
+  getWaitingParameterKeyboard,
 };
