@@ -32,8 +32,8 @@ async function waitingIdWorkChats(userId, text) {
     await sendMessage(userId, message, getWaitingParameterKeyboard());
     return
   } else if (!chat) {
-    await sendMessage(userId, `Чат с ID ${text} не найден`)
-   } else  {
+    await sendMessage(userId, `Чат с ID ${text} не найден`);
+  } else  {
     userStates.delete(userId);
     await sendMessage(userId, NOTIFICATIONS.ERROR, getSettingsListChats());
   }

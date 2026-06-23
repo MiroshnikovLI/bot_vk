@@ -16,13 +16,13 @@ async function getWorkChats() {
   }
 }
 
-async function addWorkChat(name, link, description) {
+async function addWorkChat(name, link, description, chatId) {
   try {
     const result = await query(`
-      INSERT INTO work_chats (chat_name, chat_link, is_active, description, created_at) 
-        VALUES ($1, $2, true, $3, NOW())
+      INSERT INTO work_chats (chat_name, chat_link, chat_id, is_active, description, created_at) 
+        VALUES ($1, $2, $3, true, $4, NOW())
         RETURNING *
-      `, [name, link, description]);
+      `, [name, link, chatId, description]);
     return {success: true, message: 'Данные успешно добавлены', data: result.rows[0]}
   } catch (error) {
     return {success: false, message: error.message}

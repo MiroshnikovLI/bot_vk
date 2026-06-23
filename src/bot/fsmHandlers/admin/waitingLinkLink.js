@@ -38,7 +38,7 @@ async function waitingLinkLink(userId, text) {
     }
   }
 
-    userStates.set(userId, "waitingDescriptionLink", {
+    userStates.set(userId, "waitingChatIdLink", {
       chat: {
         chat_name: state.chat.chat_name,
         chat_link: text,
@@ -46,7 +46,7 @@ async function waitingLinkLink(userId, text) {
     });
     await sendMessage(
       userId,
-      NOTIFICATIONS.WAITING_NEW_VALUE("description"),
+      NOTIFICATIONS.WAITING_NEW_VALUE("id"),
       getCancelKeyboard(),
     );
     return;

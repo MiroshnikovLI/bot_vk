@@ -24,6 +24,7 @@ const {
   waitingLinkLink,
   waitingDescriptionLink,
   waitingIdDeleteChatLink,
+  waitingChatIdLink,
 } = require("./fsmHandlers/index");
 
 const rawHandlers = {
@@ -50,6 +51,7 @@ const rawHandlers = {
   waitingLinkLink,
   waitingDescriptionLink,
   waitingIdDeleteChatLink,
+  waitingChatIdLink,
 };
 
 const safeHandlers = createSafeHandlers(rawHandlers);
