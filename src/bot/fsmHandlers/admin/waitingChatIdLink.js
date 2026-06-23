@@ -31,12 +31,13 @@ async function waitingChatIdLink(userId, text) {
     return;
   }
 
-  if (clearText >= 2000000000) {
+  const chatId = Number(clearText);
+  if (chatId >= 2000000000 && !isNaN(chatId)) {
     userStates.set(userId, "waitingDescriptionLink", {
       chat: {
         chat_name: state.chat.chat_name,
         chat_link: state.chat.chat_link,
-        chat_id: text,
+        chat_id: chatId,
       },
     });
     await sendMessage(
