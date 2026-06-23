@@ -20,9 +20,11 @@ async function waitingDescriptionLink(userId, text) {
     const rest = await updateWorkChat(state.chat.id, state.chat.chat_name, state.chat.chat_link, text);
     result = rest;
   } else {
-    const rest = await addWorkChat(state.chat.chat_name, state.chat.chat_link, text);
+    const rest = await addWorkChat(state.chat.chat_name, state.chat.chat_link, text, state.chat.chat_id, );
     result = rest;
   }
+
+  console.log(result)
 
   if (result.success) {
     await sendMessage(userId, NOTIFICATIONS.LINK_SUCCESSFULLY(result.data), getSettingsListChats());

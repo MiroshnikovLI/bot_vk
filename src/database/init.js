@@ -171,6 +171,7 @@ CREATE TABLE IF NOT EXISTS work_chats (
   id SERIAL PRIMARY KEY,
   chat_name VARCHAR(255) NOT NULL,         -- Название чата
   chat_link VARCHAR(255),                  -- Ссылка на чат
+  chat_id  INTEGER NOT NULL,               -- ID чата
   is_active BOOLEAN DEFAULT TRUE,          -- Активен ли чат
   description TEXT,                        -- Описание/примечания
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
