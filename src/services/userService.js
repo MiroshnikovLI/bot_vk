@@ -1,6 +1,16 @@
 const { query } = require("../config/database");
 const { deleteUserFromChatQuery } = require('../config/vkApi');
 
+async function startUser(vkId) {
+  const name = `user${Date.now()}`
+  const result = await query(
+    `INSERT INTO users (vk_id, full_name, created_at, updated_at)
+    VALUES ($1, $2, NOW(), NOW())
+    RETURNING *`,
+    [vkId, name]
+  );
+}
+
 async function getAllUsers() {
   try {
     const result = await query(`
@@ -185,6 +195,7 @@ async function deleteUserFromChat(userId, chats) {
 }
 
 module.exports = {
+  startUser,
   getAllUsers,
   getUserVkId,
   getUserWbId,
