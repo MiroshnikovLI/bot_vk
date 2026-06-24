@@ -31,7 +31,7 @@ async function handleUpdate(update) {
 
   const userActive = await getUserVkId(peerId);
 
-  if (!userActive.is_active) {
+  if (!userActive?.is_active) {
     return await sendMessage(peerId, DEACTIVE_USER, { buttons: [], one_time: false });
   }
 

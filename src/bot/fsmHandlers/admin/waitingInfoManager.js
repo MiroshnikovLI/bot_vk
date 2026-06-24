@@ -49,7 +49,6 @@ async function waitingInfoManager(userId, text) {
   }
 
   await sendMessage(userId, MANAGER_INFO('info', result), getManagerMenuKeyboard());
-
 }
 
 module.exports = {

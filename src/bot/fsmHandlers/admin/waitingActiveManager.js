@@ -11,6 +11,7 @@ const { getManagerMenuKeyboard } = require("../../../keyboards/keyboards");
 const {
   setActiveUser,
   deleteUserFromChat,
+  isUserAdmin
 } = require("../../../services/userService");
 const { getWorkChats } = require("../../../services");
 
@@ -20,9 +21,7 @@ async function waitingActiveManager(userId, text) {
   const resultChats = await getWorkChats();
   const status = state.status === 'restore' ? true : false;
   let user = [];
-  let chats = [];
   const messageDeleteChats = [];
-  const messageDeleteUser = [];
 
   if (clearText === COMMANDS.CANCELLATION) {
     userStates.delete(userId);
@@ -32,12 +31,11 @@ async function waitingActiveManager(userId, text) {
   user = state.user.find((e) => e.id === Number(clearText));
 
   if (!resultChats.success) {
-    chats = `Ошибка подключение к Базе Данных`;
+    messageDeleteChats.push(`Ошибка подключение к Базе Данных`);
   } else {
     if (resultChats.message === "Список чатов пока не загружен") {
       messageDeleteChats.push(resultChats.message);
     } else {
-      chats = resultChats.data.rows;
       const deleteFromChat = await deleteUserFromChat(
         clearText,
         resultChats.data,
@@ -50,6 +48,16 @@ async function waitingActiveManager(userId, text) {
     }
   }
 
+  if (Number(user.vk_id) === Number(userId) && !status) {
+    await sendMessage(userId, `Вы не можете удалить себя`, getManagerMenuKeyboard());
+    return;
+  }
+
+  if (isUserAdmin(user.vk_id) && !status) {
+    await sendMessage(userId, `Вы не можете удалить администратора`, getManagerMenuKeyboard());
+    return;
+  }
+
   const userStatus = await setActiveUser(user.id, status);
 
   if (userStatus.success) {
@@ -59,7 +67,6 @@ async function waitingActiveManager(userId, text) {
     } else {
       message = `${MANAGER_STATUS(status, userStatus.data, `Удален с чатов: ${messageDeleteChats}`)}\n\n`;
     }
-    userStates.delete(userId);
     await sendMessage(userId, message, getManagerMenuKeyboard());
   } else {
     await sendMessage(userId, NOTIFICATIONS.ERROR, getManagerMenuKeyboard());
