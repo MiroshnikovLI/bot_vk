@@ -8,7 +8,8 @@ const { commandHandlers } = require("../handlers/commandHandlers");
 const { createShiftReport } = require("../handlers/handleChatReport");
 const { chatMessageListener } = require("./listeners/chatMessageListener");
 const { userStates } = require("../state/stateManager");
-const { DEACTIVE_USER } = require("../constants/message");
+const { DEACTIVE_USER, NOTIFICATIONS } = require("../constants/message");
+const { startUser } = require('../services/userService');
 require("dotenv").config();
 
 // ============================================================
@@ -29,14 +30,21 @@ async function handleUpdate(update) {
     date,
   } = message;
 
-  const userActive = await getUserVkId(peerId);
-
-  if (!userActive?.is_active) {
-    return await sendMessage(peerId, DEACTIVE_USER, { buttons: [], one_time: false });
-  }
-
   // Игнорируем свои сообщения
   if (out === 1) return;
+
+  const userActive = await getUserVkId(peerId);
+
+  if (!userActive) {
+    await startUser(peerId);
+    userStates.set(peerId, 'waitingFullName');
+    await sendMessage(peerId, NOTIFICATIONS.START_REGISTRATION, { buttons: [], one_time: false});
+    return;
+  }
+
+  if (!userActive.is_active) {
+    return await sendMessage(peerId, DEACTIVE_USER, { buttons: [], one_time: false });
+  }
 
   const isGroupChat = peerId > 2000000000;
 
@@ -63,6 +71,7 @@ async function handleUpdate(update) {
 
   // Если команда не найдена — обрабатываем текстовый ввод или fallback
   const state = userStates.get(senderId);
+
 
   if (state) {
     // Пользователь в процессе диалога (ждёт ввод WB ID, ФИО и т.д.)

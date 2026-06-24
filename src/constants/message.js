@@ -118,6 +118,7 @@ const MANAGER_STATUS = (status, manager, chats = false) => {
 }
 
 const NOTIFICATIONS = {
+  START_REGISTRATION: "Здравствуйте! Для использования бота нужно зарегистрироваться. Пожалуйста, введите ваше ФИО.",
   WAITING_IFO_MANAGER: `Введите VK ID, WB ID или Фамилию менеджера:`,
   NOT_FIND_MANAGER: (text, value) => `Менеджер ${ value === 'name' ? `с фамилией ${text} не найден` : `с ID ${text} не найден`}`, 
   FORMAT_CHAT_ID: `ID должен:\n` + 
