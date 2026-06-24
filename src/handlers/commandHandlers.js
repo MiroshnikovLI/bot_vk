@@ -28,6 +28,10 @@ const { handleSettingsListСhats } = require('./admin/handleSettingsListСhats')
 const { handleEditListChats } = require('./admin/handleEditListChats');
 const { handleAddListChat } = require('./admin/handleAddListChat');
 const { handleDeletedChatLink } = require('./admin/handleDeletedChatLink');
+const { handleManagerMenu } = require('./admin/handleManagerMenu');
+const { handleRequestDataManager } = require('./admin/handleRequestDataManager');
+const { handleDeleteManager } = require('./admin/handleDeleteManager');
+const { handleRestoreManager } = require('./admin/handleRestoreManager');
 
 const commandHandlers = {
   [COMMANDS.MY_DATA]: (senderId) => myDataHandler(senderId),
@@ -60,7 +64,11 @@ const commandHandlers = {
   [COMMANDS.SETTINGS_LIST_CHATS]: (senderId) => handleSettingsListСhats(senderId),
   [COMMANDS.EDIT_LIST_CHATS]: (senderId) => handleEditListChats(senderId),
   [COMMANDS.ADD_LIST_CHATS]: (senderId) => handleAddListChat(senderId),
-  [COMMANDS.DELETED_CHATS]: (senderId) => handleDeletedChatLink(senderId)
+  [COMMANDS.DELETE_CHATS]: (senderId) => handleDeletedChatLink(senderId),
+  [COMMANDS.MANAGER_MENU]: (senderId) => handleManagerMenu(senderId),
+  [COMMANDS.REQUEST_DATA_MANAGER]: (senderId) => handleRequestDataManager(senderId),
+  [COMMANDS.DELETE_MANAGER]: (senderId) => handleDeleteManager(senderId),
+  [COMMANDS.RESTORE_MANAGER]: (senderId) => handleRestoreManager(senderId)
 };
 
 module.exports = { commandHandlers };

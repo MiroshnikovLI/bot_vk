@@ -1,5 +1,5 @@
 const { getWorkChats } = require('../services/index');
-const { formatPhone } = require('../utils/helpers');
+const { formatPhone, formatDate } = require('../utils/helpers');
 
 const START = "👋 Добро пожаловать! Давайте настроим ваш профиль.\n\n📝 Введите ваше ФИО полностью:";
 
@@ -7,7 +7,7 @@ const ADMIN_MENU =
   `🛡️ **АДМИН-ПАНЕЛЬ**\n\n` +
   `☰ Меню пвз - просмотр списка пвз, добавление/удаление пвз\n` +
   `☰ Меню отписок - просмотр отчетов, создание отчетов, напоминание об отписках\n` +
-  `☰ Меню менеджеров - просмотр дынных/отчетов менеджера\n` +
+  `☰ Меню менеджеров - просмотр данных/отчетов менеджера\n` +
   `🔙 Назад - вернуться в предыдущее меню`;
 
 const SETTINGS_LIST_CHATS = `🔧 **НАСТРОЙКИ СПИСКА РАБОЧИХ ЧАТОВ**\n\n` +
@@ -17,7 +17,7 @@ const SETTINGS_LIST_CHATS = `🔧 **НАСТРОЙКИ СПИСКА РАБОЧИ
   `🗑️ Удалить чат - удалить чат из списка`;
 
 const EDIT_LINK_CHATS = `Выберите один из вариантов\n` +
-  `✏️ Изменить название - изменить название ссылки которую видеть пользователь\n` +
+  `✏️ Изменить название - изменить название ссылки которую видит пользователь\n` +
   `✏️ Изменить ссылку - заменить ссылку на чат\n` + 
   `✏️ Изменить описание - изменить описание ссылки в списке чатов`;
 
@@ -35,6 +35,20 @@ const MY_DATA = (user, pvz_list, replacementList) =>
   `${pvz_list}\n\n` +
   `👤 Закрепленные сменщики:\n` +
   `${replacementList}\n\n`;
+
+const DATA_MANAGER = (user) => {
+  const full_name = user.full_name ? `[id${user.vk_id}|${user.full_name}]` : "❌ не указано";
+  return `\n\n🆔 ID: ${user.id}\n` +
+  `👤 ФИО:  ${full_name}\n` +
+  `🆔 WB ID: ${user.wb_id || "❌ не указан"}\n` +
+  `🆔 VK ID: ${user.vk_id}\n` +
+  `📱 Телефон: ${user.phone ? formatPhone(user.phone) : 'Не указан'}\n` +
+  `🔑 Доступ: ${user.role === "manager" ? 'Менеджер' : 'Админ'}\n` +
+  `⚡ Активен ли профиль: ${user.is_active ? 'Да' : 'Нет'}\n` +
+  `📅 Дата регистрации: ${formatDate(user.created_at)}`;
+}
+
+const DEACTIVE_USER = `Ваш профиль был удален. Для востановления обратитесь к Администрации`;
 
 const CHANGE_DATA =
   `✏️ **Изменение данных**\n\n` +
@@ -74,7 +88,38 @@ const DELETED_A_REPLACEMENT =
 
 const NO_ACCESS_RIGHTS = "❌ Нет прав доступа.";
 
+const MANAGER_INFO = (status, massManager) => {
+  let sts;
+  const massInfoManager = [];
+  if (status === 'restore') {
+    sts = `Введите ID менеджера которого хотите восстановить:`
+  } else if (status === 'deactive') {
+    sts = `Введите ID менеджера которого, хотите удалить:`
+  } else {
+    sts = `Информация найдена:`
+  }
+
+  massManager.map((e) => massInfoManager.push(DATA_MANAGER(e)));
+
+  return `${sts} ${massInfoManager}`
+};
+
+const MANAGER_STATUS = (status, manager, chats = false) => {
+  let sts;
+  const massInfoManager = DATA_MANAGER(manager);
+  
+  if (status) {
+    sts = `Менеджер восстановлен` 
+  } else {
+    sts = `Менеджер удален`
+  }
+
+  return `${sts} ${massInfoManager}\n\n ${chats ? chats : ''}`
+}
+
 const NOTIFICATIONS = {
+  WAITING_IFO_MANAGER: `Введите VK ID, WB ID или Фамилию менеджера:`,
+  NOT_FIND_MANAGER: (text, value) => `Менеджер ${ value === 'name' ? `с фамилией ${text} не найден` : `с ID ${text} не найден`}`, 
   FORMAT_CHAT_ID: `ID должен:\n` + 
     `• Быть числом\n` +
     `• Начинаться с 20000000...\n`+
@@ -130,7 +175,7 @@ const NOTIFICATIONS = {
   PVZ_ADDED: (pvz) => `✅ ПВЗ ${pvz.id} - ${pvz.address} успешно добавлен.`,
   PVZ_ALREADY_ADDED: (pvz) => `ПВЗ ${pvz.pvz_id} - ${pvz.address} уже добавлен.`,
   PVZ_NOT_FOUND: (pvz) => `❌ ПВЗ с кодом "${pvz}" не найден.`,
-  PVZ_NOT_FOUND_SEARCH: (pvz) => `ПВЗ ${pvz} не найден. Пожалуйста выберети из списка`,
+  PVZ_NOT_FOUND_SEARCH: (pvz) => `ПВЗ ${pvz} не найден. Пожалуйста выберите из списка`,
   PVZ_NOT_FOUND_PINNED: (pvz) => `❌ ПВЗ ${pvz.pvz_id} - ${pvz.address}\n Не был найден в закрепленных`,
   PVZ_SUCCESSFULLY_DELETED: (pvz) => `✅ Успешно удалено из отписок\n 📍ПВЗ ${pvz.pvz_id} - ${pvz.address}\n`,
   USER_NOT_FOUND: (user) => `❌ Пользователь с WB ID: ${user} не найден`,
@@ -183,7 +228,7 @@ const NOTIFICATIONS = {
     });
 
     return (
-      `📋 **ПУНКТЫ, КОТОРЫЕ ЕЩЁ НЕ ПРИСЛАЛИ ОТЧЁТ ОБ ${reportType === "open" ? "ОТКРЫТИИ ПВЗ" : "ЗАКРЫТИИ ПВЗ"}**\n\n${reportMessage.join("")}` +
+      `📋 **ПУНКТЫ, КОТОРЫЕ ЕЩЁ НЕ ПРИСЛАЛИ ОТЧЁТ ${reportType === "open" ? "ОБ ОТКРЫТИИ ПВЗ" : "О ЗАКРЫТИИ ПВЗ"}**\n\n${reportMessage.join("")}` +
       `Всего не отписалось: ${reportMessage.length}`
     );
   },
@@ -195,7 +240,7 @@ const NOTIFICATIONS = {
     });
 
     return (
-      `📋 **ПУНКТЫ, КОТОРЫЕ ЕЩЁ НЕ ПРИСЛАЛИ ОТЧЁТ ОБ ${reportType === "open" ? "ОТКРЫТИИ ПВЗ" : "ЗАКРЫТИИ ПВЗ"}**\n\n${reportMessage.join("")}\n\n` +
+      `📋 **ПУНКТЫ, КОТОРЫЕ ЕЩЁ НЕ ПРИСЛАЛИ ОТЧЁТ ${reportType === "open" ? "ОБ ОТКРЫТИИ ПВЗ" : "О ЗАКРЫТИИ ПВЗ"}**\n\n${reportMessage.join("")}\n\n` +
       `Всего не отписалось: ${reportMessage.length}\n` +
       `Старший менеджер: ${user.full_name}`
     );
@@ -237,7 +282,12 @@ const UNSUBSCRIBE_MENU =
   "• ❌ Нет отчета открытия - отчет: какие пункты еще не отчитались об открытии ПВЗ\n" +
   "• ❌ Нет отчета закрытия - отчет: какие пункты еще не отчитались о закрытии ПВЗ\n" +
   "• 🔔 Напомнить об открытии - отправить отчет в чат с ПВЗ, которые еще не отчитались об открытии\n" +
-  "• 🔔 Напомнить о закрытии - отправить отчет в чат с ПВЗ, которые еще не отчитались об закрытии\n";
+  "• 🔔 Напомнить о закрытии - отправить отчет в чат с ПВЗ, которые еще не отчитались о закрытии\n";
+
+const MENU_MANAGER = 
+  `☰ **МЕНЮ МЕНЕДЖЕРОВ**\n\n` +
+  `• 🔍 Запросить данные менеджера - из базы данных\n` +
+  `• 🗑️ Удалить менеджера - удалить учетную запись менеджера и из рабочих чатов`;
 
 module.exports = {
   START,
@@ -260,5 +310,10 @@ module.exports = {
   CHANGE_PHONE,
   PVZ_MENU,
   SETTINGS_LIST_CHATS,
-  EDIT_LINK_CHATS
+  EDIT_LINK_CHATS,
+  DATA_MANAGER,
+  MENU_MANAGER,
+  DEACTIVE_USER,
+  MANAGER_INFO,
+  MANAGER_STATUS
 };

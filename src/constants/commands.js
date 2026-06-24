@@ -35,7 +35,12 @@ const COMMANDS = {
   // Настройки рабочих чатов
   EDIT_LIST_CHATS: 'редактировать список',
   ADD_LIST_CHATS: 'добавить чат',
-  DELETED_CHATS: 'удалить чат',
+  DELETE_CHATS: 'удалить чат',
+
+  // Меню менеджера
+  REQUEST_DATA_MANAGER: 'запросить данные менеджера',
+  DELETE_MANAGER: 'удалить менеджера',
+  RESTORE_MANAGER: 'восстановить менеджера',
 
   // Редактор чатов
   EDIT_NAME_LINK: "изменить название",

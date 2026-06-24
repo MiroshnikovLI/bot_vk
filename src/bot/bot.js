@@ -1,40 +1,14 @@
 const { query } = require("../config/database");
-const {
-  getPrivateKeyboard,
-  getUnsubscribeKeyboard,
-  getEditProfileKeyboard,
-  getPvzKeyboard,
-  getCancelKeyboard,
-  getReplacementKeyboard,
-} = require("../keyboards/keyboards");
-const {
-  isProfileComplete,
-  getUserId,
-  isUserAdmin,
-  getOrCreateUser,
-} = require("../services/userService");
-const {
-  getUserPvzs,
-  getAllPvzs,
-  addPvzToDb,
-  getUserReplacements,
-} = require("../services/index");
-const {
-  hasUserReportedToday,
-  addShiftReport,
-} = require("../services/reportService");
+const { getPrivateKeyboard } = require("../keyboards/keyboards");
+const { isUserAdmin, getUserVkId } = require("../services/userService");
 const { cleanText } = require("../utils/helpers");
 const { handleTextInput } = require("./fsmHandler");
-const {
-  sendMessage,
-  startLongPoll,
-  getUserInfo,
-  editMessage,
-} = require("../config/vkApi");
+const { sendMessage, startLongPoll } = require("../config/vkApi");
 const { commandHandlers } = require("../handlers/commandHandlers");
 const { createShiftReport } = require("../handlers/handleChatReport");
 const { chatMessageListener } = require("./listeners/chatMessageListener");
 const { userStates } = require("../state/stateManager");
+const { DEACTIVE_USER } = require("../constants/message");
 require("dotenv").config();
 
 // ============================================================
@@ -54,6 +28,12 @@ async function handleUpdate(update) {
     conversation_message_id: cmid,
     date,
   } = message;
+
+  const userActive = await getUserVkId(peerId);
+
+  if (!userActive?.is_active) {
+    return await sendMessage(peerId, DEACTIVE_USER, { buttons: [], one_time: false });
+  }
 
   // Игнорируем свои сообщения
   if (out === 1) return;
@@ -78,7 +58,7 @@ async function handleUpdate(update) {
   const handler = commandHandlers[clearText];
   if (handler) {
     await handler(senderId, isAdmin);
-    return; // ← не идём дальше
+    return; 
   }
 
   // Если команда не найдена — обрабатываем текстовый ввод или fallback
