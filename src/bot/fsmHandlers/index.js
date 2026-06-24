@@ -22,6 +22,8 @@ const { waitingLinkLink } = require('./admin/waitingLinkLink');
 const { waitingDescriptionLink } = require('./admin/waitingDescriptionLink');
 const { waitingIdDeleteChatLink } = require('./admin/waitingIdDeleteChatLink');
 const { waitingChatIdLink } = require('./admin/waitingChatIdLink');
+const { waitingInfoManager } = require('./admin/waitingInfoManager');
+const { waitingActiveManager } = require('./admin/waitingActiveManager');
 
 module.exports = {
   waitingWbId,
@@ -47,5 +49,7 @@ module.exports = {
   waitingLinkLink,
   waitingDescriptionLink,
   waitingIdDeleteChatLink,
-  waitingChatIdLink
+  waitingChatIdLink,
+  waitingInfoManager,
+  waitingActiveManager
 }

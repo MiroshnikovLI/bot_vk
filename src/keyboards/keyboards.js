@@ -441,7 +441,7 @@ function getSettingsListChats() {
         {
           action: {
             type: `text`,
-            label: `🗑️ ${COMMANDS.DELETED_CHATS.toUpperCase()}`,
+            label: `🗑️ ${COMMANDS.DELETE_CHATS.toUpperCase()}`,
           },
         },
       ],
@@ -493,6 +493,49 @@ function getWaitingParameterKeyboard() {
   return { buttons, one_time: false };
 }
 
+function getManagerMenuKeyboard() {
+  return {
+    buttons: [
+      [
+        {
+          action: {
+            type: `text`,
+            label: `👤 ${COMMANDS.REQUEST_DATA_MANAGER.toUpperCase()}`
+          },
+          color: `primary`
+        },
+      ],
+      [
+        {
+          action: {
+            type: `text`,
+            label: `🗑️ ${COMMANDS.DELETE_MANAGER.toUpperCase()}`
+          },
+          color: `primary`
+        }
+      ],
+      [
+        {
+          action: {
+            type: `text`,
+            label: `➕ ${COMMANDS.RESTORE_MANAGER.toUpperCase()}`
+          },
+          color: `primary`
+        }
+      ],
+      [
+        {
+          action: {
+            type: `text`,
+            label: `🔙 ${COMMANDS.BACK_TO_ADMIN.toUpperCase()}`,
+          },
+          color: `primary`,
+        },
+      ],
+    ]
+  }
+}
+
 module.exports = {
   getPrivateKeyboard,
   getUnsubscribeKeyboard,
@@ -507,4 +550,5 @@ module.exports = {
   getPvzMenu,
   getSettingsListChats,
   getWaitingParameterKeyboard,
+  getManagerMenuKeyboard,
 };

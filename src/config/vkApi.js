@@ -171,6 +171,27 @@ async function answerCallbackQuery(eventId, userId, peerId, text) {
   return vkApiCall('messages.sendMessageEventAnswer', params);
 }
 
+async function deleteUserFromChatQuery(userId, chatId) {
+  // Преобразуем peer_id в chat_id
+  if (chatId > 2000000000) {
+    chatId = chatId - 2000000000;
+  }
+  
+  const params = {
+    chat_id: chatId,
+    user_id: userId,
+    v: VK_API_VERSION,
+    access_token: process.env.VK_GROUP_TOKEN,
+  };
+
+  try {
+    const result = await vkApiCall("messages.removeChatUser", params);
+    return { success: true, chatId, message: result };
+  } catch (error) {
+    return { success: false, chatId, message: error.message };
+  }
+}
+
 module.exports = {
   editMessage,
   sendMessage,
@@ -178,5 +199,6 @@ module.exports = {
   vkApiCall,
   startLongPoll,
   answerCallbackQuery,
+  deleteUserFromChatQuery,
   VK_API_VERSION,
 };

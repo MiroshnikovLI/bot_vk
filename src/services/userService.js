@@ -1,4 +1,5 @@
 const { query } = require("../config/database");
+const { deleteUserFromChatQuery } = require('../config/vkApi');
 
 async function getAllUsers() {
   try {
@@ -108,6 +109,81 @@ async function isUserAdmin(vkId) {
   return adminIds.includes(numericVkId) ? true : false ;
 }
 
+async function findManager(searchValue, searchType = 'auto') {
+  // Если searchValue null или undefined — сразу возвращаем пустой массив
+  if (!searchValue) return [];
+  
+  let querySQL, params;
+  
+  if (searchType === 'id') {
+    // Поиск по ID (точное совпадение)
+    querySQL = `
+      SELECT * FROM users 
+      WHERE vk_id = $1 OR wb_id = $1
+    `;
+    params = [searchValue];
+  } else if (searchType === 'name') {
+    // Поиск по имени (частичное совпадение)
+    querySQL = `
+      SELECT * FROM users 
+      WHERE full_name ILIKE $1
+    `;
+    params = [`%${searchValue}%`];
+  } else {
+    // Автоматический поиск (по ID или имени)
+    querySQL = `
+      SELECT * FROM users 
+      WHERE vk_id = $1 
+         OR wb_id = $1 
+         OR full_name ILIKE $2
+    `;
+    params = [searchValue, `%${searchValue}%`];
+  }
+  
+  const result = await query(querySQL, params);
+  return result.rows;
+}
+
+async function setActiveUser(userId, bool) {
+  try {
+    const result = await query(
+      `UPDATE users SET is_active = $1 WHERE id = $2
+        RETURNING *
+      `, [bool, userId])
+    
+    return { success: true, message: "Операция прошла успешно", data: result.rows[0]};
+  } catch (error) {
+    return {success: false, message: error.message}
+  }
+}
+
+async function deleteUserFromChat(userId, chats) {
+  const promises = chats.map(async (chat) => {
+    const res = await deleteUserFromChatQuery(userId, chat.chat_id);
+    const errorCode = res.message != 1 && res.message.replace(/\D/g, '');
+    
+    if (errorCode === '935') {
+      return {
+        success: false,
+        message: `❌ Пользователя нет в чате ${chat.chat_name}`
+      };
+    }
+    if (res.success) {
+      return {
+        success: true,
+        message: `✅ Пользователь удалён из чата ${chat.chat_name}`
+      };
+    }
+    return {
+      success: false,
+      message: `❌ Бот может удалять только из чатов сообщества: ${chat.chat_name}`
+    };
+  });
+  
+  const result = await Promise.all(promises);
+  return result;
+}
+
 module.exports = {
   getAllUsers,
   getUserVkId,
@@ -121,4 +197,7 @@ module.exports = {
   getSetting,
   isUserAdmin,
   updateUserPhone,
+  findManager,
+  setActiveUser,
+  deleteUserFromChat
 };
