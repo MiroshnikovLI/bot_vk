@@ -48,6 +48,7 @@ async function waitingInfoManager(userId, text) {
     return;  
   }
 
+  userStates.delete(userId);
   await sendMessage(userId, MANAGER_INFO('info', result), getManagerMenuKeyboard());
 }
 
