@@ -38,7 +38,7 @@ async function waitingActiveManager(userId, text) {
       messageDeleteChats.push(resultChats.message);
     } else {
       const deleteFromChat = await deleteUserFromChat(
-        clearText,
+        user.vk_id,
         resultChats.data,
       );
       let i = 1;
