@@ -43,7 +43,7 @@ async function handleUpdate(update) {
   }
 
   if (!userActive.is_active) {
-    return await sendMessage(peerId, DEACTIVE_USER, { buttons: [], one_time: false });
+    return await sendMessage(peerId, DEACTIVE_USER(), { buttons: [], one_time: false });
   }
 
   const isGroupChat = peerId > 2000000000;

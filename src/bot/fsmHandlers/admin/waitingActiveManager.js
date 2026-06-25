@@ -6,8 +6,9 @@ const {
   OPERATION_CANCELLED,
   MANAGER_STATUS,
   NOTIFICATIONS,
+  DEACTIVE_USER,
 } = require("../../../constants/message");
-const { getManagerMenuKeyboard } = require("../../../keyboards/keyboards");
+const { getManagerMenuKeyboard, getPrivateKeyboard } = require("../../../keyboards/keyboards");
 const {
   setActiveUser,
   deleteUserFromChat,
@@ -67,6 +68,8 @@ async function waitingActiveManager(userId, text) {
     } else {
       message = `${MANAGER_STATUS(status, userStatus.data, `Удален с чатов: ${messageDeleteChats}`)}\n\n`;
     }
+    const keyboards = status ? await getPrivateKeyboard(user.vk_id) : { buttons: [], one_time: false };
+    await sendMessage(user.vk_id, DEACTIVE_USER(status), keyboards)
     await sendMessage(userId, message, getManagerMenuKeyboard());
   } else {
     await sendMessage(userId, NOTIFICATIONS.ERROR, getManagerMenuKeyboard());
