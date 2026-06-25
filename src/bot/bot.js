@@ -33,19 +33,6 @@ async function handleUpdate(update) {
   // Игнорируем свои сообщения
   if (out === 1) return;
 
-  const userActive = await getUserVkId(peerId);
-
-  if (!userActive) {
-    await startUser(peerId);
-    userStates.set(peerId, 'waitingFullName');
-    await sendMessage(peerId, NOTIFICATIONS.START_REGISTRATION, { buttons: [], one_time: false});
-    return;
-  }
-
-  if (!userActive.is_active) {
-    return await sendMessage(peerId, DEACTIVE_USER(), { buttons: [], one_time: false });
-  }
-
   const isGroupChat = peerId > 2000000000;
 
   if (Number(peerId) === Number(process.env.VK_CHAT_ID)) {
@@ -62,6 +49,18 @@ async function handleUpdate(update) {
 
   const clearText = cleanText(text);
   const isAdmin = await isUserAdmin(peerId);
+  const userActive = await getUserVkId(peerId);
+
+  if (!userActive) {
+    await startUser(peerId);
+    userStates.set(peerId, 'waitingFullName');
+    await sendMessage(peerId, NOTIFICATIONS.START_REGISTRATION, { buttons: [], one_time: false});
+    return;
+  }
+
+  if (!userActive.is_active) {
+    return await sendMessage(peerId, DEACTIVE_USER(), { buttons: [], one_time: false });
+  }
 
   const handler = commandHandlers[clearText];
   if (handler) {
