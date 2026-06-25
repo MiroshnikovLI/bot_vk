@@ -53,7 +53,7 @@ async function waitingActiveManager(userId, text) {
     return;
   }
 
-  if (isUserAdmin(user.vk_id) && !status) {
+  if (await isUserAdmin(user.vk_id) && !status) {
     await sendMessage(userId, `Вы не можете удалить администратора`, getManagerMenuKeyboard());
     return;
   }
