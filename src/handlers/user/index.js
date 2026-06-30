@@ -4,7 +4,7 @@ const { handlerChangePhone } = require('./change/handlerChangePhone');
 const { handlerChangeWBId } = require('./change/handlerChangeWBId');
 // Меню
 const { handlerUnsubscribeMenu } = require('./menu/handlerUnsubscribeMenu');
-const { handlerEdiеMenu } = require('./menu/handlerEditMenu');
+const { handlerEditMenu } = require('./menu/handlerEditMenu');
 const { handlerSettingMenu } = require('./menu/handlerSettingMenu');
 
 // ПВЗ
@@ -29,7 +29,7 @@ module.exports = {
 
   // Меню
   handlerUnsubscribeMenu,
-  handlerEdiеMenu,
+  handlerEditMenu,
   handlerSettingMenu,
 
   // ПВЗ

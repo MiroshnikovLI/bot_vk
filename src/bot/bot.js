@@ -11,6 +11,7 @@ const { NOTIFICATIONS, STATES } = require("../constants/index");
 const { ADMIN } = require('../constants/commands/admin');
 require("dotenv").config();
 
+
 // ============================================================
 // ОБРАБОТЧИК СОБЫТИЙ LONG POLL
 // ============================================================
@@ -76,8 +77,13 @@ async function handleUpdate(update) {
   }
   
   if (payload) {
-    const data = JSON.parse(payload)
-    clearText = data.command
+    try {
+      const data = JSON.parse(payload)
+      clearText = data.command
+    } catch {
+      await sendMessage(peerId, NOTIFICATIONS.TECHNICAL_ERROR, userKeyboards.main(isAdmin));
+      return;
+    }
   }
 
   const handler = commandHandlers[clearText];

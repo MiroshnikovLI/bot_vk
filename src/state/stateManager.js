@@ -1,3 +1,4 @@
+const { STATES } = require('../constants/index');
 class UserStateManager {
   constructor () {
     this.states = new Map();

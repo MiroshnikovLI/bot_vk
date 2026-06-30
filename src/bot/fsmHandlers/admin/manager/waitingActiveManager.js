@@ -15,14 +15,11 @@ async function waitingActiveManager(userId, text) {
   const messageDeleteChats = [];
   
   if (clearText === COMMANDS.COMMON.CANCELLATION.TEXT) {
-    userStates.delete(userId);
+    statesDelete();
     await sendMessage(userId, NOTIFICATIONS.OPERATION_CANCELLED, adminKeyboards.managerMenu());
     return;
   }
   user = state.user.find((e) => e.id === Number(clearText));
-
-  console.log(status, "status");
-  console.log(user.is_active, 'user active')
 
   if (user.is_active && status) {
     statesDelete();
@@ -37,13 +34,13 @@ async function waitingActiveManager(userId, text) {
   }
   
   if (Number(user.vk_id) === Number(userId) && !status) {
-    userStates.delete(userId);
+    statesDelete();
     await sendMessage(userId, NOTIFICATIONS.DELETE_YOURSSELF, adminKeyboards.managerMenu());
     return;
   }
   
   if (await isUserAdmin(user.vk_id) && !status) {
-    userStates.delete(userId);
+    statesDelete();
     await sendMessage(userId, NOTIFICATIONS.DELETE_ADMIN, adminKeyboards.managerMenu());
     return;
   }
@@ -81,7 +78,7 @@ async function waitingActiveManager(userId, text) {
   } else {
     await sendMessage(userId, NOTIFICATIONS.ERROR, adminKeyboards.managerMenu());
   }
-  userStates.delete(userId);
+  statesDelete();
 }
 
 module.exports = {

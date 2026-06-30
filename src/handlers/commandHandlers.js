@@ -8,7 +8,7 @@ const {
 
   // Меню
   handlerUnsubscribeMenu,
-  handlerEdiеMenu,
+  handlerEditMenu,
   handlerSettingMenu,
 
   // ПВЗ
@@ -72,7 +72,7 @@ const commandHandlers = {
   [COMMANDS.USER.USER_HOME.OPEN_PVZ.TEXT]: (senderId) => handlerChatReport(senderId, "open"),
   [COMMANDS.USER.USER_HOME.CLOSE_PVZ.TEXT]: (senderId) => handlerChatReport(senderId, "close"),
   [COMMANDS.USER.USER_HOME.SETTINGS_MENU.TEXT]: (senderId) => handlerSettingMenu(senderId),
-  [COMMANDS.USER.SETTINGS.EDIT_PROFILE_MENU.TEXT]: (senderId) => handlerEdiеMenu(senderId),
+  [COMMANDS.USER.SETTINGS.EDIT_PROFILE_MENU.TEXT]: (senderId) => handlerEditMenu(senderId),
   [COMMANDS.USER.SETTINGS.UNSUBSCRIBE_MENU.TEXT]: (senderId) => handlerUnsubscribeMenu(senderId),
   [COMMANDS.USER.EDIT_PROFILE.CHANGE_NAME.TEXT]: (senderId) => handlerChangeName(senderId),
   [COMMANDS.USER.EDIT_PROFILE.CHANGE_WB_ID.TEXT]: (senderId) => handlerChangeWBId(senderId),
