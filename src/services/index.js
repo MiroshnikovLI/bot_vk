@@ -1,12 +1,90 @@
+const { handleToRemind } = require('./remider/reminderService');
 const {   
   getWorkChats,
   addWorkChat,
   deleteWorkChat,
-  updateWorkChat, } = require('./listChatsService');
+  updateWorkChat,
+  listChats
+} = require('./chats/listChatsService');
+const { 
+  getAllPvzs,
+  getAllActivePvzs,
+  getPvzByCode,
+  getUserPvzs,
+  addPvzToDb,
+  linkUserToPvz,
+  removeUserFromPvz,
+  addReplacementDb,
+  deleteReplacement,
+  getUserReplacements,
+  setActivePvzFromDb,
+  updatePvzRating,
+} = require('./pvz/pvzService');
+const { 
+  getThereIsNoReport,
+  getAllTheReportsForToday,
+  hasUserReportedToday,
+  addShiftReport,
+  createShiftReport,
+} = require('./report/reportService');
+const {
+  startUser,
+  getAllUsers,
+  getUserVkId,
+  getUserWbId,
+  getUserId,
+  getOrCreateUser,
+  updateUserFullName,
+  updateUserWbId,
+  getAllReplacements,
+  isProfileComplete,
+  getSetting,
+  isUserAdmin,
+  updateUserPhone,
+  findManager,
+  setActiveUser,
+  deleteUserFromChat
+} = require('./user/userService');
+
 
 module.exports = {
+  listChats,
   getWorkChats,
   addWorkChat,
   deleteWorkChat,
   updateWorkChat,
+  getAllPvzs,
+  getAllActivePvzs,
+  getPvzByCode,
+  getUserPvzs,
+  addPvzToDb,
+  linkUserToPvz,
+  removeUserFromPvz,
+  addReplacementDb,
+  deleteReplacement,
+  getUserReplacements,
+  setActivePvzFromDb,
+  updatePvzRating,
+  handleToRemind,
+  getThereIsNoReport,
+  getAllTheReportsForToday,
+  hasUserReportedToday,
+  addShiftReport,
+  startUser,
+  getAllUsers,
+  getUserVkId,
+  getUserWbId,
+  getUserId,
+  getOrCreateUser,
+  updateUserFullName,
+  updateUserWbId,
+  getAllReplacements,
+  isProfileComplete,
+  getSetting,
+  isUserAdmin,
+  updateUserPhone,
+  findManager,
+  setActiveUser,
+  deleteUserFromChat,
+  createShiftReport
 }

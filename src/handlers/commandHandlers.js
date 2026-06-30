@@ -1,74 +1,113 @@
 const { COMMANDS } = require('../constants/index');
-const { myDataHandler } = require("./private/myDataHandler");
-const { editProfileHandler } = require("./private/editProfileHandler");
-const { handleChangeName } = require("./private/handleChangeName");
-const { handleChangeWBId } = require("./private/handleChangeWBId");
-const { handleUnsubscribeSettings } = require("./private/handleUnsubscribeSettings");
-const { handleAddPVZForRequest } = require("./private/handleAddPVZForRequest");
-const { handleDeletePVZForRequest } = require("./private/handleDeletePVZForRequest");
-const { handleAddReplacement } = require("./private/handleAddReplacement");
-const { handledeleteReplacement } = require("./private/handleDeletedAReplacement");
-const { handleListPvz } = require("./admin/handleListPVZ");
-const { handleAdminMenu } = require("./admin/handleAdminMenu");
-const { handleChatReport } = require("./handleChatReport");
-const { handleAddPVZ } = require("./admin/handleAddPVZ");
-const { handleDeletePVZ } = require("./admin/handleDeletePVZ");
-const { handleUnsubscriptions } = require("./admin/handleUnsubscriptions");
-const { handleTheyWillReturn } = require("./admin/handleTheyWillReturn");
-const { handlePVZOpeningReport } = require("./admin/handlePVZOpeningReport");
-const { handlePVZClosureReport } = require("./admin/handlePVZClosureReport");
-const { handleThereIsNoOpeningReport } = require("./admin/handleThereIsNoOpeningReport");
-const { handleThereIsNoClosesReport } = require('./admin/handleThereIsNoClosesReport');
-const { handleToRemindAboutTheOpening } = require('./admin/handleToRemindAboutTheOpening');
-const { handleToRemindAboutTheCloses } = require('./admin/handleToRemindAboutTheCloses');
-const { handleChangePhone } = require('./private/handleChangePhone');
-const { handlePvzMenu } = require('./admin/handlePvzMenu');
-const { handleListChats } = require('./private/handleListChats');
-const { handleSettingsListСhats } = require('./admin/handleSettingsListСhats');
-const { handleEditListChats } = require('./admin/handleEditListChats');
-const { handleAddListChat } = require('./admin/handleAddListChat');
-const { handleDeletedChatLink } = require('./admin/handleDeletedChatLink');
-const { handleManagerMenu } = require('./admin/handleManagerMenu');
-const { handleRequestDataManager } = require('./admin/handleRequestDataManager');
-const { handleDeleteManager } = require('./admin/handleDeleteManager');
-const { handleRestoreManager } = require('./admin/handleRestoreManager');
+/** Пользователь */ 
+const {
+  // Редактирование
+  handlerChangeName,
+  handlerChangePhone,
+  handlerChangeWBId,
+
+  // Меню
+  handlerUnsubscribeMenu,
+  handlerEditMenu,
+  handlerSettingMenu,
+
+  // ПВЗ
+  handlerAddPVZForRequest,
+  handlerDeletePvzForRequest,
+
+  // Сменщики
+  handlerAddReplacement,
+  handlerDeleteReplacement,
+
+  // Отчеты
+  handlerChatReport,
+
+  // Общии
+  handlerMyData,
+} = require('./user/index');
+
+/** Админ */ 
+const {
+  // Чаты
+  handlerAddListChat,
+  handlerDeleteChatLink,
+  handlerEditListChats,
+
+  // Менеджеры
+  handlerDeleteManager,
+  handlerRequestDataManager,
+  handlerRestoreManager,
+
+  // Меню
+  handlerAdminMenu,
+  handlerListСhatsMenu,
+  handlerManagerMenu,
+  handlerPvzMenu,
+  handlerUnsubscriptionsMenu,
+
+  // ПВЗ
+  handlerActivePvz,
+  handlerAddPVZ,
+  handlerDeletePvz,
+  handlerListPvz,
+
+  // Отчеты
+  handlerPvzClosureReport,
+  handlerPvzOpeningReport,
+  handlerThereIsNoClosesReport,
+  handlerThereIsNoOpeningReport,
+  handlerToRemindCloses,
+  handlerToRemindOpening,
+} = require('./admin/index');
+
+/** Общие */ 
+const {
+  handlerListChats,
+  handlerMain
+} = require('./common/index');
 
 const commandHandlers = {
-  [COMMANDS.MY_DATA]: (senderId) => myDataHandler(senderId),
-  [COMMANDS.EDIT_DATA]: (senderId) => editProfileHandler(senderId),
-  [COMMANDS.CHANGE_NAME]: (senderId) => handleChangeName(senderId),
-  [COMMANDS.CHANGE_WB_ID]: (senderId) => handleChangeWBId(senderId),
-  [COMMANDS.UNSUBSCRIBE_SETTINGS]: (senderId) => handleUnsubscribeSettings(senderId),
-  [COMMANDS.ADD_PVZ]: (senderId) => handleAddPVZForRequest(senderId),
-  [COMMANDS.DELETE_PVZ]: (senderId) => handleDeletePVZForRequest(senderId),
-  [COMMANDS.ADD_REPLACEMENT]: (senderId) => handleAddReplacement(senderId),
-  [COMMANDS.DELETE_REPLACEMENT]: (senderId) => handledeleteReplacement(senderId),
-  [COMMANDS.BACK]: (senderId) => myDataHandler(senderId),
-  [COMMANDS.ADMIN]: (senderId) => handleAdminMenu(senderId),
-  [COMMANDS.OPEN_PVZ]: (senderId) => handleChatReport(senderId, "open"),
-  [COMMANDS.CLOSE_PVZ]: (senderId) => handleChatReport(senderId, "close"),
-  [COMMANDS.ADD_PVZ_TO_DB]: (senderId, isAdmin) => handleAddPVZ(senderId, isAdmin),
-  [COMMANDS.DELETE_PVZ_FROM_DB]: (senderId, isAdmin) => handleDeletePVZ(senderId, isAdmin),
-  [COMMANDS.LIST_PVZ]: (senderId, isAdmin) => handleListPvz(senderId, isAdmin),
-  [COMMANDS.UNSUBSCRIPTIONS_MENU]: (senderId, isAdmin) => handleUnsubscriptions(senderId, isAdmin),
-  [COMMANDS.BACK_TO_ADMIN]: (senderId, isAdmin) => handleTheyWillReturn(senderId, isAdmin),
-  [COMMANDS.REPORT_OPENING]: (senderId, isAdmin) => handlePVZOpeningReport(senderId, isAdmin),
-  [COMMANDS.REPORT_CLOSING]: (senderId, isAdmin) => handlePVZClosureReport(senderId, isAdmin),
-  [COMMANDS.MISSING_OPENING]: (senderId, isAdmin) => handleThereIsNoOpeningReport(senderId, isAdmin),
-  [COMMANDS.MISSING_CLOSING]: (senderId, isAdmin) => handleThereIsNoClosesReport(senderId, isAdmin),
-  [COMMANDS.REMIND_OPENING]: (senderId, isAdmin) => handleToRemindAboutTheOpening(senderId, isAdmin),
-  [COMMANDS.REMIND_CLOSING]: (senderId, isAdmin) => handleToRemindAboutTheCloses(senderId, isAdmin),
-  [COMMANDS.CHANGE_PHONE]: (senderId) => handleChangePhone(senderId),
-  [COMMANDS.PVZ_MENU]: (senderId) => handlePvzMenu(senderId),
-  [COMMANDS.LIST_CHATS]: (senderId) => handleListChats(senderId),
-  [COMMANDS.SETTINGS_LIST_CHATS]: (senderId) => handleSettingsListСhats(senderId),
-  [COMMANDS.EDIT_LIST_CHATS]: (senderId) => handleEditListChats(senderId),
-  [COMMANDS.ADD_LIST_CHATS]: (senderId) => handleAddListChat(senderId),
-  [COMMANDS.DELETE_CHATS]: (senderId) => handleDeletedChatLink(senderId),
-  [COMMANDS.MANAGER_MENU]: (senderId) => handleManagerMenu(senderId),
-  [COMMANDS.REQUEST_DATA_MANAGER]: (senderId) => handleRequestDataManager(senderId),
-  [COMMANDS.DELETE_MANAGER]: (senderId) => handleDeleteManager(senderId),
-  [COMMANDS.RESTORE_MANAGER]: (senderId) => handleRestoreManager(senderId)
+  // Пользователь
+  [COMMANDS.USER.USER_HOME.MY_DATA.TEXT]: (senderId) => handlerMyData(senderId),
+  [COMMANDS.USER.USER_HOME.OPEN_PVZ.TEXT]: (senderId) => handlerChatReport(senderId, "open"),
+  [COMMANDS.USER.USER_HOME.CLOSE_PVZ.TEXT]: (senderId) => handlerChatReport(senderId, "close"),
+  [COMMANDS.USER.USER_HOME.SETTINGS_MENU.TEXT]: (senderId) => handlerSettingMenu(senderId),
+  [COMMANDS.USER.SETTINGS.EDIT_PROFILE_MENU.TEXT]: (senderId) => handlerEditMenu(senderId),
+  [COMMANDS.USER.SETTINGS.UNSUBSCRIBE_MENU.TEXT]: (senderId) => handlerUnsubscribeMenu(senderId),
+  [COMMANDS.USER.EDIT_PROFILE.CHANGE_NAME.TEXT]: (senderId) => handlerChangeName(senderId),
+  [COMMANDS.USER.EDIT_PROFILE.CHANGE_WB_ID.TEXT]: (senderId) => handlerChangeWBId(senderId),
+  [COMMANDS.USER.EDIT_PROFILE.CHANGE_PHONE.TEXT]: (senderId) => handlerChangePhone(senderId),
+  [COMMANDS.USER.UNSUBSCRIBE.ADD_PVZ.TEXT]: (senderId) => handlerAddPVZForRequest(senderId),
+  [COMMANDS.USER.UNSUBSCRIBE.DELETE_PVZ.TEXT]: (senderId) => handlerDeletePvzForRequest(senderId),
+  [COMMANDS.USER.UNSUBSCRIBE.ADD_REPLACEMENT.TEXT]: (senderId) => handlerAddReplacement(senderId),
+  [COMMANDS.USER.UNSUBSCRIBE.DELETE_REPLACEMENT.TEXT]: (senderId) => handlerDeleteReplacement(senderId),
+  
+  // Админ
+  [COMMANDS.ADMIN.ADMIN_MENU.TEXT]: (senderId) => handlerAdminMenu(senderId),
+  [COMMANDS.ADMIN.ADMIN_HOME.UNSUBSCRIPTIONS_MENU.TEXT]: (senderId) => handlerUnsubscriptionsMenu(senderId),
+  [COMMANDS.ADMIN.ADMIN_HOME.LIST_CHATS_MENU.TEXT]: (senderId) => handlerListСhatsMenu(senderId),
+  [COMMANDS.ADMIN.ADMIN_HOME.PVZ_MENU.TEXT]: (senderId) => handlerPvzMenu(senderId),
+  [COMMANDS.ADMIN.ADMIN_HOME.MANAGER_MENU.TEXT]: (senderId) => handlerManagerMenu(senderId),
+  [COMMANDS.ADMIN.PVZ_MENU.ADD_PVZ_TO_DB.TEXT]: (senderId) => handlerAddPVZ(senderId),
+  [COMMANDS.ADMIN.PVZ_MENU.DELETE_PVZ_FROM_DB.TEXT]: (senderId) => handlerDeletePvz(senderId),
+  [COMMANDS.ADMIN.PVZ_MENU.ACTIVE_PVZ_FROM_DB.TEXT]: (senderId) => handlerActivePvz(senderId),
+  [COMMANDS.ADMIN.PVZ_MENU.LIST_PVZ.TEXT]: (senderId) => handlerListPvz(senderId),
+  [COMMANDS.ADMIN.UNSUBSCRIPTIONS_MENU.REPORT_OPENING.TEXT]: (senderId) => handlerPvzOpeningReport(senderId),
+  [COMMANDS.ADMIN.UNSUBSCRIPTIONS_MENU.REPORT_CLOSING.TEXT]: (senderId) => handlerPvzClosureReport(senderId),
+  [COMMANDS.ADMIN.UNSUBSCRIPTIONS_MENU.MISSING_OPENING.TEXT]: (senderId) => handlerThereIsNoOpeningReport(senderId),
+  [COMMANDS.ADMIN.UNSUBSCRIPTIONS_MENU.MISSING_CLOSING.TEXT]: (senderId) => handlerThereIsNoClosesReport(senderId),
+  [COMMANDS.ADMIN.UNSUBSCRIPTIONS_MENU.REMIND_OPENING.TEXT]: (senderId) => handlerToRemindOpening(senderId),
+  [COMMANDS.ADMIN.UNSUBSCRIPTIONS_MENU.REMIND_CLOSING.TEXT]: (senderId) => handlerToRemindCloses(senderId),
+  [COMMANDS.ADMIN.LIST_CHATS_MENU.EDIT_LIST_CHATS.TEXT]: (senderId) => handlerEditListChats(senderId),
+  [COMMANDS.ADMIN.LIST_CHATS_MENU.ADD_LIST_CHATS.TEXT]: (senderId) => handlerAddListChat(senderId),
+  [COMMANDS.ADMIN.LIST_CHATS_MENU.DELETE_CHATS.TEXT]: (senderId) => handlerDeleteChatLink(senderId),
+  [COMMANDS.ADMIN.MANAGER_MENU.REQUEST_DATA_MANAGER.TEXT]: (senderId) => handlerRequestDataManager(senderId),
+  [COMMANDS.ADMIN.MANAGER_MENU.DELETE_MANAGER.TEXT]: (senderId) => handlerDeleteManager(senderId),
+  [COMMANDS.ADMIN.MANAGER_MENU.RESTORE_MANAGER.TEXT]: (senderId) => handlerRestoreManager(senderId),
+  
+  // Общие
+  [COMMANDS.COMMON.LIST_CHATS.TEXT]: (senderId) => handlerListChats(senderId),
+  [COMMANDS.COMMON.MAIN.TEXT]: (senderId) => handlerMain(senderId)
 };
 
 module.exports = { commandHandlers };
