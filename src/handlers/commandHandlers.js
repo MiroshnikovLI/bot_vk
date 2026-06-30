@@ -47,7 +47,7 @@ const {
 
   // ПВЗ
   handlerActivePvz,
-  handlerAddPVZ,
+  handlerAddPvz,
   handlerDeletePvz,
   handlerListPvz,
 
@@ -88,7 +88,7 @@ const commandHandlers = {
   [COMMANDS.ADMIN.ADMIN_HOME.LIST_CHATS_MENU.TEXT]: (senderId) => handlerListСhatsMenu(senderId),
   [COMMANDS.ADMIN.ADMIN_HOME.PVZ_MENU.TEXT]: (senderId) => handlerPvzMenu(senderId),
   [COMMANDS.ADMIN.ADMIN_HOME.MANAGER_MENU.TEXT]: (senderId) => handlerManagerMenu(senderId),
-  [COMMANDS.ADMIN.PVZ_MENU.ADD_PVZ_TO_DB.TEXT]: (senderId) => handlerAddPVZ(senderId),
+  [COMMANDS.ADMIN.PVZ_MENU.ADD_PVZ_TO_DB.TEXT]: (senderId) => handlerAddPvz(senderId),
   [COMMANDS.ADMIN.PVZ_MENU.DELETE_PVZ_FROM_DB.TEXT]: (senderId) => handlerDeletePvz(senderId),
   [COMMANDS.ADMIN.PVZ_MENU.ACTIVE_PVZ_FROM_DB.TEXT]: (senderId) => handlerActivePvz(senderId),
   [COMMANDS.ADMIN.PVZ_MENU.LIST_PVZ.TEXT]: (senderId) => handlerListPvz(senderId),

@@ -17,7 +17,7 @@ const { handlerUnsubscriptionsMenu } = require('./menu/handlerUnsubscriptionsMen
 
 // ПВЗ
 const { handlerActivePvz } = require('./pvz/handlerActivePvz');
-const { handlerAddPVZ } = require('./pvz/handlerAddPVZ');
+const { handlerAddPvz } = require('./pvz/handlerAddPvz');
 const { handlerDeletePvz } = require('./pvz/handlerDeletePvz');
 const { handlerListPvz } = require('./pvz/handlerListPvz');
 
@@ -49,7 +49,7 @@ module.exports = {
 
   // ПВЗ
   handlerActivePvz,
-  handlerAddPVZ,
+  handlerAddPvz,
   handlerDeletePvz,
   handlerListPvz,
 
