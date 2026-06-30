@@ -22,7 +22,7 @@ class UserStateManager {
   clearExpired(maxAge = 3600000) {
     const now = Date.now();
     for (const [userId, state] of this.states.entries()) {
-      if (now - state.updatedAt > maxEge) {
+      if (now - state.updatedAt > maxAge) {
         this.states.delete(userId)
       }
     }

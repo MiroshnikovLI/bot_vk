@@ -1,8 +1,6 @@
-const { getAllPvzs } = require("../../services/pvzService");
-const { addShiftReport } = require('../../services/reportService');
-const { getUserVkId, getOrCreateUser } = require("../../services/userService");
-const { normalizeYo, determineReportTypeWithChecks } = require("../../utils/helpers");
-const { NOTIFICATIONS } = require("../../constants/message");
+const { getAllActivePvzs, addShiftReport, getUserVkId, getOrCreateUser } = require("../../services/index");
+const { normalizeYo, determineReportTypeWithChecks } = require("../../utils/index");
+const { NOTIFICATIONS } = require("../../constants/index");
 const { getUserInfo } = require("../../config/vkApi");
 
 async function chatMessageListener(context) {
@@ -17,13 +15,12 @@ async function chatMessageListener(context) {
     const userInfo = await getUserInfo(senderId);
     if (!userInfo) return;
     
-    await getOrCreateUser(senderId, `${userInfo.last_name} ${userInfo.first_name}`);
-    user = await getUserVkId(senderId);
+    user = await getOrCreateUser(senderId, `${userInfo.last_name} ${userInfo.first_name}`);
     if (!user) return;
   }
   
   // 2. Получаем список ПВЗ
-  const pvzsResult = await getAllPvzs();
+  const pvzsResult = await getAllActivePvzs();
   if (!pvzsResult.success || pvzsResult.data.length === 0) return;
   
   const pvzs = pvzsResult.data;

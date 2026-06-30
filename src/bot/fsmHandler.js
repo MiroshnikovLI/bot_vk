@@ -1,23 +1,26 @@
-const { createSafeHandlers } = require('../utils/safeHandler');
+const { createSafeHandlers } = require('../utils/index');
 const { userStates } = require('../state/stateManager');
 const {
+  // Пользователь
   waitingFullName,
   waitingWbId,
-  changeName,
-  changeWbId,
-  selectingPvzInChat,
-  selectingReplacementInChat,
-  selectingPvzToAdd,
-  selectingPvzForRemoval,
-  addReplacement,
-  deletedReplacement,
-  adminWaitingPvzId,
-  adminWaitingDeletePvzId,
-  adminWaitingPvzAdress,
-  adminWaitindWorkTime,
-  adminWaitingСonfirmation,
+  waitingChangeName,
+  waitingChangeWbId,
+  waitingSelectingPvzInChat,
+  waitingSelectingReplacementInChat,
+  waitingSelectingPvzToAdd,
+  waitingAddReplacement,
+  waitingDeleteReplacement,
+  waitingWorkTime,
   waitingRatePvzInChat,
-  changePhone,
+  waitingChangePhone,
+  waitingSelectingPvzForRemoval,
+  
+  // Админ
+  waitingPvzId,
+  waitingActivePvzId,
+  waitingPvzAdress,
+  waitingСonfirmation,
   waitingParametrEditChat,
   waitingIdWorkChats,
   waitingNameLink,
@@ -30,23 +33,26 @@ const {
 } = require("./fsmHandlers/index");
 
 const rawHandlers = {
+  // Пользователь
   waitingFullName,
   waitingWbId,
-  changeName,
-  changeWbId,
-  selectingPvzInChat,
-  selectingReplacementInChat,
-  selectingPvzToAdd,
-  selectingPvzForRemoval,
-  addReplacement,
-  deletedReplacement,
-  adminWaitingPvzId,
-  adminWaitingDeletePvzId,
-  adminWaitingPvzAdress,
-  adminWaitindWorkTime,
-  adminWaitingСonfirmation,
+  waitingChangeName,
+  waitingChangeWbId,
+  waitingSelectingPvzInChat,
+  waitingSelectingReplacementInChat,
+  waitingSelectingPvzToAdd,
+  waitingAddReplacement,
+  waitingDeleteReplacement,
+  waitingWorkTime,
   waitingRatePvzInChat,
-  changePhone,
+  waitingChangePhone,
+  waitingSelectingPvzForRemoval,
+  
+  // Админ
+  waitingPvzId,
+  waitingActivePvzId,
+  waitingPvzAdress,
+  waitingСonfirmation,
   waitingParametrEditChat,
   waitingIdWorkChats,
   waitingNameLink,
@@ -55,7 +61,7 @@ const rawHandlers = {
   waitingIdDeleteChatLink,
   waitingChatIdLink,
   waitingInfoManager,
-  waitingActiveManager
+  waitingActiveManager,
 };
 
 const safeHandlers = createSafeHandlers(rawHandlers);
@@ -65,7 +71,7 @@ async function handleTextInput(userId, text, ...args) {
   if (!state) return false;
 
   const handler = safeHandlers[state.state];
-
+  
   if (handler) {
     handler(userId, text, ...args)
   } else {

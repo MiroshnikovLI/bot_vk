@@ -1,15 +1,14 @@
 const { query } = require("../config/database");
-const { getPrivateKeyboard } = require("../keyboards/keyboards");
-const { isUserAdmin, getUserVkId } = require("../services/userService");
-const { cleanText } = require("../utils/helpers");
+const { userKeyboards, getAdminKeyboards } = require("../keyboards/index");
+const { isUserAdmin, getUserVkId, startUser, createShiftReport } = require("../services/index");
+const { cleanText, findAdminKeyByPartialMatch } = require("../utils/index");
 const { handleTextInput } = require("./fsmHandler");
 const { sendMessage, startLongPoll } = require("../config/vkApi");
 const { commandHandlers } = require("../handlers/commandHandlers");
-const { createShiftReport } = require("../handlers/handleChatReport");
 const { chatMessageListener } = require("./listeners/chatMessageListener");
 const { userStates } = require("../state/stateManager");
-const { DEACTIVE_USER, NOTIFICATIONS } = require("../constants/message");
-const { startUser } = require('../services/userService');
+const { NOTIFICATIONS, STATES } = require("../constants/index");
+const { ADMIN } = require('../constants/commands/admin');
 require("dotenv").config();
 
 // ============================================================
@@ -28,6 +27,7 @@ async function handleUpdate(update) {
     out,
     conversation_message_id: cmid,
     date,
+    payload
   } = message;
 
   // Игнорируем свои сообщения
@@ -47,30 +47,55 @@ async function handleUpdate(update) {
 
   // ========== ТОЛЬКО ЛИЧНЫЕ СООБЩЕНИЯ ==========
 
-  const clearText = cleanText(text);
+  let clearText = cleanText(text);
   const isAdmin = await isUserAdmin(peerId);
   const userActive = await getUserVkId(peerId);
 
   if (!userActive) {
-    await startUser(peerId);
-    userStates.set(peerId, 'waitingFullName');
-    await sendMessage(peerId, NOTIFICATIONS.START_REGISTRATION, { buttons: [], one_time: false});
+    const start = await startUser(peerId);
+    if (!start.success) {
+        await sendMessage(peerId, NOTIFICATIONS.TECHNICAL_ERROR, {
+        buttons: [],
+        one_time: false,
+      });
+      return;
+    }
+    userStates.set(peerId, STATES.WAITING_FULL_NAME);
+    await sendMessage(peerId, NOTIFICATIONS.START_REGISTRATION, {
+      buttons: [],
+      one_time: false,
+    });
     return;
   }
 
   if (!userActive.is_active) {
-    return await sendMessage(peerId, DEACTIVE_USER(), { buttons: [], one_time: false });
+    return await sendMessage(peerId, NOTIFICATIONS.DEACTIVE_USER(), {
+      buttons: [],
+      one_time: false,
+    });
+  }
+  
+  if (payload) {
+    const data = JSON.parse(payload)
+    clearText = data.command
   }
 
   const handler = commandHandlers[clearText];
+
+  if (findAdminKeyByPartialMatch(clearText, ADMIN)) {
+    if(!isAdmin) {
+      await sendMessage(peerId, NOTIFICATIONS.NO_ACCESS_RIGHTS, userKeyboards.main());
+      return;
+    }
+  }
+
   if (handler) {
-    await handler(senderId, isAdmin);
-    return; 
+    await handler(senderId);
+    return;
   }
 
   // Если команда не найдена — обрабатываем текстовый ввод или fallback
   const state = userStates.get(senderId);
-
 
   if (state) {
     // Пользователь в процессе диалога (ждёт ввод WB ID, ФИО и т.д.)
@@ -86,15 +111,8 @@ async function handleUpdate(update) {
     // Нет активного диалога и команда не распознана
     await sendMessage(
       senderId,
-      "❌ Я не понял ваш запрос.\n\n" +
-        "🔍 Доступные команды:\n" +
-        "• 📋 Мои данные\n" +
-        "• ✏️ Изменить данные\n" +
-        "• 🏪 Настройки отписки\n" +
-        "• 🌅 Открытие ПВЗ\n" +
-        "• 🌙 Закрытие ПВЗ\n\n" +
-        "Или воспользуйтесь кнопками меню.",
-      await getPrivateKeyboard(peerId),
+      NOTIFICATIONS.UNKNOWN_COMMAND,
+      userKeyboards.main(isAdmin),
     );
   }
 }

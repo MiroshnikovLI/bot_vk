@@ -149,7 +149,6 @@ async function startLongPoll(callback) {
 
       setTimeout(poll, 0);
     } catch (error) {
-      console.error("Long Poll error:", error.message);
       setTimeout(poll, 5000);
     }
   };
