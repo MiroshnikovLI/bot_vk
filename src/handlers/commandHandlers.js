@@ -12,7 +12,7 @@ const {
   handlerSettingMenu,
 
   // ПВЗ
-  handlerAddPVZForRequest,
+  handlerAddPvzForRequest,
   handlerDeletePvzForRequest,
 
   // Сменщики
@@ -77,7 +77,7 @@ const commandHandlers = {
   [COMMANDS.USER.EDIT_PROFILE.CHANGE_NAME.TEXT]: (senderId) => handlerChangeName(senderId),
   [COMMANDS.USER.EDIT_PROFILE.CHANGE_WB_ID.TEXT]: (senderId) => handlerChangeWBId(senderId),
   [COMMANDS.USER.EDIT_PROFILE.CHANGE_PHONE.TEXT]: (senderId) => handlerChangePhone(senderId),
-  [COMMANDS.USER.UNSUBSCRIBE.ADD_PVZ.TEXT]: (senderId) => handlerAddPVZForRequest(senderId),
+  [COMMANDS.USER.UNSUBSCRIBE.ADD_PVZ.TEXT]: (senderId) => handlerAddPvzForRequest(senderId),
   [COMMANDS.USER.UNSUBSCRIBE.DELETE_PVZ.TEXT]: (senderId) => handlerDeletePvzForRequest(senderId),
   [COMMANDS.USER.UNSUBSCRIBE.ADD_REPLACEMENT.TEXT]: (senderId) => handlerAddReplacement(senderId),
   [COMMANDS.USER.UNSUBSCRIBE.DELETE_REPLACEMENT.TEXT]: (senderId) => handlerDeleteReplacement(senderId),

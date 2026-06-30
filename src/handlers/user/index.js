@@ -8,7 +8,7 @@ const { handlerEditMenu } = require('./menu/handlerEditMenu');
 const { handlerSettingMenu } = require('./menu/handlerSettingMenu');
 
 // ПВЗ
-const { handlerAddPVZForRequest } = require('./pvz/handlerAddPVZForRequest');
+const { handlerAddPvzForRequest } = require('./pvz/handlerAddPvzForRequest');
 const { handlerDeletePvzForRequest } = require('./pvz/handlerDeletePvzForRequest');
 
 // Сменщики
@@ -33,7 +33,7 @@ module.exports = {
   handlerSettingMenu,
 
   // ПВЗ
-  handlerAddPVZForRequest,
+  handlerAddPvzForRequest,
   handlerDeletePvzForRequest,
 
   // Сменщики
