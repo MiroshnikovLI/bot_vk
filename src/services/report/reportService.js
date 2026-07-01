@@ -3,6 +3,7 @@ const { isUserAdmin } = require('../user/userService');
 const { sendMessage } = require('../../config/vkApi');
 const { userStates } = require('../../state/stateManager');
 const { NOTIFICATIONS } = require('../../constants/index');
+require("dotenv").config();
 
 async function getThereIsNoReport(reportType) {
   try {
