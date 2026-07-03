@@ -78,7 +78,7 @@ async function waitingActiveManager(userId, text) {
       if (status) {
         message = `${NOTIFICATIONS.STATUS_MANAGER(userStatus.data, `restore`)}\n\n`
       } else {
-        message = `${NOTIFICATIONS.STATUS_MANAGER(userStatus.data, 'deactive')} Удален с чатов: ${messageDeleteChats}}\n\n`;
+        message = `${NOTIFICATIONS.STATUS_MANAGER(userStatus.data, 'deactive')} Удален с чатов: ${messageDeleteChats}\n\n`;
       }
       const keyboards = status ? userKeyboards.main() : { buttons: [], one_time: false };
       if (user.role !== 'replacement') {

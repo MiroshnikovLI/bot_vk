@@ -7,7 +7,7 @@ const USER = {
   PROFILE_NOT_FILLED:
     "⚠️ Ваш профиль не заполнен. Пожалуйста, заполните данные.",
   CHANGE_PHONE: "✏️ Введите номер телефона:",
-  NUMBER_NOT_VALID: "Неверный формат телефона\n Введите в формате:\n +7 999 123-45-67\n 8 999 123-45-67\n 89991234567\n 79991234567\n 9991234567",
+  NUMBER_NOT_VALID: "Неверный формат телефона\nВведите в формате:\n+7 999 123-45-67\n8 999 123-45-67\n89991234567\n79991234567\n9991234567",
   CHANGE_PHONE_SUCCESSFULLY: (phone) => `✅ Номер успешно изменен ${formatPhone(phone)}`,
   CHANGE_NAME: "✏️ Введите ваше ФИО полностью:",
   CHANGE_NAME_SUCCESSFULLY: (text) => `✅ ФИО изменено на: ${text}`,
@@ -55,8 +55,8 @@ const USER = {
   DELETED_A_REPLACEMENT:
   "🗑️ **УДАЛИТЬ СМЕНЩИКА ИЗ ОТПИСОК**\n\n• Введите WB ID сменщика (только цифры)\n• Или введите 'Отмена' для выхода.",
   CHOOSE_REPLACEMENT: "👤 Пожалуйста, выберите сменщика",
-  WAITING_WB_ID_REPLECEMENT: "Введите WB ID сменщика.\n Можно найти в отписках или спросить лично\n",
-  WAITING_FULL_NAME_REPLECEMENT: "Введите ФИО сменщика.",
+  WAITING_WB_ID_REPLACEMENT: "Введите WB ID сменщика.\n Можно найти в отписках или спросить лично\n",
+  WAITING_FULL_NAME_REPLACEMENT: "Введите ФИО сменщика.",
   WAITING_NUMBER_REPLACAMENT: "Введите номер телефона сменщика:",
   REPLACEMENT_ALREADY_ADDED: (user) => `✅ Сменщик уже добавлен.\n• ${user.full_name}`,
   REPLACEMENT_FOUND_ADDED: (user) => `✅ Сменщик успешно добавлен.\n• ${user.full_name}`,

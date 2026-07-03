@@ -109,8 +109,8 @@ async function waitingSelectingReplacementInChat(userId, text, payload) {
 
   if (state.resultNotFind) {
     if (clearText === COMMANDS.COMMON.ENTER_MANUALLY.TEXT) {
-      userStates.set(userId, STATES.WAITING_WB_ID_REPLECEMENT, {pvz, user, reportType});
-      await sendMessage(userId, NOTIFICATIONS.WAITING_WB_ID_REPLECEMENT, getCancelKeyboard());
+      userStates.set(userId, STATES.WAITING_WB_ID_REPLACEMENT, {pvz, user, reportType});
+      await sendMessage(userId, NOTIFICATIONS.WAITING_WB_ID_REPLACEMENT, getCancelKeyboard());
       return;
     } else if (clearText === COMMANDS.COMMON.RETURN_SEARCH.TEXT) {
       userStates.set(userId, STATES.WAITING_SELECTING_REPLACEMENT_IN_CHAT, {pvz, user, reportType, fixedReplacement});

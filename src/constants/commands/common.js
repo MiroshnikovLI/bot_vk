@@ -15,7 +15,7 @@ const COMMON = {
     TEXT: "ввести вручную"
   },
   RETURN_SEARCH: {
-    TEXT: "вернутся к поиску"
+    TEXT: "вернуться к поиску"
   }
 }
 

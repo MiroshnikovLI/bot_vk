@@ -7,7 +7,7 @@ const { userStates } = require('../../../../state/stateManager');
 
 async function waitingFullNameReplacement(userId, text) {
   const clearText = cleanText(text);
-  const isAdmin = isUserAdmin(userId);
+  const isAdmin = await isUserAdmin(userId);
   const state = userStates.get(userId);
   const pvz = state.pvz;
   const user = state.user;
@@ -20,7 +20,7 @@ async function waitingFullNameReplacement(userId, text) {
     return;
   }
 
-  userStates.set(userId, STATES.WAITING_NUMBER_REPLECEMENT, {pvz, user, reportType, wbId, fullName: text});
+  userStates.set(userId, STATES.WAITING_NUMBER_REPLACEMENT, {pvz, user, reportType, wbId, fullName: text});
   await sendMessage(userId, NOTIFICATIONS.WAITING_NUMBER_REPLACAMENT, getCancelKeyboard())
 }
 

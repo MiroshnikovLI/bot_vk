@@ -166,7 +166,7 @@ async function findManager(searchValue, searchType = 'auto') {
 
     return { success: true, message: 'Найден пользователь', data: result.rows };
   } catch (error) {
-    return { success: false, error: error.message }
+    return { success: false, message: error.message }
   }
 }
 

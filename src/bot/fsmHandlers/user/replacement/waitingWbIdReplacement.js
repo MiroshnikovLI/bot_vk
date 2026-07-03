@@ -8,7 +8,7 @@ const { userStates } = require('../../../../state/stateManager');
 async function waitingWbIdReplacement(userId, text) {
   const clearText = cleanText(text);
   const validWbId = isValidWbId(clearText);
-  const isAdmin = isUserAdmin(userId);
+  const isAdmin = await isUserAdmin(userId);
   const userWbId = await getUserWbId(clearText);
   const state = userStates.get(userId);
   const pvz = state.pvz;
@@ -31,8 +31,8 @@ async function waitingWbIdReplacement(userId, text) {
     return;
   }
 
-  userStates.set(userId, STATES.WAITING_FULL_NAME_REPLECEMENT, {pvz, user, reportType, wbId: clearText});
-  await sendMessage(userId, NOTIFICATIONS.WAITING_FULL_NAME_REPLECEMENT, getCancelKeyboard());
+  userStates.set(userId, STATES.WAITING_FULL_NAME_REPLACEMENT, {pvz, user, reportType, wbId: clearText});
+  await sendMessage(userId, NOTIFICATIONS.WAITING_FULL_NAME_REPLACEMENT, getCancelKeyboard());
 }
 
 module.exports = {

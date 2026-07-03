@@ -15,7 +15,6 @@ require("dotenv").config();
 // ============================================================
 // ОБРАБОТЧИК СОБЫТИЙ LONG POLL
 // ============================================================
-let i = 1;
 async function handleUpdate(update) {
   // Проверка на новое сообщение
   if (update.type !== "message_new") return;

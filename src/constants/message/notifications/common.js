@@ -16,7 +16,7 @@ const COMMON = {
         "Или воспользуйтесь кнопками меню.",
   DELETE_YOURSSELF: `Вы не можете удалить себя`,
   ERROR_ID_USER: `Введи ID он находит под номером 1)`,
-  USER_ID_NOT_FOUND: (text) => `Пользователь с ID ${text} не найден. Повторите ввод ID пользователя`,
+  USER_ID_NOT_FOUND: (text) => `Пользователь с ID ${text} не найден. Повторите ввод ID пользователя.`,
 };
 
 module.exports = {

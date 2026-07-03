@@ -7,7 +7,7 @@ const { userStates } = require('../../../../state/stateManager');
 
 async function waitingNumberReplacement(userId, text) {
   const clearText = cleanText(text);
-  const isAdmin = isUserAdmin(userId);
+  const isAdmin = await isUserAdmin(userId);
   const validNumber = isValidPhoneNumber(clearText);
   const state = userStates.get(userId);
   const pvz = state.pvz;
