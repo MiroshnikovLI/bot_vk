@@ -1,4 +1,4 @@
-const { getCancelKeyboard } = require('../common');
+const { getCancelKeyboard } = require('../common/common');
 
 function ratePvz(rate) {
   const buttons = [

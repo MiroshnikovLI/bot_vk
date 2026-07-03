@@ -107,7 +107,7 @@ const commandHandlers = {
   
   // Общие
   [COMMANDS.COMMON.LIST_CHATS.TEXT]: (senderId) => handlerListChats(senderId),
-  [COMMANDS.COMMON.MAIN.TEXT]: (senderId) => handlerMain(senderId)
+  [COMMANDS.COMMON.MAIN.TEXT]: (senderId) => handlerMain(senderId),
 };
 
 module.exports = { commandHandlers };

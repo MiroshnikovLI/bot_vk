@@ -11,6 +11,9 @@ const { waitingAddReplacement } = require('./user/replacement/waitingAddReplacem
 const { waitingDeleteReplacement } = require('./user/replacement/waitingDeleteReplacement');
 const { waitingChangePhone } = require('./user/edit/waitingChangePhone');
 const { waitingRatePvzInChat } = require('./user/pvz/waitingRatePvzInChat');
+const { waitingWbIdReplacement } = require('./user/replacement/waitingWbIdReplacement');
+const { waitingFullNameReplacement } = require('./user/replacement/waitingFullNameReplacement');
+const { waitingNumberReplacement } = require('./user/replacement/waitingNumberReplacement');
 
 // Админ
 const { waitingPvzId } = require('./admin/pvz/waitingPvzId');
@@ -42,6 +45,9 @@ module.exports = {
   waitingDeleteReplacement,
   waitingChangePhone,
   waitingRatePvzInChat,
+  waitingWbIdReplacement,
+  waitingFullNameReplacement,
+  waitingNumberReplacement,
 
   // Админ
   waitingPvzId,
@@ -57,5 +63,5 @@ module.exports = {
   waitingIdDeleteChatLink,
   waitingChatIdLink,
   waitingInfoManager,
-  waitingActiveManager
+  waitingActiveManager,
 }

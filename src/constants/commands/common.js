@@ -10,6 +10,12 @@ const COMMON = {
   },
   BACK: {
     TEXT: "назад",
+  },
+  ENTER_MANUALLY: {
+    TEXT: "ввести вручную"
+  },
+  RETURN_SEARCH: {
+    TEXT: "вернуться к поиску"
   }
 }
 

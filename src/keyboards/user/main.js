@@ -1,5 +1,5 @@
 const { COMMANDS } = require("../../constants/index");
-const { getAdminKeyboards } = require("../common");
+const { getAdminKeyboards } = require("../common/common");
 const { isUserAdmin } = require("../../services/index");
 
 function main(isAdmin = false) {

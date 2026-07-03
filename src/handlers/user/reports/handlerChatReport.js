@@ -49,11 +49,12 @@ async function handlerChatReport(userId, reportType) {
       pvz: pvzOpen,
       reportType,
       userId,
+      fixedReplacement: replecament,
     });
     await sendMessage(
       userId,
       NOTIFICATIONS.SHIFT_CLOSED(pvzOpen.pvz_id, pvzOpen.address),
-      userKeyboards.replacement(replecament, reportType),
+      userKeyboards.replacement(replecament),
     );
     return;
   }

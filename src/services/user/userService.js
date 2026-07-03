@@ -132,34 +132,42 @@ async function findManager(searchValue, searchType = 'auto') {
   if (!searchValue) return [];
   
   let querySQL, params;
-  
-  if (searchType === 'id') {
-    // Поиск по ID (точное совпадение)
-    querySQL = `
-      SELECT * FROM users 
-      WHERE vk_id = $1 OR wb_id = $1
-    `;
-    params = [searchValue];
-  } else if (searchType === 'name') {
-    // Поиск по имени (частичное совпадение)
-    querySQL = `
-      SELECT * FROM users 
-      WHERE full_name ILIKE $1
-    `;
-    params = [`%${searchValue}%`];
-  } else {
-    // Автоматический поиск (по ID или имени)
-    querySQL = `
-      SELECT * FROM users 
-      WHERE vk_id = $1 
-         OR wb_id = $1 
-         OR full_name ILIKE $2
-    `;
-    params = [searchValue, `%${searchValue}%`];
+  try {
+    if (searchType === 'id') {
+      // Поиск по ID (точное совпадение)
+      querySQL = `
+        SELECT * FROM users 
+        WHERE vk_id = $1 OR wb_id = $1
+      `;
+      params = [searchValue];
+    } else if (searchType === 'name') {
+      // Поиск по имени (частичное совпадение)
+      querySQL = `
+        SELECT * FROM users 
+        WHERE full_name ILIKE $1
+      `;
+      params = [`%${searchValue}%`];
+    } else {
+      // Автоматический поиск (по ID или имени)
+      querySQL = `
+        SELECT * FROM users 
+        WHERE vk_id = $1 
+          OR wb_id = $1 
+          OR full_name ILIKE $2
+      `;
+      params = [searchValue, `%${searchValue}%`];
+    }
+    
+    const result = await query(querySQL, params);
+    
+    if (result.rows.length === 0) {
+      return { success: true, message: 'Пользователь не найден'}
+    }
+
+    return { success: true, message: 'Найден пользователь', data: result.rows };
+  } catch (error) {
+    return { success: false, message: error.message }
   }
-  
-  const result = await query(querySQL, params);
-  return result.rows;
 }
 
 async function setActiveUser(userId, bool) {
@@ -202,6 +210,21 @@ async function deleteUserFromChat(userId, chats) {
   return result;
 }
 
+async function createdReplacement(wbId, fullName, phone) {
+  try {
+    const result = await query(
+      `INSERT INTO users (wb_id, full_name, phone, role, created_at, updated_at)
+      VALUES ($1, $2, $3, 'replacement', NOW(), NOW())
+      RETURNING *`,
+      [wbId, fullName, phone]
+    );
+
+    return {success: true, message: "Пользователь создан", data: result.rows[0]}
+  } catch (error) {
+    return { success: false, message: error.message }
+  }
+}
+
 module.exports = {
   startUser,
   getAllUsers,
@@ -218,5 +241,6 @@ module.exports = {
   updateUserPhone,
   findManager,
   setActiveUser,
-  deleteUserFromChat
+  deleteUserFromChat,
+  createdReplacement
 };

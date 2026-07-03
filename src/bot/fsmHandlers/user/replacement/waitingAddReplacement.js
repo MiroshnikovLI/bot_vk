@@ -57,7 +57,6 @@ async function waitingAddReplacement(userId, text) {
         addUserMain.id,
         addReplacementUser.id,
       );
-      console.log(resultAddReplecement);
       if (resultAddReplecement.message === "Сменщик уже привязан") {
         await sendMessage(
           userId,

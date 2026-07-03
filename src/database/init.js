@@ -15,14 +15,19 @@ const createTableSQL = `
 -- 1. Пользователи(менеджеры)
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
-  vk_id BIGINT UNIQUE NOT NULL,                     -- ID менеджера в вк
+  vk_id BIGINT UNIQUE,                              -- ID менеджера в вк
   wb_id INTEGER UNIQUE,                             -- ID менеджера в системе WB
   full_name VARCHAR(255) NOT NULL,                  -- Полное имя менеджера
   phone VARCHAR(20),                                -- Телефон менеджера (опционально)
-  role VARCHAR(50) DEFAULT 'manager',               -- 'admin', 'manager', 'viewer'
+  role VARCHAR(50) DEFAULT 'manager',               -- 'admin', 'manager', 'replacement'
   is_active BOOLEAN DEFAULT TRUE,                   -- 'Активен ли менеджер'
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+  CONSTRAINT chk_replacement_vk CHECK (
+    (role != 'replacement' AND vk_id IS NOT NULL) OR
+    (role = 'replacement')
+  )
 );
 
 -- 2. Пункты выдачи (ПВЗ)

@@ -15,7 +15,6 @@ require("dotenv").config();
 // ============================================================
 // ОБРАБОТЧИК СОБЫТИЙ LONG POLL
 // ============================================================
-
 async function handleUpdate(update) {
   // Проверка на новое сообщение
   if (update.type !== "message_new") return;
@@ -75,28 +74,31 @@ async function handleUpdate(update) {
       one_time: false,
     });
   }
-  
+
   if (payload) {
     try {
-      const data = JSON.parse(payload)
-      clearText = data.command
+      const data = JSON.parse(payload);
+      if (data.command) {
+        clearText = data.command
+      }
     } catch {
       await sendMessage(peerId, NOTIFICATIONS.TECHNICAL_ERROR, userKeyboards.main(isAdmin));
       return;
     }
   }
-
+  
+  
   const handler = commandHandlers[clearText];
-
+  
   if (findAdminKeyByPartialMatch(clearText, ADMIN)) {
     if(!isAdmin) {
       await sendMessage(peerId, NOTIFICATIONS.NO_ACCESS_RIGHTS, userKeyboards.main());
       return;
     }
   }
-
+  
   if (handler) {
-    await handler(senderId);
+    await handler(senderId, payload);
     return;
   }
 
@@ -104,10 +106,10 @@ async function handleUpdate(update) {
   const state = userStates.get(senderId);
 
   if (state) {
-    // Пользователь в процессе диалога (ждёт ввод WB ID, ФИО и т.д.)
     await handleTextInput(
       senderId,
       text,
+      payload,
       false,
       null,
       createShiftReport,
