@@ -42,6 +42,9 @@ const STATES = {
   WAITING_ADD_REPLACEMENT: "waitingAddReplacement",
   WAITING_DELETE_REPLACEMENT: "waitingDeleteReplacement",
   WAITING_SELECTING_REPLACEMENT_IN_CHAT: "waitingSelectingReplacementInChat",
+  WAITING_WB_ID_REPLECEMENT: "waitingWbIdReplacement",
+  WAITING_FULL_NAME_REPLECEMENT: "waitingFullNameReplacement",
+  WAITING_NUMBER_REPLECEMENT: "waitingNumberReplacement",
 }
 
 module.exports = {

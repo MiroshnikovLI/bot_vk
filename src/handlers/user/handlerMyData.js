@@ -18,7 +18,7 @@ async function handlerMyData(userId) {
           await Promise.all(
             replacement.map(async (p) => {
               const user = await getUserId(p.replacement_user_id);
-              return ` • [id${user.vk_id}|${user.wb_id}] - [id${user.vk_id}|${user.full_name}]`;
+              return ` • ${user.vk_id ? `[id${user.vk_id}|${user.wb_id}] - [id${user.vk_id}|${user.full_name}]` : `${user.wb_id} - ${user.full_name}` } `;
             }),
           )
         ).join("\n")

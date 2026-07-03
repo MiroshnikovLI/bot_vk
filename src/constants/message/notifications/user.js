@@ -7,6 +7,7 @@ const USER = {
   PROFILE_NOT_FILLED:
     "⚠️ Ваш профиль не заполнен. Пожалуйста, заполните данные.",
   CHANGE_PHONE: "✏️ Введите номер телефона:",
+  NUMBER_NOT_VALID: "Неверный формат телефона\n Введите в формате:\n +7 999 123-45-67\n 8 999 123-45-67\n 89991234567\n 79991234567\n 9991234567",
   CHANGE_PHONE_SUCCESSFULLY: (phone) => `✅ Номер успешно изменен ${formatPhone(phone)}`,
   CHANGE_NAME: "✏️ Введите ваше ФИО полностью:",
   CHANGE_NAME_SUCCESSFULLY: (text) => `✅ ФИО изменено на: ${text}`,
@@ -38,7 +39,9 @@ const USER = {
   NO_PVZ: "⚠️ У вас не закреплено ни одного ПВЗ. Пожалуйста, заполните данные.",
   NO_PVZ_LIST: "📋 Список ПВЗ пуст.",
   CHOOSE_PVZ: "🏪 Выберите ПВЗ:",
-  CHOOSE_RATE_PVZ: "Введите рейтинг ПВЗ в формате: 5 4,99 4.99",
+  CHOOSE_RATE_PVZ: (pvz, user) => `Закрытие смены ${pvz.pvz_id} - ${pvz.address}\n` +
+    `Завтра в смене: ${user.vk_id ? `[id${user.vk_id}|${user.full_name}]` : `${user.full_name}`} ${user.wb_id}\n\n` +
+    "Введите рейтинг ПВЗ в формате: 5 4,99 4.99", 
   PVZ_NOT_FOUND: (pvz) => `❌ ПВЗ с кодом "${pvz}" не найден.`,
   PVZ_NOT_FOUND_SEARCH: (pvz) => `ПВЗ ${pvz} не найден. Пожалуйста выберите из списка`,
   PVZ_NOT_FOUND_PINNED: (pvz) => `❌ ПВЗ ${pvz.pvz_id} - ${pvz.address}\n Не был найден в закрепленных`,
@@ -50,26 +53,40 @@ const USER = {
   " WB ID можно найти в отписках или спросить лично\n•" +
   " Или введите 'Отмена' для выхода.",
   DELETED_A_REPLACEMENT:
-  "🗑️ **УДАЛИТЬ СМЕНЩИКА ИЗ ОТПИСОК**\n\n• Введите WB ID сменщика (только цифры)\n• Можно найти в отписках или спросить лично\n• Или введите 'Отмена' для выхода.",
+  "🗑️ **УДАЛИТЬ СМЕНЩИКА ИЗ ОТПИСОК**\n\n• Введите WB ID сменщика (только цифры)\n• Или введите 'Отмена' для выхода.",
   CHOOSE_REPLACEMENT: "👤 Пожалуйста, выберите сменщика",
+  WAITING_WB_ID_REPLECEMENT: "Введите WB ID сменщика.\n Можно найти в отписках или спросить лично\n",
+  WAITING_FULL_NAME_REPLECEMENT: "Введите ФИО сменщика.",
+  WAITING_NUMBER_REPLACAMENT: "Введите номер телефона сменщика:",
   REPLACEMENT_ALREADY_ADDED: (user) => `✅ Сменщик уже добавлен.\n• ${user.full_name}`,
   REPLACEMENT_FOUND_ADDED: (user) => `✅ Сменщик успешно добавлен.\n• ${user.full_name}`,
   REPLACEMENT_FOUND_DELETED: (text) => `✅ Сменщик успешно удален из отписок.\n• ${text}`,
   REPLACEMENT_NOT_FOUND: (text) => `❌ Сменщик ${text} не найден.\n`,
   ERROR_ADDED_REPLACEMENT: (message) => `${message}\n❌ Не удалось добавить сменщика\n• Повторите операцию позже.`,
+  DATA_REPLACEMENT: (user) => {
+    const full_name = user.full_name
+      ? `[id${user.vk_id}|${user.full_name}]`
+      : "❌ не указано";
+    return (
+      `\n\n1) 🆔 ID: ${user.id}\n` +
+      `2) 👤 ФИО:  ${full_name}\n` +
+      `3) 🆔 WB ID: ${user.wb_id || "❌ не указан"}\n` +
+      `4) 🆔 VK ID: ${user.vk_id || "❌ не указан"}`
+    );
+  },
 
   // Отчеты
   GOOD_WORK: "✅ Вы сегодня хорошо потрудились. Приходите завтра.",
   NO_OPEN_SHIFTS: "✅ У вас нет открытых смен.",
   SHIFT_CLOSED: (pvzId, address) =>
-    `Закрытие смены ${pvzId} - ${address}\n\n🏪 Выберите сменщика:`,
+    `Закрытие смены ${pvzId} - ${address}\n\n🏪 Выберите сменщика:\n\nВведите WB ID, VK ID или Фамилию сменщика.`,
   OPEN_SHIFT_EXISTS: (pvzId, address) =>
     `✅ У вас есть открытая смена ${pvzId} - ${address}`,
   REPORT_TEXT: (pvz, user, replacement, reportType, rate) => {
     const replacementText =
       replacement.length === 0
         ? ""
-        : `7. Завтра в смене: [id${replacement.vk_id}|${replacement.full_name}] ${replacement.wb_id}`;
+        : `7. Завтра в смене: ${ replacement.vk_id ? `[id${replacement.vk_id}|${replacement.full_name}]` : `${replacement.full_name}`} ${replacement.wb_id}`;
 
     const reportText =
       reportType === "open"

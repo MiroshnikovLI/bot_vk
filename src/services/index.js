@@ -43,7 +43,8 @@ const {
   updateUserPhone,
   findManager,
   setActiveUser,
-  deleteUserFromChat
+  deleteUserFromChat,
+  createdReplacement
 } = require('./user/userService');
 
 
@@ -86,5 +87,6 @@ module.exports = {
   findManager,
   setActiveUser,
   deleteUserFromChat,
-  createShiftReport
+  createShiftReport,
+  createdReplacement
 }

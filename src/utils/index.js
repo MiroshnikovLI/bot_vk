@@ -9,11 +9,11 @@ const {
   normalizePhone,
   formatPhone,
   formatDate,
-  findAdminKeyByPartialMatch
+  findAdminKeyByPartialMatch,
 } = require('./helpers/helpers');
 const { logAction } = require('./logger/logger');
 const { createSafeHandlers } = require('./handler/safeHandler');
-const { isValidVkMeLink, isValidWbId } = require('./validator/validator');
+const { isValidVkMeLink, isValidWbId, isValidPhoneNumber } = require('./validator/validator');
 
 module.exports = {
   parseScheduleTime,
@@ -29,5 +29,6 @@ module.exports = {
   findAdminKeyByPartialMatch,
   createSafeHandlers,
   isValidVkMeLink,
-  isValidWbId
+  isValidWbId,
+  isValidPhoneNumber
 }

@@ -19,36 +19,36 @@ async function waitingInfoManager(userId, text) {
 
   if (/^\d+$/.test(clearText)) {
     const rest = await findManager(clearText, 'id');
-    if (rest.length === 0) {
+    if (!rest.data) {
       await sendMessage(userId, NOTIFICATIONS.NOT_FIND_MANAGER(clearText, 'id'), getCancelKeyboard());
       return;
     } else {
-    result = rest
+      result = rest
     }
   } else {
     const rest = await findManager(clearText, 'name');
-    if (rest.length === 0) {
+    if (!rest.data) {
       await sendMessage(userId, NOTIFICATIONS.NOT_FIND_MANAGER(clearText, 'name'), getCancelKeyboard());
       return;
     } else {
       result = rest
     }
-  } 
+  }
 
   if (state.status === 'restore') {
-    userStates.set(userId, STATES.WAITING_ACTIVE_MANAGER, {user: result, status: "restore"});
-    await sendMessage(userId, NOTIFICATIONS.MANAGER_INFO('restore', result), getCancelKeyboard());
+    userStates.set(userId, STATES.WAITING_ACTIVE_MANAGER, {user: result.data, status: "restore"});
+    await sendMessage(userId, NOTIFICATIONS.MANAGER_INFO(result.data, 'restore'), getCancelKeyboard());
     return;  
   }
   
   if (state.status === 'deactive') {
-    userStates.set(userId, STATES.WAITING_ACTIVE_MANAGER, {user: result, status: "deactive"});
-    await sendMessage(userId, NOTIFICATIONS.MANAGER_INFO('deactive', result), getCancelKeyboard());
+    userStates.set(userId, STATES.WAITING_ACTIVE_MANAGER, {user: result.data, status: "deactive"});
+    await sendMessage(userId, NOTIFICATIONS.MANAGER_INFO(result.data, 'deactive'), getCancelKeyboard());
     return;  
   }
 
   userStates.delete(userId);
-  await sendMessage(userId, NOTIFICATIONS.MANAGER_INFO('info', result), adminKeyboards.managerMenu());
+  await sendMessage(userId, NOTIFICATIONS.MANAGER_INFO(result.data, 'info'), adminKeyboards.managerMenu());
 }
 
 module.exports = {

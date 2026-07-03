@@ -2,7 +2,7 @@ const COMMON = {
   START_REGISTRATION:
     "Здравствуйте! Для использования бота нужно зарегистрироваться. Пожалуйста, введите ваше ФИО.",  
   REPORT_SENT: "Отчет отправлен в чат",
-  USER_NOT_FOUND: (user) => `⚠️ Пользователь с WB ID: ${user} не найден`,
+  USER_NOT_FOUND: (text) => `⚠️ Пользователь ${text} не найден`,
   WARNING_ID_ONLY_NUMBERS: "⚠️ ID должен содержать только цифры.",
   WB_ID_LENGTH: 'WB ID состоит от 6 до 10 цифр.',
   OPERATION_CANCELLED: "⚠️ Операция отменена",
@@ -15,6 +15,8 @@ const COMMON = {
         "• 🌙 Закрытие ПВЗ\n\n" +
         "Или воспользуйтесь кнопками меню.",
   DELETE_YOURSSELF: `Вы не можете удалить себя`,
+  ERROR_ID_USER: `Введи ID он находит под номером 1)`,
+  USER_ID_NOT_FOUND: (text) => `Пользователь с ID ${text} не найден. Повторите ввод ID пользователя`,
 };
 
 module.exports = {
