@@ -21,6 +21,11 @@ async function waitingActiveManager(userId, text) {
   }
   user = state.user.find((e) => e.id === Number(clearText));
 
+  if (!user) {
+    await sendMessage(userId, `${NOTIFICATIONS.USER_ID_NOT_FOUND(clearText)} ${NOTIFICATIONS.MANAGER_INFO(state.user)}`, );
+    return;
+  }
+
   if (user.is_active && status) {
     statesDelete();
     await sendMessage(userId, NOTIFICATIONS.STATUS_MANAGER(user), adminKeyboards.managerMenu());
@@ -33,50 +38,56 @@ async function waitingActiveManager(userId, text) {
     return;
   }
   
-  if (Number(user.vk_id) === Number(userId) && !status) {
-    statesDelete();
-    await sendMessage(userId, NOTIFICATIONS.DELETE_YOURSSELF, adminKeyboards.managerMenu());
-    return;
-  }
+  if (user.role !== 'replacement') {
+    if (Number(user.vk_id) === Number(userId) && !status) {
+      statesDelete();
+      await sendMessage(userId, NOTIFICATIONS.DELETE_YOURSSELF, adminKeyboards.managerMenu());
+      return;
+    }
+    
+    if (await isUserAdmin(user.vk_id) && !status) {
+      statesDelete();
+      await sendMessage(userId, NOTIFICATIONS.DELETE_ADMIN, adminKeyboards.managerMenu());
+      return;
+    }
   
-  if (await isUserAdmin(user.vk_id) && !status) {
-    statesDelete();
-    await sendMessage(userId, NOTIFICATIONS.DELETE_ADMIN, adminKeyboards.managerMenu());
-    return;
-  }
-  
-  if (!resultChats.success) {
-    messageDeleteChats.push(`Ошибка подключение к Базе Данных`);
-  } else {
-    if (resultChats.message === "Список чатов пока не загружен") {
-      messageDeleteChats.push(resultChats.message);
+    if (!resultChats.success) {
+      messageDeleteChats.push(`Ошибка подключение к Базе Данных`);
     } else {
-      const deleteFromChat = await deleteUserFromChat(
-        user.vk_id,
-        resultChats.data,
-      );
-      let i = 1;
-      deleteFromChat.map((e) => {
-        messageDeleteChats.push(`\n${i}) ${e.message}`);
-        i++;
-      });
+      if (resultChats.message === "Список чатов пока не загружен") {
+        messageDeleteChats.push(resultChats.message);
+      } else {
+        const deleteFromChat = await deleteUserFromChat(
+          user.vk_id,
+          resultChats.data,
+        );
+        let i = 1;
+        deleteFromChat.map((e) => {
+          messageDeleteChats.push(`\n${i}) ${e.message}`);
+          i++;
+        });
+      }
     }
   }
+  
+  try {
+    const userStatus = await setActiveUser(user.id, status);
 
-  const userStatus = await setActiveUser(user.id, status);
-
-  if (userStatus.success) {
-    let message;
-    if (status) {
-      message = `${NOTIFICATIONS.STATUS_MANAGER(userStatus.data, `restore`)}\n\n`
-    } else {
-      message = `${NOTIFICATIONS.STATUS_MANAGER(userStatus.data, `deactive`, `Удален с чатов: ${messageDeleteChats}`)}\n\n`;
-    }
-    const keyboards = status ? userKeyboards.main() : { buttons: [], one_time: false };
-    await sendMessage(user.vk_id, NOTIFICATIONS.DEACTIVE_USER(status), keyboards)
-    await sendMessage(userId, message, adminKeyboards.managerMenu());
-  } else {
-    await sendMessage(userId, NOTIFICATIONS.ERROR, adminKeyboards.managerMenu());
+    if (userStatus.success) {
+      let message;
+      if (status) {
+        message = `${NOTIFICATIONS.STATUS_MANAGER(userStatus.data, `restore`)}\n\n`
+      } else {
+        message = `${NOTIFICATIONS.STATUS_MANAGER(userStatus.data, 'deactive')} ${user.role !== 'replacement' ? `Удален с чатов: ${messageDeleteChats}\n\n` : ''}`;
+      }
+      const keyboards = status ? userKeyboards.main() : { buttons: [], one_time: false };
+      if (user.role !== 'replacement') {
+        await sendMessage(user.vk_id, NOTIFICATIONS.DEACTIVE_USER(status), keyboards);
+      }
+      await sendMessage(userId, message, adminKeyboards.managerMenu());
+    } 
+  } catch (error) {
+    await sendMessage(userId, NOTIFICATIONS.TECHNICAL_ERROR, adminKeyboards.managerMenu());
   }
   statesDelete();
 }
