@@ -1,24 +1,22 @@
-const { userKeyboards } = require("../../../../keyboards/index");
+const { userKeyboards, getCancelKeyboard } = require("../../../../keyboards/index");
 const { updateUserPhone } = require("../../../../services/index");
-const { cleanText, normalizePhone } = require("../../../../utils/index");
+const { cleanText, normalizePhone, isValidPhoneNumber } = require("../../../../utils/index");
 const { userStates } = require("../../../../state/stateManager");
 const { sendMessage } = require("../../../../config/vkApi");
 const { NOTIFICATIONS, COMMANDS } = require("../../../../constants/index");
 
 async function waitingChangePhone(userId, text) {
   const clearText = cleanText(text);
+  const validNumber = isValidPhoneNumber(clearText);
+
   if (clearText === COMMANDS.COMMON.CANCELLATION.TEXT) {
     userStates.delete(userId);
     await sendMessage(userId, NOTIFICATIONS.OPERATION_CANCELLED, userKeyboards.editProfile());
     return;
   }
 
-  if (!/^(\+7|\+8|7|8)?\s*\(?\d{3}\)?\s*\d{3}[\s-]?\d{2}[\s-]?\d{2}$/.test(text)) {
-    await sendMessage(
-      userId,
-      "Неверный формат телефона\n Введите в формате:\n +7 999 123-45-67\n 8 999 123-45-67\n 89991234567\n 79991234567\n 9991234567",
-    );
-    return;
+  if (!validNumber.success) {
+    return await sendMessage(userId, validNumber.message, getCancelKeyboard());
   }
 
   const phone = normalizePhone(text);

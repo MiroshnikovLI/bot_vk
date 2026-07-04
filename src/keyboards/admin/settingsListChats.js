@@ -1,5 +1,5 @@
 const { COMMANDS } = require('../../constants/index');
-const { getBackKeyboards } = require('../common');
+const { getBackKeyboards } = require('../common/common');
 
 function settingsListChats() {
   const buttons = [

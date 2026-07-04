@@ -15,6 +15,9 @@ const {
   waitingRatePvzInChat,
   waitingChangePhone,
   waitingSelectingPvzForRemoval,
+  waitingFullNameReplacement,
+  waitingWbIdReplacement,
+  waitingNumberReplacement,
   
   // Админ
   waitingPvzId,
@@ -47,6 +50,9 @@ const rawHandlers = {
   waitingRatePvzInChat,
   waitingChangePhone,
   waitingSelectingPvzForRemoval,
+  waitingFullNameReplacement,
+  waitingWbIdReplacement,
+  waitingNumberReplacement,
   
   // Админ
   waitingPvzId,
@@ -66,14 +72,14 @@ const rawHandlers = {
 
 const safeHandlers = createSafeHandlers(rawHandlers);
 
-async function handleTextInput(userId, text, ...args) {
+async function handleTextInput(userId, text, payload, ...args) {
   const state = userStates.get(userId);
   if (!state) return false;
 
   const handler = safeHandlers[state.state];
   
   if (handler) {
-    handler(userId, text, ...args)
+    handler(userId, text, payload, ...args)
   } else {
     userStates.delete(userId);
     return false

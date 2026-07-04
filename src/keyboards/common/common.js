@@ -1,4 +1,4 @@
-const { COMMANDS } = require("../constants/index");
+const { COMMANDS } = require("../../constants/index");
 
 function getCancelKeyboard() {
   return {
@@ -53,8 +53,23 @@ function getAdminKeyboards() {
   };
 }
 
+function createParameterKeyboard(parametr) {
+  const buttons = parametr.map((e) => [
+    {
+      action: {
+        type: `text`,
+        label: `${e.toUpperCase()}`,
+      },
+      color: `primary`,
+    },
+  ]);
+  buttons.push(...getCancelKeyboard().buttons);
+  return { buttons, one_time: true };
+}
+
 module.exports = {
   getCancelKeyboard,
   getBackKeyboards,
   getAdminKeyboards,
+  createParameterKeyboard,
 };

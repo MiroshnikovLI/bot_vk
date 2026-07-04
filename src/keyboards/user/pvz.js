@@ -1,4 +1,4 @@
-const { getCancelKeyboard } = require('../common');
+const { getCancelKeyboard } = require('../common/common');
 
 function pvz(pvzs, reportType) {
   const buttons = pvzs.map((pvz) => [

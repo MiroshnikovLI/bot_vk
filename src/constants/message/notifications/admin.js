@@ -103,21 +103,30 @@ const ADMIN = {
   NOT_FIND_MANAGER: (text, value) =>
     `Менеджер ${value === "name" ? `с фамилией ${text} не найден` : `с ID ${text} не найден`}`,
   DATA_MANAGER: (user) => {
-    const full_name = user.full_name
+    const full_name = user.vk_id
       ? `[id${user.vk_id}|${user.full_name}]`
-      : "❌ не указано";
+      : `${user.full_name}`;
+    let role;
+    if (user.role === 'manager') {
+      role = 'Менеджер'; 
+    } else if (user.role === 'admin') {
+      role = 'Админ';
+    } else {
+      role = 'Замена'
+    }
+    
     return (
       `\n\n🆔 ID: ${user.id}\n` +
       `👤 ФИО:  ${full_name}\n` +
       `🆔 WB ID: ${user.wb_id || "❌ не указан"}\n` +
-      `🆔 VK ID: ${user.vk_id}\n` +
+      `🆔 VK ID: ${user.vk_id || "❌ не указан"}\n` +
       `📱 Телефон: ${user.phone ? formatPhone(user.phone) : "Не указан"}\n` +
-      `🔑 Доступ: ${user.role === "manager" ? "Менеджер" : "Админ"}\n` +
+      `🔑 Тип учетной записи: ${role}\n` +
       `⚡ Активен ли профиль: ${user.is_active ? "Да" : "Нет"}\n` +
       `📅 Дата регистрации: ${formatDate(user.created_at)}`
     );
   },
-  MANAGER_INFO: (status, massManager) => {
+  MANAGER_INFO: (massManager, status) => {
     let sts;
     const massInfoManager = [];
     if (status === "restore") {

@@ -36,7 +36,22 @@ function isValidWbId(wbId) {
   }
 }
 
+function isValidPhoneNumber(number) {
+  if (!/^(\+7|\+8|7|8)?\s*\(?\d{3}\)?\s*\d{3}[\s-]?\d{2}[\s-]?\d{2}$/.test(number)) {
+    return {
+      success: false,
+      message: NOTIFICATIONS.NUMBER_NOT_VALID
+    }
+  }
+
+  return {
+    success: true,
+    message: "Проверка пройдена"
+  }
+}
+
 module.exports = {
   isValidVkMeLink,
-  isValidWbId
+  isValidWbId,
+  isValidPhoneNumber
 }

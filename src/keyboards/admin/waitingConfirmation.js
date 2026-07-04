@@ -1,5 +1,5 @@
 const { COMMANDS } = require("../../constants/index");
-const { getCancelKeyboard } = require("../common");
+const { getCancelKeyboard } = require("../common/common");
 
 function waitingСonfirmation() {
   const buttons = [
