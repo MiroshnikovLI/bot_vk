@@ -14,6 +14,7 @@ const {
 const { logAction } = require('./logger/logger');
 const { createSafeHandlers } = require('./handler/safeHandler');
 const { isValidVkMeLink, isValidWbId, isValidPhoneNumber } = require('./validator/validator');
+const { createMenuDescription } = require('./createMenuDescription/createMenuDescription')
 
 module.exports = {
   parseScheduleTime,
@@ -30,5 +31,6 @@ module.exports = {
   createSafeHandlers,
   isValidVkMeLink,
   isValidWbId,
-  isValidPhoneNumber
+  isValidPhoneNumber,
+  createMenuDescription
 }

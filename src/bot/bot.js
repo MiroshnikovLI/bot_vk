@@ -11,7 +11,6 @@ const { NOTIFICATIONS, STATES } = require("../constants/index");
 const { ADMIN } = require('../constants/commands/admin');
 require("dotenv").config();
 
-
 // ============================================================
 // ОБРАБОТЧИК СОБЫТИЙ LONG POLL
 // ============================================================
@@ -89,7 +88,7 @@ async function handleUpdate(update) {
   
   
   const handler = commandHandlers[clearText];
-  
+
   if (findAdminKeyByPartialMatch(clearText, ADMIN)) {
     if(!isAdmin) {
       await sendMessage(peerId, NOTIFICATIONS.NO_ACCESS_RIGHTS, userKeyboards.main());
@@ -139,7 +138,7 @@ async function startBot() {
     if (!process.env.VK_GROUP_ID) {
       throw new Error("VK_GROUP_ID не указан в .env");
     }
-
+    
     await startLongPoll(handleUpdate);
   } catch (err) {
     console.error("❌ Ошибка запуска бота:", err.message);
