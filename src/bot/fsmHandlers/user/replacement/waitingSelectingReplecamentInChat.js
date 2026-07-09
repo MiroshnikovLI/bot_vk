@@ -130,8 +130,8 @@ async function waitingSelectingReplacementInChat(userId, text, payload) {
   if (result.success) {
     if (result.message === "Пользователь не найден") {
       const commands = [
-        COMMANDS.COMMON.ENTER_MANUALLY.TEXT,
-        COMMANDS.COMMON.RETURN_SEARCH.TEXT,
+        COMMANDS.COMMON.ENTER_MANUALLY,
+        COMMANDS.COMMON.RETURN_SEARCH,
       ];
       userStates.set(userId, STATES.WAITING_SELECTING_REPLACEMENT_IN_CHAT, {
         pvz, user, fixedReplacement, reportType,

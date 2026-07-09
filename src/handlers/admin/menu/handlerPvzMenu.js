@@ -3,7 +3,7 @@ const { PVZ_MENU } = require("../../../constants/index");
 const { adminKeyboards } = require("../../../keyboards/index");
 
 async function handlerPvzMenu(userId) {
-  await sendMessage(userId, PVZ_MENU, adminKeyboards.pvzMenu());
+  await sendMessage(userId, PVZ_MENU(), adminKeyboards.pvzMenu());
 }
 
 module.exports = {

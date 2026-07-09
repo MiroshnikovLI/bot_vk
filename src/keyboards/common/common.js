@@ -7,29 +7,9 @@ function getCancelKeyboard() {
         {
           action: {
             type: `text`,
-            label: `❌ ${COMMANDS.COMMON.CANCELLATION.TEXT.toUpperCase()}`,
+            label: `${COMMANDS.COMMON.CANCELLATION.ICON ? COMMANDS.COMMON.CANCELLATION.ICON : ""} ${COMMANDS.COMMON.CANCELLATION.TEXT.toUpperCase()}`,
           },
-          color: `negative`,
-        },
-      ],
-    ],
-    one_time: false,
-  };
-}
-
-function getBackKeyboards(command) {
-  return {
-    buttons: [
-      [
-        {
-          action: {
-            type: `text`,
-            label: `🔙 ${COMMANDS.COMMON.BACK.TEXT.toUpperCase()}`,
-            payload: JSON.stringify({
-              command: `${command}`
-            })
-          },
-          color: `primary`,
+          color: `${COMMANDS.COMMON.CANCELLATION.COLOR ? COMMANDS.COMMON.CANCELLATION.COLOR : "negative"}`,
         },
       ],
     ],
@@ -42,9 +22,9 @@ function getAdminKeyboards() {
     buttons: [[      {
         action: {
           type: `text`,
-          label: `🛡️ ${COMMANDS.ADMIN.ADMIN_MENU.TEXT.toUpperCase()}`,
+          label: `${COMMANDS.ADMIN.ADMIN_MENU.ICON ? COMMANDS.ADMIN.ADMIN_MENU.ICON : ""} ${COMMANDS.ADMIN.ADMIN_MENU.TEXT.toUpperCase()}`,
         },
-        color: `primary`,
+        color: `${COMMANDS.ADMIN.ADMIN_MENU.COLOR ? COMMANDS.ADMIN.ADMIN_MENU.COLOR : "secondary"}`,
       },
     ],
   ],
@@ -58,9 +38,9 @@ function createParameterKeyboard(parametr) {
     {
       action: {
         type: `text`,
-        label: `${e.toUpperCase()}`,
+        label: `${e.ICON ? e.ICON : ""} ${e.TEXT.toUpperCase()}`,
       },
-      color: `primary`,
+      color: `${e.COLOR ? e.COLOR : "secondary"}`,
     },
   ]);
   buttons.push(...getCancelKeyboard().buttons);
@@ -69,7 +49,6 @@ function createParameterKeyboard(parametr) {
 
 module.exports = {
   getCancelKeyboard,
-  getBackKeyboards,
   getAdminKeyboards,
   createParameterKeyboard,
 };

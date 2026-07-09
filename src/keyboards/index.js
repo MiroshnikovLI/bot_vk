@@ -3,7 +3,6 @@ const { userKeyboards } = require("./user/index");
 const {
   getCancelKeyboard,
   getAdminKeyboards,
-  getBackKeyboards,
   createParameterKeyboard,
 } = require("./common/common");
 
@@ -12,6 +11,5 @@ module.exports = {
   userKeyboards,
   getCancelKeyboard,
   getAdminKeyboards,
-  getBackKeyboards,
   createParameterKeyboard,
 };

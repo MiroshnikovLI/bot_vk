@@ -1,5 +1,5 @@
 const { cleanText, parseScheduleTime } = require("../../../../utils/index");
-const { adminKeyboards, getCancelKeyboard } = require("../../../../keyboards/index");
+const { adminKeyboards, getCancelKeyboard, createParameterKeyboard } = require("../../../../keyboards/index");
 const { userStates } = require("../../../../state/stateManager");
 const { sendMessage } = require("../../../../config/vkApi");
 const { NOTIFICATIONS, COMMANDS, STATES } = require("../../../../constants/index");
@@ -31,7 +31,7 @@ async function waitingWorkTime(userId, text) {
     state.address,
     timeWork,
   );
-  await sendMessage(userId, message, adminKeyboards.waitingСonfirmation());
+  await sendMessage(userId, message, createParameterKeyboard([COMMANDS.ADMIN.YES_DATA_IS_CORRECT, COMMANDS.ADMIN.EDIT]));
 }
 
 module.exports = {

@@ -138,7 +138,7 @@ async function addShiftReport(
 }
 
 async function createShiftReport(userId, user, pvz, replecament, reportType, rate) {
-  const userKeyboards = require('../../keyboards/user/main'); 
+  const { userKeyboards } = require('../../keyboards/user/index'); 
   const isAdmin = await isUserAdmin(userId);
   const reportText = await NOTIFICATIONS.REPORT_TEXT(
     pvz,
@@ -147,7 +147,7 @@ async function createShiftReport(userId, user, pvz, replecament, reportType, rat
     reportType,
     rate
   );
-
+  
   const result = await addShiftReport(
     pvz.id,
     user.id,

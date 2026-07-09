@@ -2,7 +2,7 @@ const { sendMessage } = require('../../../../config/vkApi');
 const { cleanText, isValidVkMeLink } = require('../../../../utils/index');
 const { userStates } = require('../../../../state/stateManager');
 const { COMMANDS, NOTIFICATIONS } = require('../../../../constants/index');
-const { getCancelKeyboard, adminKeyboards } = require('../../../../keyboards/index');
+const { adminKeyboards } = require('../../../../keyboards/index');
 const { addWorkChat, updateWorkChat } = require('../../../../services/index');
 
 async function waitingDescriptionLink(userId, text) {

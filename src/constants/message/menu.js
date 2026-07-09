@@ -1,7 +1,12 @@
+const { USER } = require('../commands/user');
+const { ADMIN } = require('../commands/admin');
+const { createMenuDescription } = require('../../utils/createMenuDescription/createMenuDescription');
+
 const MAIN_MENU = (isAdmin) => {
   const admin = isAdmin ? `\n• 🛡️ Админ - меню управления администраторов` : ``;
   
-  const message =
+  const message = []
+
     `🏠 **ГЛАВНАЯ СТРАНИЦА**\n\n` +
     `• 📋 Мои данные - посмотреть свои данные\n` +
     `• 🔧 Настройки - ПВЗ, отписок, редактирование профиля\n` +
@@ -31,40 +36,28 @@ const UNSUBSCRIBE_MENU =
   `• 🗑️ Удалить сменщика - из отписок\n` +
   `• 🔙 Назад - вернуться\n`;
 
-const ADMIN_MENU =
-  `🛡️ **АДМИН-ПАНЕЛЬ**\n\n` +
-  `☰ Меню пвз - просмотр списка пвз, добавление/удаление пвз\n` +
-  `☰ Меню отписок - просмотр отчетов, создание отчетов, напоминание об отписках\n` +
-  `☰ Меню менеджеров - просмотр данных/отчетов менеджера\n` +
-  `🔙 Назад - вернуться в предыдущее меню`;
   
-const UNSUBSCRIBE_MENU_ADMIN =
-  `☰ **МЕНЮ ОТПИСОК**\n\n` +
-  "• 📊 Открытие ПВЗ - отчет об открытии ПВЗ\n" +
-  "• 📊 Закрытие ПВЗ - отчет о закрытии ПВЗ\n" +
-  "• ❌ Нет отчета открытия - отчет: какие пункты еще не отчитались об открытии ПВЗ\n" +
-  "• ❌ Нет отчета закрытия - отчет: какие пункты еще не отчитались о закрытии ПВЗ\n" +
-  "• 🔔 Напомнить об открытии - отправить отчет в чат с ПВЗ, которые еще не отчитались об открытии\n" +
-  "• 🔔 Напомнить о закрытии - отправить отчет в чат с ПВЗ, которые еще не отчитались о закрытии\n";
-
-const PVZ_MENU =
-  `☰ **МЕНЮ ПВЗ**\n\n` +
-  `➕ Добавить ПВЗ - добавить новый пункт выдачи в базу\n` +
-  `❌ Удалить пункт выдачи - удалить пункт выдачи из базы\n` +
-  `📋 Список ПВЗ - просмотр всех ПВЗ\n`;
-
-const MANAGER_MENU = 
-  `☰ **МЕНЮ МЕНЕДЖЕРОВ**\n\n` +
-  `• 🔍 Запросить данные менеджера - из базы данных\n` +
-  `• 🗑️ Удалить менеджера - удалить учетную запись менеджера и из рабочих чатов`;
-
-const LIST_CHATS_MENU =
-  `🔧 **МЕНЮ СПИСКА РАБОЧИХ ЧАТОВ**\n\n` +
-  `📋 Рабочие чаты - получить список рабочих чатов\n` +
-  `✏️ Редактировать список - отредактировать уже созданный список чатов\n` +
-  `➕ Добавить чат - добавить новый чат в список\n` +
-  `🗑️ Удалить чат - удалить чат из списка`;
+const ADMIN_MENU = () => {
+  return createMenuDescription(ADMIN.ADMIN_HOME)
+};
   
+const UNSUBSCRIBE_MENU_ADMIN = () => {
+  return createMenuDescription(ADMIN.UNSUBSCRIPTIONS_MENU)
+}
+
+const PVZ_MENU = () => {
+  return createMenuDescription(ADMIN.PVZ_MENU)
+}
+
+const MANAGER_MENU = () => {
+  return createMenuDescription(ADMIN.MANAGER_MENU)
+}
+
+const LIST_CHATS_MENU = () => {
+  const mass = {...ADMIN.LIST_CHATS_MENU};
+  return createMenuDescription(mass)
+}
+
 module.exports = {
   ADMIN_MENU,
   PVZ_MENU,

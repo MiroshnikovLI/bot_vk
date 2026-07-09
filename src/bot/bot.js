@@ -11,11 +11,12 @@ const { NOTIFICATIONS, STATES } = require("../constants/index");
 const { ADMIN } = require('../constants/commands/admin');
 require("dotenv").config();
 
-
+console.log('🔄 Бот запущен, Long Poll активен');
 // ============================================================
 // ОБРАБОТЧИК СОБЫТИЙ LONG POLL
 // ============================================================
 async function handleUpdate(update) {
+  console.log('📩 Получено обновление:', update.type, update.object.message.text);
   // Проверка на новое сообщение
   if (update.type !== "message_new") return;
 
@@ -89,6 +90,7 @@ async function handleUpdate(update) {
   
   
   const handler = commandHandlers[clearText];
+  console.log('📋 Найден обработчик:', handler ? 'Да' : 'Нет');
   
   if (findAdminKeyByPartialMatch(clearText, ADMIN)) {
     if(!isAdmin) {
@@ -139,7 +141,7 @@ async function startBot() {
     if (!process.env.VK_GROUP_ID) {
       throw new Error("VK_GROUP_ID не указан в .env");
     }
-
+    
     await startLongPoll(handleUpdate);
   } catch (err) {
     console.error("❌ Ошибка запуска бота:", err.message);
