@@ -1,10 +1,10 @@
 const { buildKeyboard } = require('../buildKeyboard/buildKeyboard');
 const { getAdminKeyboards } = require('../common/common');
 const { USER } = require('../../constants/commands/user');
-const { COMMON } = require('../../constants/commands/common');
 const { ratePvz } = require('./ratePvz');
 const { replacement } = require('./replecament');
 const { pvz } = require('./pvz');
+const { COMMON } = require('../../constants/commands/common');
 
 function editProfile() {
   return buildKeyboard(USER.EDIT_PROFILE);

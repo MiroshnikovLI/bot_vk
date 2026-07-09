@@ -47,7 +47,7 @@ async function waitingSelectingPvzToAdd(userId, text) {
   }
 
   userStates.delete(userId);
-  await sendMessage(userId, UNSUBSCRIBE_MENU, userKeyboards.unsubscribe());
+  await sendMessage(userId, UNSUBSCRIBE_MENU(), userKeyboards.unsubscribe());
 }
 
 module.exports = {

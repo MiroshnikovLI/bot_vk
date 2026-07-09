@@ -66,7 +66,7 @@ async function waitingSelectingPvzForRemoval(userId, text) {
   userStates.delete(userId);
   await sendMessage(
     userId,
-    UNSUBSCRIBE_MENU,
+    UNSUBSCRIBE_MENU(),
     userKeyboards.unsubscribe(),
   );
 }

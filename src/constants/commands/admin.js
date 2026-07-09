@@ -63,7 +63,7 @@ const ADMIN = {
     get PARENTS() {
       return ADMIN.ADMIN_MENU.TEXT;
     },
-    get NAME () {
+    get NAME() {
       return `${ADMIN.ADMIN_HOME.PVZ_MENU.ICON ? ADMIN.ADMIN_HOME.PVZ_MENU.ICON : ""} **${ADMIN.ADMIN_HOME.PVZ_MENU.TEXT}**`
     }
   },
@@ -90,7 +90,7 @@ const ADMIN = {
     get PARENTS() {
       return ADMIN.ADMIN_MENU.TEXT;
     },
-    get NAME () {
+    get NAME() {
       return `${ADMIN.ADMIN_HOME.LIST_CHATS_MENU.ICON ? ADMIN.ADMIN_HOME.LIST_CHATS_MENU.ICON : ""} **${ADMIN.ADMIN_HOME.LIST_CHATS_MENU.TEXT}**`
     }
   },
@@ -117,7 +117,7 @@ const ADMIN = {
     get PARENTS() {
       return ADMIN.ADMIN_MENU.TEXT;
     },
-    get NAME () {
+    get NAME() {
       return `${ADMIN.ADMIN_HOME.MANAGER_MENU.ICON ? ADMIN.ADMIN_HOME.MANAGER_MENU.ICON : ''} **${ADMIN.ADMIN_HOME.MANAGER_MENU.TEXT}**`
     }
   },

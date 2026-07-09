@@ -1,42 +1,30 @@
-const { USER } = require('../commands/user');
-const { ADMIN } = require('../commands/admin');
 const { createMenuDescription } = require('../../utils/createMenuDescription/createMenuDescription');
+const { ADMIN } = require('../commands/admin');
+const { COMMON } = require('../commands/common');
+const { USER } = require('../commands/user');
 
 const MAIN_MENU = (isAdmin) => {
-  const admin = isAdmin ? `\n• 🛡️ Админ - меню управления администраторов` : ``;
+  const mass = {...USER.USER_HOME, LIST_CHATS: COMMON.LIST_CHATS}
+  if (isAdmin) {
+    mass.ADMIN = ADMIN.ADMIN_MENU;
+  }
+  const message = createMenuDescription(mass)
   
-  const message = []
-
-    `🏠 **ГЛАВНАЯ СТРАНИЦА**\n\n` +
-    `• 📋 Мои данные - посмотреть свои данные\n` +
-    `• 🔧 Настройки - ПВЗ, отписок, редактирование профиля\n` +
-    `• 📋 Рабочие чаты - получить список рабочих чатов\n` +
-    `• 🌅 Открытие ПВЗ - создать и отправить отчет об открытии смены\n` +
-    `• 🌙 Закрытие ПВЗ - создать и отправить отчет о закрытии смены`;
-  
-  return message + admin;
+  return message;
 };
 
-const SETTINGS_MENU = 
-  `☰ **МЕНЮ НАСТРОЙКИ**\n\n` +
-  `• ☰ МЕНЮ ОТПИСКИ - добавить/удалить пвз/сменщика\n`+
-  `• ✏️ РЕДАКТИРОВАНИЕ ПРОФИЛЯ - изменить ФИО, WB ID, номер телефона \n`
+const SETTINGS_MENU = () => {
+  return createMenuDescription(USER.SETTINGS)
+};
 
-const EDIT_MENU =
-  `✏️ **МЕНЮ РЕДАКТИРОВАНИЯ ПРОФИЛЯ**\n\n` +
-  `• ✏️ Изменить ФИО - обновить ФИО\n` +
-  `• 🆔 Изменить WB ID - обновить ID\n` +
-  `• 📱 Изменить номер телефона - обновить номер телефона\n`;
+const EDIT_MENU = () => {
+  return createMenuDescription(USER.EDIT_PROFILE)
+}
 
-const UNSUBSCRIBE_MENU =
-  `🏪 **МЕНЮ ОТПИСКИ**\n\n` +
-  `• ➕ Добавить ПВЗ - для отписок\n` +
-  `• 🗑️ Удалить ПВЗ - из отписок\n` +
-  `• ➕ Добавить сменщика - для отписок\n` +
-  `• 🗑️ Удалить сменщика - из отписок\n` +
-  `• 🔙 Назад - вернуться\n`;
+const UNSUBSCRIBE_MENU = () => {
+  return createMenuDescription(USER.UNSUBSCRIBE)
+}
 
-  
 const ADMIN_MENU = () => {
   return createMenuDescription(ADMIN.ADMIN_HOME)
 };
@@ -45,7 +33,7 @@ const UNSUBSCRIBE_MENU_ADMIN = () => {
   return createMenuDescription(ADMIN.UNSUBSCRIPTIONS_MENU)
 }
 
-const PVZ_MENU = () => {
+const PVZ_MENU = () =>  {
   return createMenuDescription(ADMIN.PVZ_MENU)
 }
 
@@ -54,10 +42,9 @@ const MANAGER_MENU = () => {
 }
 
 const LIST_CHATS_MENU = () => {
-  const mass = {...ADMIN.LIST_CHATS_MENU};
-  return createMenuDescription(mass)
+  return createMenuDescription(ADMIN.LIST_CHATS_MENU)
 }
-
+  
 module.exports = {
   ADMIN_MENU,
   PVZ_MENU,

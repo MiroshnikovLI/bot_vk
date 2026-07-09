@@ -1,5 +1,25 @@
 const { COMMANDS } = require("../../constants/index");
 
+function getBackKeyboards(command) {
+  return {
+    buttons: [
+      [
+        {
+          action: {
+            type: `text`,
+            label: `${COMMANDS.COMMON.BACK.ICON ? COMMANDS.COMMON.BACK.ICON : ""} ${COMMANDS.COMMON.BACK.TEXT.toUpperCase()}`,
+            payload: JSON.stringify({
+              command: `${command}`
+            })
+          },
+          color: `${COMMANDS.COMMON.BACK.COLOR ? COMMANDS.COMMON.BACK.COLOR : "secondary"}`,
+        },
+      ],
+    ],
+    one_time: false,
+  };
+}
+
 function getCancelKeyboard() {
   return {
     buttons: [
@@ -50,5 +70,6 @@ function createParameterKeyboard(parametr) {
 module.exports = {
   getCancelKeyboard,
   getAdminKeyboards,
+  getBackKeyboards,
   createParameterKeyboard,
 };
