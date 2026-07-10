@@ -4,10 +4,18 @@ const { sendMessage } = require("../../../../config/vkApi");
 const { NOTIFICATIONS, STATES } = require("../../../../constants/index");
 const { userKeyboards } = require("../../../../keyboards");
 const { updateUserFullName } = require("../../../../services");
+const { validateFullName } = require('../../../../utils/index');
 
 async function waitingFullName(userId, text) {
   const state = userStates.get(userId);
   const name = await updateUserFullName(userId, text);
+  const validName = validateFullName(text);
+
+  if (!validName.success) {
+    await sendMessage(userId, validName.message, {buttons: [], one_time: false});
+    return;
+  }
+
   if (!state.userWbId) {
     if (name.success) {
       await sendMessage(userId, NOTIFICATIONS.CHANGE_NAME_SUCCESSFULLY(text), userKeyboards.main());

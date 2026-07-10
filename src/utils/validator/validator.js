@@ -9,7 +9,17 @@ function isValidVkMeLink(link) {
   // Основное регулярное выражение
   const regex = /^https:\/\/vk\.me\/join\/[a-zA-Z0-9_\-/]+={0,2}$/;
   
-  return regex.test(trimmed);
+  if (regex.test(trimmed)) {
+    return {
+      success: true,
+      message: NOTIFICATIONS.VERIFICATION_COMPLETED
+    }
+  }
+
+  return {
+    success: false,
+    message: NOTIFICATIONS.ERROR_LINK_CHAT
+  }
 }
 
 function isValidWbId(wbId) {
@@ -32,7 +42,7 @@ function isValidWbId(wbId) {
 
   return {
     success: true,
-    message: `WB ID корректный`
+    message: NOTIFICATIONS.VERIFICATION_COMPLETED
   }
 }
 
@@ -46,12 +56,27 @@ function isValidPhoneNumber(number) {
 
   return {
     success: true,
-    message: "Проверка пройдена"
+    message: NOTIFICATIONS.VERIFICATION_COMPLETED
+  }
+}
+
+function validateFullName(name) {
+  if (!/^[а-яА-ЯёЁ\s-.]{2,100}$/.test(name)) {
+    return {
+      success: false,
+      message: NOTIFICATIONS.NAME_NOT_VALID
+    }
+  }
+
+  return {
+    success: true,
+    message: NOTIFICATIONS.VERIFICATION_COMPLETED
   }
 }
 
 module.exports = {
   isValidVkMeLink,
   isValidWbId,
-  isValidPhoneNumber
+  isValidPhoneNumber,
+  validateFullName
 }
