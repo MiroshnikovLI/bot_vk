@@ -1,5 +1,5 @@
 const { sendMessage } = require('../../../../config/vkApi');
-const { cleanText, isValidVkMeLink } = require('../../../../utils/index');
+const { cleanText } = require('../../../../utils/index');
 const { userStates } = require('../../../../state/stateManager');
 const { COMMANDS, NOTIFICATIONS } = require('../../../../constants/index');
 const { adminKeyboards } = require('../../../../keyboards/index');

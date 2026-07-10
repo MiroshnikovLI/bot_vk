@@ -1,18 +1,25 @@
-const { userKeyboards } = require('../../../../keyboards/index');
+const { userKeyboards, getCancelKeyboard } = require('../../../../keyboards/index');
 const { updateUserFullName } = require('../../../../services/index');
-const { cleanText } = require('../../../../utils/index');
+const { cleanText, validateFullName } = require('../../../../utils/index');
 const { userStates } = require('../../../../state/stateManager');
 const { sendMessage } = require('../../../../config/vkApi');
 const { NOTIFICATIONS, COMMANDS, STATES } = require('../../../../constants/index');
 
 async function waitingChangeName(userId, text) {
   const clearText = cleanText(text);
+  const validName = validateFullName(text);
 
   if (clearText === COMMANDS.COMMON.CANCELLATION.TEXT) {
     userStates.delete(userId);
     await sendMessage(userId, NOTIFICATIONS.OPERATION_CANCELLED, userKeyboards.editProfile());
     return;
   }
+
+  if (!validName.success) {
+    await sendMessage(userId, validName.message, getCancelKeyboard());
+    return;
+  }
+
   const changeName = await updateUserFullName(userId, text);
   if (changeName.success) {
     await sendMessage(
