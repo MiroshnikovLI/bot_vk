@@ -14,12 +14,16 @@ async function waitingChangeName(userId, text) {
     return;
   }
   const changeName = await updateUserFullName(userId, text);
+  if (changeName.success) {
+    await sendMessage(
+      userId,
+      NOTIFICATIONS.CHANGE_NAME_SUCCESSFULLY(text),
+      userKeyboards.editProfile(),
+    );
+  } else {
+    await sendMessage(userId, NOTIFICATIONS.ERROR, userKeyboards.editProfile())
+  }
   userStates.delete(userId);
-  await sendMessage(
-    userId,
-    NOTIFICATIONS.CHANGE_NAME_SUCCESSFULLY(text),
-    userKeyboards.editProfile(),
-  );
 }
 
 module.exports = {

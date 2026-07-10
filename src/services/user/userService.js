@@ -121,7 +121,7 @@ async function updateUserWbId(vkId, wbId) {
       const user = await query(`
         SELECT * FROM users WHERE wb_id = $1
         `, [wbId]);
-      if (!user.vkId) {
+      if (!user.vk_id) {
         return { success: false, message: "Этот WB ID уже используется сменщиком", data: user.rows[0]}
       }
       return { success: false, message: "WB ID уже используется другим пользователем" };

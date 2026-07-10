@@ -20,7 +20,7 @@ async function waitingWbId(userId, text) {
   const clearText = cleanText(text);
   const state = userStates.get(userId);
   const deleteStates = () => userStates.delete(userId);
-  const emptyKeyboard = { buttons: {}, one_time: false };
+  const emptyKeyboard = { buttons: [], one_time: false };
 
   const validWb = isValidWbId(clearText);
 
