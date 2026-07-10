@@ -256,7 +256,7 @@ function findAdminKeyByPartialMatch(searchText, obj, path = []) {
     
     // Если значение - объект с TEXT
     if (value && typeof value === 'object' && value.TEXT !== undefined) {
-      if (value.TEXT.toLowerCase().includes(searchLower)) {
+      if (value.TEXT.toLowerCase() === searchLower) {
         return {
           key: key,
           value: value.TEXT,

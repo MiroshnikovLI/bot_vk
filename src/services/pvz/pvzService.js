@@ -166,7 +166,7 @@ async function removeUserFromPvz(userId, pvzId) {
   }
 }
 
-async function addReplacementDb(userId, replacementId) {
+async function addReplacementDb(userId, replacementId = userId) {
   try {
     const result = await query(
       `INSERT INTO shift_substitutes (main_user_id, replacement_user_id, created_at, updated_at)

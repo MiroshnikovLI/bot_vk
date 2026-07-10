@@ -1,8 +1,7 @@
 // Пользователь
-const { waitingWbId } = require('./user/edit/waitingWbId');
-const { waitingFullName } = require('./user/edit/waitingFullName');
+const { waitingWbId } = require('./user/registration/waitingWbId');
+const { waitingFullName } = require('./user/registration/waitingFullName');
 const { waitingChangeName } = require('./user/edit/waitingChangeName');
-const { waitingChangeWbId } = require('./user/edit/waitingChangeWbId');
 const { waitingSelectingPvzInChat } = require('./user/pvz/waitingSelectingPvzInChat');
 const { waitingSelectingReplacementInChat } = require('./user/replacement/waitingSelectingReplecamentInChat');
 const { waitingSelectingPvzToAdd } = require('./user/pvz/waitingSelectingPvzToAdd');
@@ -36,7 +35,6 @@ module.exports = {
   waitingWbId,
   waitingFullName,
   waitingChangeName,
-  waitingChangeWbId,
   waitingSelectingPvzInChat,
   waitingSelectingReplacementInChat,
   waitingSelectingPvzToAdd,

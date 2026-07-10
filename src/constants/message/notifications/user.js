@@ -10,20 +10,36 @@ const USER = {
   NUMBER_NOT_VALID: "Неверный формат телефона\nВведите в формате:\n+7 999 123-45-67\n8 999 123-45-67\n89991234567\n79991234567\n9991234567",
   CHANGE_PHONE_SUCCESSFULLY: (phone) => `✅ Номер успешно изменен ${formatPhone(phone)}`,
   CHANGE_NAME: "✏️ Введите ваше ФИО полностью:",
+  PROFILE_NOT_FILLED: (text) => `Ваш профиль полностью не заполнен пожалуйста ${text === 'name' ? USER.CHANGE_NAME : USER.WAITING_WB_ID }`, 
   CHANGE_NAME_SUCCESSFULLY: (text) => `✅ ФИО изменено на: ${text}`,
-  CHANGE_WB_ID: "🆖 Введите ваш WB ID (только цифры):",
-  CHANGE_WB_ID_SUCCESSFULLY: (text) => `✅ WB ID изменен на: ${text}`,
+  WAITING_WB_ID: "🆖 Введите ваш WB ID (только цифры):",
+  WB_ID_USER_REPLACEMENT: (wbId, user) => `⚠️ **WB ID ${wbId} уже используется**\n\n` +
+    `Этот WB ID привязан к профилю сменщика ${user.full_name}.\n\n` +
+    `🔹 **Если это ваш WB ID** — вы можете занять этот профиль. Все данные (ФИО, телефон) будут перенесены на ваш аккаунт.\n` +
+    `🔹 **Если это не ваш WB ID** — проверьте правильность ввода.\n\n` +
+    `Хотите использовать этот профиль? \n\n` +
+    `✅ **Да** — перенести данные \n` +
+    `❌ **Нет** — ввести другой WB ID`,
+  INVALID_YES_NO_RESPONSE: `❌ **Я не понял ваш ответ.**\n\n` +
+    `Пожалуйста, выберите один из вариантов:\n\n` +
+    `✅ **Да** — перенести данные \n` +
+    `❌ **Нет** — ввести другой WB ID\n` +
+    `Или нажмите на кнопку ниже.`,
+  WB_ID_USER_USER: (wbId) => `⚠️ **WB ID ${wbId} уже используется другим пользователем**\n\n` + 
+    `Если это ваш WB ID обратитесь к администратору`,
   CHECK_CORRECTNESS: (text) => `${text}\n Проверьте правильность введенного WB ID`,
   MY_DATA: (user, pvz_list, replacementList) => { return `📋 **ВАШ ПРОФИЛЬ**\n\n` +
-    `👤 ФИО: ${user.full_name || "❌ не указано"}\n` +
-    `🆔 VK ID: ${user.vk_id || "❌ не указан"}\n` +
-    `🆔 WB ID: ${user.wb_id || "❌ не указан"}\n` +
-    `📱 Телефон: ${user.phone ? formatPhone(user.phone) : 'Не указан'}\n\n` +
-    `🏪 Закрепленные ПВЗ:\n` +
-    `${pvz_list}\n\n` +
-    `👤 Закрепленные сменщики:\n` +
-    `${replacementList}\n\n`
-  },
+      `👤 ФИО: ${user.full_name || "❌ не указано"}\n` +
+      `🆔 VK ID: ${user.vk_id || "❌ не указан"}\n` +
+      `🆔 WB ID: ${user.wb_id || "❌ не указан"}\n` +
+      `📱 Телефон: ${user.phone ? formatPhone(user.phone) : 'Не указан'}\n\n` +
+      `🏪 Закрепленные ПВЗ:\n` +
+      `${pvz_list}\n\n` +
+      `👤 Закрепленные сменщики:\n` +
+      `${replacementList}\n\n`
+    },
+  DATA_SUCCESSFULLY_TRANSFERRED: `✅ Данные успешно перенесены в новый профиль.\n\n` +
+    `🔍 Пожалуйста, проверьте правильность перенесённых данных в разделе «Мои данные».\n\n`,
   DEACTIVE_USER: (status = false) => 
     status ? 
       `Ваш профиль был восстановлен. Вам снова доступны все функции бота.` : 

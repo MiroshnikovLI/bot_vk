@@ -57,11 +57,6 @@ const USER = {
       ICON: "✏️",
       DESCRIPTION: "обновить ФИО",
     },
-    CHANGE_WB_ID: {
-      TEXT: "изменить wb id",
-      ICON: "🆔",
-      DESCRIPTION: "обновить WB ID",
-    },
     CHANGE_PHONE: {
       TEXT: "изменить телефон",
       ICON: "📱",

@@ -1,7 +1,6 @@
 // Редактирование
 const { handlerChangeName } = require('./change/handlerChangeName');
 const { handlerChangePhone } = require('./change/handlerChangePhone');
-const { handlerChangeWBId } = require('./change/handlerChangeWBId');
 // Меню
 const { handlerUnsubscribeMenu } = require('./menu/handlerUnsubscribeMenu');
 const { handlerEditMenu } = require('./menu/handlerEditMenu');
@@ -25,7 +24,6 @@ module.exports = {
   // Редактирование
   handlerChangeName,
   handlerChangePhone,
-  handlerChangeWBId,
 
   // Меню
   handlerUnsubscribeMenu,
