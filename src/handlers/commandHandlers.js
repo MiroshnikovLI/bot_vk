@@ -4,7 +4,6 @@ const {
   // Редактирование
   handlerChangeName,
   handlerChangePhone,
-  handlerChangeWBId,
 
   // Меню
   handlerUnsubscribeMenu,
@@ -75,7 +74,6 @@ const commandHandlers = {
   [COMMANDS.USER.SETTINGS.EDIT_PROFILE_MENU.TEXT]: (senderId) => handlerEditMenu(senderId),
   [COMMANDS.USER.SETTINGS.UNSUBSCRIBE_MENU.TEXT]: (senderId) => handlerUnsubscribeMenu(senderId),
   [COMMANDS.USER.EDIT_PROFILE.CHANGE_NAME.TEXT]: (senderId) => handlerChangeName(senderId),
-  [COMMANDS.USER.EDIT_PROFILE.CHANGE_WB_ID.TEXT]: (senderId) => handlerChangeWBId(senderId),
   [COMMANDS.USER.EDIT_PROFILE.CHANGE_PHONE.TEXT]: (senderId) => handlerChangePhone(senderId),
   [COMMANDS.USER.UNSUBSCRIBE.ADD_PVZ.TEXT]: (senderId) => handlerAddPvzForRequest(senderId),
   [COMMANDS.USER.UNSUBSCRIBE.DELETE_PVZ.TEXT]: (senderId) => handlerDeletePvzForRequest(senderId),

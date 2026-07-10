@@ -24,6 +24,14 @@ const COMMON = {
   RETURN_SEARCH: {
     TEXT: "вернуться к поиску",
     ICON: "↩️"
+  },
+  YES: {
+    TEXT: "да",
+    ICON: "✅"
+  },
+  NO: {
+    TEXT: "нет",
+    ICON: "❌"
   }
 }
 

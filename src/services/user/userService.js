@@ -19,6 +19,30 @@ async function startUser(vkId) {
   }
 }
 
+async function deleteIncompleteUser(vkId) {
+  try {
+    const result = await query(`
+      DELETE FROM users WHERE vk_id = $1
+      `, [vkId]);
+    
+      return { success: true, message: "Операция прошла успешно"}
+  } catch (error) {
+    return { success: false, message: error.message}
+  }
+}
+
+async function updateVkIdByWbId(vkId, wbId) {
+  try {
+    const result = await query(`
+      UPDATE users SET vk_id = $1 WHERE wb_id = $2 RETURNING *
+      `, [vkId, wbId]);
+
+    return { success: true, message: "Операция прошла успешно", data: result.rows[0]}
+  } catch (error) {
+    return { success: false, message: error.message}
+  }
+}
+
 async function getAllUsers() {
   try {
     const result = await query(`
@@ -62,7 +86,13 @@ async function getOrCreateUser(vkId, fullName = null) {
 }
 
 async function updateUserFullName(vkId, fullName) {
-  await query(`UPDATE users SET full_name = $1, updated_at = NOW() WHERE vk_id = $2`, [fullName, vkId]);
+  try {
+    const result = await query(`UPDATE users SET full_name = $1, updated_at = NOW() WHERE vk_id = $2`, [fullName, vkId]);
+
+    return { success: true, message: "Операция прошла успешно"}
+  } catch (error) {
+    return { success: false, message: error.message}
+  }
 }
 
 async function updateUserPhone(vkId, phone) {
@@ -85,12 +115,15 @@ async function updateUserWbId(vkId, wbId) {
       `UPDATE users SET wb_id = $1, updated_at = NOW() WHERE vk_id = $2 RETURNING id, wb_id, full_name`,
       [wbId, vkId]
     );
-    if (result.rows.length === 0) {
-      return { success: false, message: "Пользователь не найден" };
-    }
-    return { success: true, message: 'Данные успешно изменены', data: result.rows[0] };
+    return { success: true, message: 'Данные успешно сохранены', data: result.rows[0] };
   } catch (error) {
     if (error.code === '23505') {
+      const user = await query(`
+        SELECT * FROM users WHERE wb_id = $1
+        `, [wbId]);
+      if (!user.vkId) {
+        return { success: false, message: "Этот WB ID уже используется сменщиком", data: user.rows[0]}
+      }
       return { success: false, message: "WB ID уже используется другим пользователем" };
     }
     return { success: false, message: error.message };
@@ -242,5 +275,7 @@ module.exports = {
   findManager,
   setActiveUser,
   deleteUserFromChat,
-  createdReplacement
+  createdReplacement,
+  deleteIncompleteUser,
+  updateVkIdByWbId,
 };

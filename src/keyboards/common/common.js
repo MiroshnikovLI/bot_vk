@@ -53,7 +53,7 @@ function getAdminKeyboards() {
   };
 }
 
-function createParameterKeyboard(parametr) {
+function createParameterKeyboard(parametr, showCancle = true) {
   const buttons = parametr.map((e) => [
     {
       action: {
@@ -63,7 +63,9 @@ function createParameterKeyboard(parametr) {
       color: `${e.COLOR ? e.COLOR : "secondary"}`,
     },
   ]);
-  buttons.push(...getCancelKeyboard().buttons);
+  if (showCancle) {
+    buttons.push(...getCancelKeyboard().buttons);
+  }
   return { buttons, one_time: true };
 }
 

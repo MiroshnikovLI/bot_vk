@@ -30,7 +30,6 @@ const STATES = {
   // Редактирование
   WAITING_CHANGE_NAME: "waitingChangeName",
   WAITING_CHANGE_PHONE: "waitingChangePhone",
-  WAITING_CHANGE_WB_ID: "waitingChangeWbId",
 
   // ПВЗ
   WAITING_RATE_PVZ_IN_CHAT: "waitingRatePvzInChat",

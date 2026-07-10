@@ -45,15 +45,27 @@ async function handleUpdate(update) {
   }
 
   // ========== ТОЛЬКО ЛИЧНЫЕ СООБЩЕНИЯ ==========
+  const state = userStates.get(senderId);
 
-  let clearText = cleanText(text);
-  const isAdmin = await isUserAdmin(peerId);
-  const userActive = await getUserVkId(peerId);
+  if (state) {
+    await handleTextInput(
+      senderId,
+      text,
+      payload,
+      false,
+      null,
+      createShiftReport,
+      sendMessage,
+    );
+    return;
+  }
 
-  if (!userActive) {
+  const user = await getUserVkId(peerId);
+  
+  if (!user) {
     const start = await startUser(peerId);
     if (!start.success) {
-        await sendMessage(peerId, NOTIFICATIONS.TECHNICAL_ERROR, {
+      await sendMessage(peerId, NOTIFICATIONS.TECHNICAL_ERROR, {
         buttons: [],
         one_time: false,
       });
@@ -67,12 +79,28 @@ async function handleUpdate(update) {
     return;
   }
 
-  if (!userActive.is_active) {
+  if (!user.full_name || !user.wb_id) {
+    if (!user.full_name) {
+      userStates.set(peerId, STATES.WAITING_FULL_NAME, {userWbId: !user.wb_id});
+      await sendMessage(peerId, NOTIFICATIONS.PROFILE_NOT_FILLED(`name`), {buttons: [], one_time: false});
+      return;
+    }
+    if (!user.wb_id) {
+      userStates.set(peerId, STATES.WAITING_WB_ID, {change: true});
+      await sendMessage(peerId, NOTIFICATIONS.PROFILE_NOT_FILLED(`wbId`), {buttons: [], one_time: false});
+      return;
+    }
+  }
+  
+  if (!user.is_active) {
     return await sendMessage(peerId, NOTIFICATIONS.DEACTIVE_USER(), {
       buttons: [],
       one_time: false,
     });
   }
+  
+  let clearText = cleanText(text);
+  const isAdmin = await isUserAdmin(peerId);
 
   if (payload) {
     try {
@@ -85,9 +113,6 @@ async function handleUpdate(update) {
       return;
     }
   }
-  
-  
-  const handler = commandHandlers[clearText];
 
   if (findAdminKeyByPartialMatch(clearText, ADMIN)) {
     if(!isAdmin) {
@@ -95,27 +120,13 @@ async function handleUpdate(update) {
       return;
     }
   }
-  
+
+  const handler = commandHandlers[clearText];
+
   if (handler) {
     await handler(senderId, payload);
     return;
-  }
-
-  // Если команда не найдена — обрабатываем текстовый ввод или fallback
-  const state = userStates.get(senderId);
-
-  if (state) {
-    await handleTextInput(
-      senderId,
-      text,
-      payload,
-      false,
-      null,
-      createShiftReport,
-      sendMessage,
-    );
   } else {
-    // Нет активного диалога и команда не распознана
     await sendMessage(
       senderId,
       NOTIFICATIONS.UNKNOWN_COMMAND,
