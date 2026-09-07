@@ -1,5 +1,6 @@
 const https = require("https");
 const querystring = require("querystring");
+const { smartSplitText } = require('../utils/smartSplitText/smartSplitText');
 
 // Базовые параметры
 const VK_API_VERSION = "5.199";
@@ -17,22 +18,28 @@ async function editMessage(peerId, existingMsgId, message, keyboard) {
 }
 
 // Отправка сообщения
-async function sendMessage(peerId, message, keyboard = null) {
-  const randomId = Date.now(); // или любое уникальное число
+async function sendMessage(peerId, message, keyboard = null, attachment = null) {
+  const parts = smartSplitText(message);
 
-  const params = {
-    peer_id: peerId,
-    message: message,
-    random_id: randomId,
-    v: VK_API_VERSION,
-    access_token: process.env.VK_GROUP_TOKEN,
-  };
-
-  if (keyboard) {
-    params.keyboard = JSON.stringify(keyboard);
+  for (let i = 0; i < parts.length; i++) {
+    const params = {
+        peer_id: peerId,
+        message: parts.length > 1 ? `(${i+1}/${parts.length})\n\n${parts[i]}` : parts[i],
+        random_id: Date.now() + i,
+        v: VK_API_VERSION,
+        access_token: process.env.VK_GROUP_TOKEN,
+    };
+    
+    // Клавиатуру прикрепляем только к последнему сообщению
+    if (keyboard && i === parts.length - 1) {
+      if (attachment) {
+        params.attachment = attachment;
+      }
+      params.keyboard = JSON.stringify(keyboard);
+    }
+    
+    await vkApiCall("messages.send", params);
   }
-
-  return vkApiCall("messages.send", params);
 }
 
 // Получение информации о пользователе
