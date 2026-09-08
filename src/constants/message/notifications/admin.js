@@ -1,4 +1,5 @@
 const { formatDate, formatPhone } = require("../../../utils/helpers/helpers");
+require('dotenv').config();
 
 const ADMIN = {
   // Чаты
@@ -158,52 +159,83 @@ const ADMIN = {
   NO_REPORT_TO_DAY: "Нет отчетов за сегодня",
   PVZ_ALL_UNSUBSCRIBED: "Все пункты отписались",
   SHIFT_REPORT: (pvzs, users, reports, reportType) => {
-    const reportMessage = [];
+    const openIsEight = [];
+    const openIsTen = [];
+
     reports.forEach((report) => {
       const pvz = pvzs.find((p) => p.id === report.pvz_id);
       const user = users.find((p) => p.id === report.user_id);
       if (pvz && user) {
         const message =
           report.report_type === "open"
-            ? `1) ${pvz.pvz_id} - ${pvz.address}\n` +
+            ? `1) ${pvz.pvz_id} - ${pvz.address} (${pvz.open_time.slice(0, 2)} - ${pvz.close_time.slice(0, 2)})\n` +
               `2) Отчёт об открытии отправлен в ${report.report_time.split(".")[0]}\n` +
               `3) Менеджер в смене:  [id${user.vk_id}|${user.full_name}] ${user.wb_id}\n\n`
-            : `1) ${pvz.pvz_id} - ${pvz.address}\n` +
+            : `1) ${pvz.pvz_id} - ${pvz.address} (${pvz.open_time.slice(0, 2)} - ${pvz.close_time.slice(0, 2)})\n` +
               `2) Отчёт о закрытии отправлен в ${report.report_time.split(".")[0]}\n` +
               `3) Смену отработал: [id${user.vk_id}|${user.full_name}] ${user.wb_id}\n\n`;
-        reportMessage.push(message);
+        if (pvz.open_time === "08:00:00") {
+          openIsEight.push(message)
+        } else {
+          openIsTen.push(message)
+        }
       }
     });
+
     return (
-      `📋 **ОТЧЁТЫ ОБ ОТКРЫТИИ**\n\n${reportMessage.join("")}` +
+      `📋 **ОТЧЁТЫ ${reportType === "open" ? "ОБ ОТКРЫТИИ" : "О ЗАКРЫТИИ"}**\n\n` +
+      `${openIsEight.length > 0 ? `${openIsEight.join('')}` : ""}\n\n\n` +
+      `${openIsTen.length > 0 ? `${openIsTen.join('')}` : ""}\n\n` +
       `Всего ПВЗ: ${pvzs.length}\n` +
-      `Отписалось: ${reportMessage.length}\n` +
-      `Осталось: ${pvzs.length - reportMessage.length}`
+      `Отписалось: ${openIsEight.length + openIsTen.length}\n` +
+      `Осталось: ${pvzs.length - (openIsEight.length + openIsTen.length)}`
     );
   },
   NO_REPORT: (pvzList, reportType) => {
-    const reportMessage = [];
-    let count = 1;
+    const openIsEight = [];
+    const openIsTen = [];
+
+    let count1 = 1;
+    let count2 = 1;
     pvzList.forEach((p) => {
-      (reportMessage.push(`${count}) ${p.pvz_id} - ${p.address}\n`), count++);
+      if (p.open_time === "08:00:00") {
+        openIsEight.push(`${count1}) ${p.pvz_id} - ${p.address} (${p.open_time.slice(0, 2)} - ${p.close_time.slice(0, 2)})\n`); 
+        count1++
+      } else {
+        openIsTen.push(`${count2}) ${p.pvz_id} - ${p.address} (${p.open_time.slice(0, 2)} - ${p.close_time.slice(0, 2)})\n`); 
+        count2++
+      }
     });
 
     return (
-      `📋 **ПУНКТЫ, КОТОРЫЕ ЕЩЁ НЕ ПРИСЛАЛИ ОТЧЁТ ${reportType === "open" ? "ОБ ОТКРЫТИИ ПВЗ" : "О ЗАКРЫТИИ ПВЗ"}**\n\n${reportMessage.join("")}` +
-      `Всего не отписалось: ${reportMessage.length}`
+      `📋 **ПУНКТЫ, КОТОРЫЕ ЕЩЁ НЕ ПРИСЛАЛИ ОТЧЁТ ${reportType === "open" ? "ОБ ОТКРЫТИИ ПВЗ" : "О ЗАКРЫТИИ ПВЗ"}**\n\n` +
+      `${openIsEight.length > 0 ? `${openIsEight.join("")}` : ""}\n\n` +
+      `${openIsTen.length > 0 ? `${openIsTen.join("")}` : ""}\n\n` +
+      `Всего не отписалось: ${openIsEight.length + openIsTen.length}`
     );
   },
   REMIND_SHIFT: (pvzList, reportType, user) => {
-    const reportMessage = [];
-    let count = 1;
+    const openIsEight = [];
+    const openIsTen = [];
+
+    let count1 = 1;
+    let count2 = 1;
     pvzList.forEach((p) => {
-      (reportMessage.push(`${count}) ${p.pvz_id} - ${p.address}\n`), count++);
+      if (p.open_time === "08:00:00") {
+        openIsEight.push(`${count1}) ${p.pvz_id} - ${p.address} (${p.open_time.slice(0, 2)} - ${p.close_time.slice(0, 2)})\n`); 
+        count1++
+      } else {
+        openIsTen.push(`${count2}) ${p.pvz_id} - ${p.address} (${p.open_time.slice(0, 2)} - ${p.close_time.slice(0, 2)})\n`); 
+        count2++
+      }
     });
 
     return (
-      `📋 **ПУНКТЫ, КОТОРЫЕ ЕЩЁ НЕ ПРИСЛАЛИ ОТЧЁТ ${reportType === "open" ? "ОБ ОТКРЫТИИ ПВЗ" : "О ЗАКРЫТИИ ПВЗ"}**\n\n${reportMessage.join("")}\n\n` +
-      `Всего не отписалось: ${reportMessage.length}\n` +
-      `Старший менеджер: ${user.full_name}`
+      `📋 **ПУНКТЫ, КОТОРЫЕ ЕЩЁ НЕ ПРИСЛАЛИ ОТЧЁТ ${reportType === "open" ? "ОБ ОТКРЫТИИ ПВЗ" : "О ЗАКРЫТИИ ПВЗ"}**\n\n` +
+      `${openIsEight.length > 0 ? `${openIsEight.join("")}` : ""}\n\n` +
+      `${openIsTen.length > 0 ? `${openIsTen.join("")}` : ""}\n\n`+
+      `Всего не отписалось: ${openIsEight.length + openIsTen.length}\n` +
+      `${process.env.VK_ID_ZRR.includes(user.vk_id) ? `ЗРР: ${user.full_name}` : `Старший менеджер: ${user.full_name}`}`
     );
   },
 };
