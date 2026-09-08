@@ -26,6 +26,7 @@ const STATES = {
   // Регистрация
   WAITING_FULL_NAME: "waitingFullName",
   WAITING_WB_ID: "waitingWbId",
+  WAITING_PHONE: "waitingPhone",
 
   // Редактирование
   WAITING_CHANGE_NAME: "waitingChangeName",

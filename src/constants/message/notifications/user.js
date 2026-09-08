@@ -3,7 +3,15 @@ const { formatPhone } = require('../../../utils/helpers/helpers');
 const USER = {
   // Профиль
   NAME_SUCCESSFULLY_WAITING_WB_ID: (text) => `✅ ФИО сохранено: ${text}\n\n🔢 Теперь введите ваш WB ID (цифры):`,
-  PROFILE_COMPLETED_SUCCESSFULLY: (name, text) => `✅ Профиль успешно настроен!\n\nВаши данные:\n👤 ФИО: ${name}\n🆔 WB ID: ${text}\n\nТеперь вы можете отправлять отчеты в беседе.`,
+  NAME_SUCCESSFULLY_WAITING_PHONE: (text, wbId) => `✅ ФИО сохранено: ${text}\n\n✅ WB ID: ${wbId}\n\n📱 Теперь введите ваш номер телефона:`,
+  WB_ID_SWCCESSFULLY_WAITING_PHONE: (name, wbId) => `✅ ФИО: ${name}\n\n✅ WB ID сохранён: ${wbId}\n\n📱 Теперь введите ваш номер телефона:`,
+  PROFILE_COMPLETED_SUCCESSFULLY: (name, wbId, phone) => 
+    `✅ Профиль успешно настроен!\n\n` +
+    `Ваши данные:\n` +
+    `👤 ФИО: ${name}\n` +
+    `🆔 WB ID: ${wbId}\n` +
+    `📱 Телефон: ${phone}\n\n` +
+    `Теперь вы можете отправлять отчеты в беседе.`,
   PROFILE_NOT_FILLED:
     "⚠️ Ваш профиль не заполнен. Пожалуйста, заполните данные.",
   CHANGE_PHONE: "✏️ Введите номер телефона:",
@@ -16,7 +24,18 @@ const USER = {
     `📌 Салтыков-Щедрин\n` +
     `📌 Анна-Мария\n` +
     `Пожалуйста, введите ФИО заново.`,
-  PROFILE_NOT_FILLED: (text) => `Ваш профиль полностью не заполнен пожалуйста ${text === 'name' ? USER.CHANGE_NAME : USER.WAITING_WB_ID }`, 
+  PROFILE_NOT_FILLED: (text) => {
+    let message;
+    if (text === 'name') {
+      message = USER.CHANGE_NAME
+    } else if (text === 'wbId') {
+      message = USER.WAITING_WB_ID
+    } else {
+      message = USER.CHANGE_PHONE
+    }
+    return `Ваш профиль полностью не заполнен пожалуйста ${message}`
+
+  },
   CHANGE_NAME_SUCCESSFULLY: (text) => `✅ ФИО изменено на: ${text}`,
   WAITING_WB_ID: "🆖 Введите ваш WB ID (только цифры):",
   WB_ID_USER_REPLACEMENT: (wbId, user) => `⚠️ **WB ID ${wbId} уже используется**\n\n` +
