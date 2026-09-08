@@ -9,7 +9,7 @@ async function handlerPvzOpeningReport(userId) {
   const listUsers = await getAllUsers();
 
   if(report.success) {
-    const reportMessage = await NOTIFICATIONS.SHIFT_REPORT(LIST_PVZ.data, listUsers.data, report.data);
+    const reportMessage = await NOTIFICATIONS.SHIFT_REPORT(LIST_PVZ.data, listUsers.data, report.data, "open");
     await sendMessage(userId, reportMessage, adminKeyboards.unsubscriptions())
   } else {
     await sendMessage(userId, NOTIFICATIONS.NO_REPORT_TO_DAY, adminKeyboards.unsubscriptions())
