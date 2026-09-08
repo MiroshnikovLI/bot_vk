@@ -14,6 +14,7 @@ const { cleanText, isValidWbId } = require("../../../../utils/index");
 const {
   deleteIncompleteUser,
   updateVkIdByWbId,
+  getUserVkId,
 } = require("../../../../services/user/userService");
 
 async function waitingWbId(userId, text) {
@@ -21,7 +22,8 @@ async function waitingWbId(userId, text) {
   const state = userStates.get(userId);
   const deleteStates = () => userStates.delete(userId);
   const emptyKeyboard = { buttons: [], one_time: false };
-
+  const user = await getUserVkId(userId);
+  
   const validWb = isValidWbId(clearText);
 
   if (state.choice) {
@@ -67,10 +69,15 @@ async function waitingWbId(userId, text) {
 
   const wbId = await updateUserWbId(userId, text);
   if (wbId.success) {
+    if (!user.phone) {
+      userStates.set(userId, STATES.WAITING_PHONE);
+      await sendMessage(userId, NOTIFICATIONS.WB_ID_SWCCESSFULLY_WAITING_PHONE(user.full_name, text), emptyKeyboard);
+      return;
+    }
     deleteStates();
     await sendMessage(
       userId,
-      NOTIFICATIONS.PROFILE_COMPLETED_SUCCESSFULLY(state.full_name, text),
+      NOTIFICATIONS.PROFILE_COMPLETED_SUCCESSFULLY(user.full_name, text, user.phone),
       userKeyboards.main(),
     );
   } else {

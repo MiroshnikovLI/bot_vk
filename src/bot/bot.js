@@ -25,7 +25,6 @@ async function handleUpdate(update) {
     text,
     out,
     conversation_message_id: cmid,
-    date,
     payload
   } = message;
 
@@ -79,15 +78,20 @@ async function handleUpdate(update) {
     return;
   }
 
-  if (!user.full_name || !user.wb_id) {
+  if (!user.full_name || !user.wb_id || !user.phone) {
     if (!user.full_name) {
-      userStates.set(peerId, STATES.WAITING_FULL_NAME, {userWbId: !user.wb_id});
+      userStates.set(peerId, STATES.WAITING_FULL_NAME);
       await sendMessage(peerId, NOTIFICATIONS.PROFILE_NOT_FILLED(`name`), {buttons: [], one_time: false});
       return;
     }
     if (!user.wb_id) {
-      userStates.set(peerId, STATES.WAITING_WB_ID, {change: true});
+      userStates.set(peerId, STATES.WAITING_WB_ID);
       await sendMessage(peerId, NOTIFICATIONS.PROFILE_NOT_FILLED(`wbId`), {buttons: [], one_time: false});
+      return;
+    }
+    if (!user.phone) {
+      userStates.set(peerId, STATES.WAITING_PHONE);
+      await sendMessage(peerId, NOTIFICATIONS.PROFILE_NOT_FILLED(`phone`), {buttons: [], one_time: false});
       return;
     }
   }

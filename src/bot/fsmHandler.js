@@ -4,6 +4,7 @@ const {
   // Пользователь
   waitingFullName,
   waitingWbId,
+  waitingPhone,
   waitingChangeName,
   waitingSelectingPvzInChat,
   waitingSelectingReplacementInChat,
@@ -38,6 +39,7 @@ const rawHandlers = {
   // Пользователь
   waitingFullName,
   waitingWbId,
+  waitingPhone,
   waitingChangeName,
   waitingSelectingPvzInChat,
   waitingSelectingReplacementInChat,
