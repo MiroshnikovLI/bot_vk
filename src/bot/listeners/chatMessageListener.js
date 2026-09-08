@@ -1,7 +1,8 @@
 const { getAllActivePvzs, addShiftReport, getUserVkId, getOrCreateUser } = require("../../services/index");
-const { normalizeYo, determineReportTypeWithChecks } = require("../../utils/index");
+const { determineReportTypeWithChecks } = require("../../utils/index");
 const { NOTIFICATIONS } = require("../../constants/index");
 const { getUserInfo } = require("../../config/vkApi");
+require("dotenv").config();
 
 async function chatMessageListener(context) {
   const { text, from_id: senderId, isOutbox, date } = context;
@@ -10,6 +11,8 @@ async function chatMessageListener(context) {
   
   // 1. Получаем или создаём пользователя
   let user = await getUserVkId(senderId);
+
+  if (process.env.VK_ID_ZRR.includes(user.vk_id)) return;
   
   if (!user) {
     const userInfo = await getUserInfo(senderId);
@@ -28,26 +31,10 @@ async function chatMessageListener(context) {
   // 3. Определяем ПВЗ по ID
   let selectedPvz = pvzs.find(p => text.includes(p.pvz_id));
   
-  // 4. Если не нашли по ID — ищем по улице и дому
-  if (!selectedPvz) {
-    const streetMatches = pvzs.filter(p => 
-      normalizeYo(text).toLowerCase().includes(p.street_normalized?.toLowerCase())
-    );
-    
-    if (streetMatches.length === 1) {
-      selectedPvz = streetMatches[0];
-    } else if (streetMatches.length > 1) {
-      // Если несколько улиц — уточняем по дому
-      selectedPvz = streetMatches.find(p => 
-        text.toLowerCase().includes(p.house?.toLowerCase())
-      );
-    }
-  }
-  
-  // 5. Если ПВЗ не найден — выходим
+  // 4. Если ПВЗ не найден — выходим
   if (!selectedPvz) return;
   
-  // 6. Определяем тип отчёта
+  // 5. Определяем тип отчёта
   const reportTypeResult = await determineReportTypeWithChecks(
     selectedPvz.id,
     user,

@@ -155,6 +155,8 @@ function parseAddress(fullAddress) {
 async function determineReportTypeWithChecks(pvzId, user, timestamp) {
   const reportDate = new Date(timestamp * 1000);
   const hours = reportDate.getHours();
+  const twoHoursInMs = 2 * 60 * 60 * 1000;
+
   
   // Определяем целевой день для отчёта
   let targetDate = new Date(reportDate);
@@ -167,31 +169,34 @@ async function determineReportTypeWithChecks(pvzId, user, timestamp) {
   const openReport = await query(`
     SELECT id, created_at FROM shift_reports 
     WHERE pvz_id = $1 
-      AND user_id = $2 
-      AND report_type = 'open'
-      AND DATE(created_at) = $3
-  `, [pvzId, user.id, dateStr]);
-  
+    AND user_id = $2 
+    AND report_type = 'open'
+    AND DATE(created_at) = $3
+    `, [pvzId, user.id, dateStr]);
+
   // 2. Проверяем отчёт о закрытии
   const closeReport = await query(`
     SELECT id, created_at FROM shift_reports 
     WHERE pvz_id = $1 
-      AND user_id = $2 
-      AND report_type = 'close'
-      AND DATE(created_at) = $3
-  `, [pvzId, user.id, dateStr]);
-  
+    AND user_id = $2 
+    AND report_type = 'close'
+    AND DATE(created_at) = $3
+    `, [pvzId, user.id, dateStr]);
+    
   // 3. Если нет ни одного отчёта — это открытие
   if (openReport.rows.length === 0 && closeReport.rows.length === 0) {
     return { type: 'open', date: dateStr, needConfirmation: false };
   }
-  
-  // 4. Если есть открытие, но нет закрытия — это закрытие
+
+  // 4. Если есть отчет об открытии но с мемента первого отчета не прошшло два часа
+  if(!((reportDate.getTime() - openReport.rows[0].created_at.getTime()) >= twoHoursInMs)) return
+    
+  // 5. Если есть открытие, но нет закрытия — это закрытие
   if (openReport.rows.length > 0 && closeReport.rows.length === 0) {
     return { type: 'close', date: dateStr, needConfirmation: false };
   }
   
-  // 5. Если есть оба отчёта — нужно уточнить (возможно, переотправка)
+  // 6. Если есть оба отчёта — нужно уточнить (возможно, переотправка)
   if (openReport.rows.length > 0 && closeReport.rows.length > 0) {
     return { 
       type: null, 
