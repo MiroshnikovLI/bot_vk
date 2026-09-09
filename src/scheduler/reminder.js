@@ -7,7 +7,7 @@ require('dotenv').config();
 // Временная функция потом заменится на полноценный task
 async function reminderTask() {
   const openIsEight = () => {
-    cron.schedule('40,45,50,55 8 * * *', async () => {
+    cron.schedule('40,45,50,55 7 * * *', async () => {
         const report = await getThereIsNoReport('open', '08:00:00');
   
         if(report.success) {
