@@ -16,6 +16,12 @@ module.exports = {
       time: true
     },
     {
+      name: 'reminder',        // ✅ Добавляем
+      script: './src/scheduler/reminder.js',
+      watch: false,
+      env: { NODE_ENV: 'production' }
+    },
+    {
       name: 'bot_api',
       script: 'src/server/index.js',        
       watch: false,
