@@ -5,26 +5,39 @@ const { userStates } = require('../../state/stateManager');
 const { NOTIFICATIONS } = require('../../constants/index');
 require("dotenv").config();
 
-async function getThereIsNoReport(reportType) {
+async function getThereIsNoReport(reportType, time = null) {
   try {
-    const result = await query(
-      `
+    let queryText = `
       SELECT p.* FROM pvz p
       WHERE p.is_active = true 
+    `;
+
+    const params = [reportType];
+
+    if (time) {
+      if (reportType === 'open') {
+        queryText += ` AND p.open_time = $2`;
+      } else {
+        queryText += ` AND p.close_time = $2`
+      }
+      params.push(time);
+    }
+
+    queryText += `
       AND NOT EXISTS (
         SELECT 1 FROM shift_reports sr 
         WHERE sr.pvz_id = p.id 
           AND sr.report_type = $1
           AND DATE(sr.created_at) = CURRENT_DATE
       )
-    `,
-      [reportType],
-    );
+    `;
 
+    const result = await query(queryText, params);
+    
     if (result.rows.length === 0) {
       return { success: false, message: "Все пункты отписались" };
     }
-
+    
     return {
       success: true,
       message: "Пункты которые еще не отписались",

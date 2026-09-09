@@ -1,5 +1,5 @@
 const { query } = require("../config/database");
-const { userKeyboards, getAdminKeyboards } = require("../keyboards/index");
+const { userKeyboards } = require("../keyboards/index");
 const { isUserAdmin, getUserVkId, startUser, createShiftReport } = require("../services/index");
 const { cleanText, findAdminKeyByPartialMatch } = require("../utils/index");
 const { handleTextInput } = require("./fsmHandler");
@@ -9,6 +9,7 @@ const { chatMessageListener } = require("./listeners/chatMessageListener");
 const { userStates } = require("../state/stateManager");
 const { NOTIFICATIONS, STATES } = require("../constants/index");
 const { ADMIN } = require('../constants/commands/admin');
+const { reminderTask } = require("../scheduler/reminder");
 require("dotenv").config();
 
 // ============================================================
@@ -162,6 +163,7 @@ async function startBot() {
 }
 
 startBot();
+reminderTask();
 
 setInterval(() => {
   userStates.clearExpired();
