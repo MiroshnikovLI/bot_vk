@@ -29,8 +29,8 @@ async function chatMessageListener(context) {
   const pvzs = pvzsResult.data;
   
   // 3. Определяем ПВЗ по ID
-  let selectedPvz = pvzs.find(p => text.includes(p.pvz_id));
-  
+  let selectedPvz = pvzs.find(p => text.replace(/[,;.#-]/g, ' ').includes(p.pvz_id));
+
   // 4. Если ПВЗ не найден — выходим
   if (!selectedPvz) return;
   
