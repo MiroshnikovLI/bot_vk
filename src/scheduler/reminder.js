@@ -29,7 +29,7 @@ async function reminderTask() {
   }
 
   const openIsTen = () => {
-    cron.schedule('30,35,40,45,50,55 9 * * *', async () => {
+    cron.schedule('30,40,50 9 * * *', async () => {
         const report = await getThereIsNoReport('open');
   
         if(report.success) {
@@ -51,7 +51,7 @@ async function reminderTask() {
   }
 
   const closeInEight = () => {
-      cron.schedule('00,05,10,15,20,25,30 21 * * *', async () => {
+      cron.schedule('15,30 21 * * *', async () => {
         const report = await getThereIsNoReport('close', "21:00:00");
   
         if(report.success) {
@@ -73,7 +73,7 @@ async function reminderTask() {
   }
 
     const closeInTen = () => {
-      cron.schedule('00,05,10,15,20,25,30 22 * * *', async () => {
+      cron.schedule('15,30 22 * * *', async () => {
         const report = await getThereIsNoReport('close', "22:00:00");
   
         if(report.success) {
