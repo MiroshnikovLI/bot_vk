@@ -163,7 +163,7 @@ async function startBot() {
 }
 
 startBot();
-reminderTask();
+// reminderTask();
 
 
 setInterval(() => {

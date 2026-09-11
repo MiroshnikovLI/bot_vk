@@ -5,15 +5,11 @@ const { getUserInfo } = require("../../config/vkApi");
 require("dotenv").config();
 
 async function chatMessageListener(context) {
-  const { text, from_id: senderId, isOutbox, date } = context;
-  
-  if (isOutbox || !text?.trim()) return;
+  const { text, from_id: senderId, date } = context;
   
   // 1. Получаем или создаём пользователя
   let user = await getUserVkId(senderId);
 
-  if (process.env.VK_ID_ZRR.includes(user.vk_id)) return;
-  
   if (!user) {
     const userInfo = await getUserInfo(senderId);
     if (!userInfo) return;
@@ -21,6 +17,8 @@ async function chatMessageListener(context) {
     user = await getOrCreateUser(senderId, `${userInfo.last_name} ${userInfo.first_name}`);
     if (!user) return;
   }
+
+  if (process.env.VK_ID_ZRR.includes(user.vk_id)) return;
   
   // 2. Получаем список ПВЗ
   const pvzsResult = await getAllActivePvzs();
