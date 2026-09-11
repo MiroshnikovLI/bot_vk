@@ -19,7 +19,7 @@ const { handlerUnsubscriptionsMenu } = require('./menu/handlerUnsubscriptionsMen
 const { handlerActivePvz } = require('./pvz/handlerActivePvz');
 const { handlerAddPvz } = require('./pvz/handlerAddPvz');
 const { handlerDeletePvz } = require('./pvz/handlerDeletePvz');
-const { handlerListPvz } = require('./pvz/handlerListPvz');
+const { handlerListPvz } = require('./pvz/handlerList');
 
 // Отчеты
 const { handlerPvzClosureReport } = require('./reports/handlerPvzClosureReport');
