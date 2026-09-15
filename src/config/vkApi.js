@@ -1,10 +1,11 @@
 const https = require("https");
 const querystring = require("querystring");
 const { smartSplitText } = require('../utils/smartSplitText/smartSplitText');
+require('dotenv').config();
 
 // Базовые параметры
-const VK_API_VERSION = "5.199";
-const VK_API_URL = "api.vk.com";
+const VK_API_VERSION = process.env.VK_API_VERSION || "5.199";
+const VK_API_URL = process.env.VK_API_URL || "api.vk.com";
 
 async function editMessage(peerId, existingMsgId, message, keyboard) {
   await vkApiCall("messages.edit", {
